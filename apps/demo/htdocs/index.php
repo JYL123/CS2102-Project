@@ -5,7 +5,7 @@
   <style>li {list-style: none;}</style>
 </head>
 <body>
-  <h2>Supply bookid and enter</h2>
+  <h2>Sample: Supply bookid and enter</h2>
   <ul>
     <form name="display" action="index.php" method="POST" >
       <li>Book ID:</li>
