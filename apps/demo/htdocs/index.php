@@ -11,6 +11,7 @@
       <li>Book ID:</li>
       <li><input type="text" name="bookid" /></li>
       <li><input type="submit" name="submit" /></li>
+      <li><input type="submit" name="next" /></li>
     </form>
   </ul>
   <?php
@@ -40,6 +41,10 @@
         } else {
             echo "Update successful!";
         }
+    }
+    if (isset($_POST['next'])) {  
+        header('Location: testPage.php'); 
+        exit(); 
     }
     ?>  
 </body>

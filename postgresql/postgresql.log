@@ -45,3 +45,7 @@
 2018-02-10 21:17:24.653 +08 [12643] FATAL:  password authentication failed for user "ljy"
 2018-02-10 21:17:24.653 +08 [12643] DETAIL:  Role "ljy" does not exist.
 	Connection matched pg_hba.conf line 86: "host    all             all             127.0.0.1/32            md5"
+2018-02-13 22:34:46.268 +08 [34825] ERROR:  invalid input syntax for type numeric: "" at character 56
+2018-02-13 22:34:46.268 +08 [34825] STATEMENT:  UPDATE book SET book_id = '',  
+	    name = '',price = '',  
+	    date_of_publication = ''
