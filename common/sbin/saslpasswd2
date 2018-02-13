@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. /Applications/mappstack-7.1.13-0/scripts/setenv.sh
+SASL_PATH="/Applications/mappstack-7.1.13-0/common/lib/sasl2"
+                export SASL_PATH
+exec /Applications/mappstack-7.1.13-0/common/sbin/.saslpasswd2.bin -f "/Applications/mappstack-7.1.13-0/common/etc/sasldb2" "$@"

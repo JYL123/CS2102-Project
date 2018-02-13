@@ -1,0 +1,10 @@
+
+PATH="/Applications/mappstack-7.1.13-0/frameworks/laravel/app/Console:/Applications/mappstack-7.1.13-0/frameworks/cakephp/bin:/Applications/mappstack-7.1.13-0/frameworks/codeigniter/bin:/Applications/mappstack-7.1.13-0/frameworks/symfony/bin:/Applications/mappstack-7.1.13-0/frameworks/zendframework/app/Console:/Applications/mappstack-7.1.13-0/git/bin:/Applications/mappstack-7.1.13-0/varnish/bin:/Applications/mappstack-7.1.13-0/sqlite/bin:/Applications/mappstack-7.1.13-0/php/bin:/Applications/mappstack-7.1.13-0/postgresql/bin:/Applications/mappstack-7.1.13-0/apache2/bin:/Applications/mappstack-7.1.13-0/common/bin:$PATH"
+BITNAMI_ROOT="/Applications/mappstack-7.1.13-0"
+export BITNAMI_ROOT
+
+
+if [ "$BASH" != "" -a -s "/Applications/mappstack-7.1.13-0/git/scripts/git-completion.bash" ]; then
+    . "/Applications/mappstack-7.1.13-0/git/scripts/git-completion.bash"
+fi
+GIT_PS1_SHOWDIRTYSTATE=true

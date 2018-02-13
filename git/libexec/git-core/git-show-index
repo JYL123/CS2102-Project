@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. /Applications/mappstack-7.1.13-0/scripts/setenv.sh
+
+exec /Applications/mappstack-7.1.13-0/git/libexec/git-core/.git-show-index.bin  "$@"

@@ -1,0 +1,33 @@
+[Wed Feb 07 16:06:36.003789 2018] [ssl:warn] [pid 8969] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Wed Feb 07 16:06:36.081719 2018] [ssl:warn] [pid 8970] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Wed Feb 07 16:06:36.084719 2018] [mpm_prefork:notice] [pid 8970] AH00163: Apache/2.4.29 (Unix) PHP/7.1.13 OpenSSL/1.0.2n configured -- resuming normal operations
+[Wed Feb 07 16:06:36.084780 2018] [core:notice] [pid 8970] AH00094: Command line: '/Applications/mappstack-7.1.13-0/apache2/bin/httpd.bin -f /Applications/mappstack-7.1.13-0/apache2/conf/httpd.conf'
+[Wed Feb 07 16:06:51.596954 2018] [mpm_prefork:notice] [pid 8970] AH00169: caught SIGTERM, shutting down
+[Wed Feb 07 16:06:54.266793 2018] [ssl:warn] [pid 9005] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Wed Feb 07 16:06:54.329595 2018] [ssl:warn] [pid 9006] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Wed Feb 07 16:06:54.331911 2018] [mpm_prefork:notice] [pid 9006] AH00163: Apache/2.4.29 (Unix) PHP/7.1.13 OpenSSL/1.0.2n configured -- resuming normal operations
+[Wed Feb 07 16:06:54.331981 2018] [core:notice] [pid 9006] AH00094: Command line: '/Applications/mappstack-7.1.13-0/apache2/bin/httpd.bin -f /Applications/mappstack-7.1.13-0/apache2/conf/httpd.conf'
+[Thu Feb 08 23:48:19.080421 2018] [mpm_prefork:notice] [pid 9006] AH00169: caught SIGTERM, shutting down
+[Sat Feb 10 19:54:23.905854 2018] [ssl:warn] [pid 7148] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Sat Feb 10 19:54:24.030133 2018] [ssl:warn] [pid 7149] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Sat Feb 10 19:54:24.033613 2018] [mpm_prefork:notice] [pid 7149] AH00163: Apache/2.4.29 (Unix) PHP/7.1.13 OpenSSL/1.0.2n configured -- resuming normal operations
+[Sat Feb 10 19:54:24.033681 2018] [core:notice] [pid 7149] AH00094: Command line: '/Applications/mappstack-7.1.13-0/apache2/bin/httpd.bin -f /Applications/mappstack-7.1.13-0/apache2/conf/httpd.conf'
+[Sat Feb 10 19:59:53.700159 2018] [mpm_prefork:notice] [pid 7149] AH00169: caught SIGTERM, shutting down
+[Sat Feb 10 20:00:02.715887 2018] [ssl:warn] [pid 7411] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Sat Feb 10 20:00:02.800108 2018] [ssl:warn] [pid 7412] AH01909: localhost:8443:0 server certificate does NOT include an ID which matches the server name
+[Sat Feb 10 20:00:02.802661 2018] [mpm_prefork:notice] [pid 7412] AH00163: Apache/2.4.29 (Unix) PHP/7.1.13 OpenSSL/1.0.2n configured -- resuming normal operations
+[Sat Feb 10 20:00:02.802727 2018] [core:notice] [pid 7412] AH00094: Command line: '/Applications/mappstack-7.1.13-0/apache2/bin/httpd.bin -f /Applications/mappstack-7.1.13-0/apache2/conf/httpd.conf'
+[Sat Feb 10 20:00:38.151396 2018] [php7:warn] [pid 7413] [client ::1:58600] PHP Warning:  pg_connect(): Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &quot;postgres&quot; in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 18
+[Sat Feb 10 20:00:38.152675 2018] [php7:notice] [pid 7413] [client ::1:58600] PHP Notice:  Undefined index: bookid in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19
+[Sat Feb 10 20:00:38.153055 2018] [php7:warn] [pid 7413] [client ::1:58600] PHP Warning:  pg_query() expects parameter 1 to be resource, boolean given in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19
+[Sat Feb 10 20:00:38.153364 2018] [php7:warn] [pid 7413] [client ::1:58600] PHP Warning:  pg_fetch_assoc() expects parameter 1 to be resource, null given in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 20
+[Sat Feb 10 20:15:28.294602 2018] [php7:warn] [pid 7414] [client ::1:59976] PHP Warning:  pg_connect(): Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &quot;postgres&quot; in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 18
+[Sat Feb 10 20:15:28.294884 2018] [php7:notice] [pid 7414] [client ::1:59976] PHP Notice:  Undefined index: bookid in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19
+[Sat Feb 10 20:15:28.294967 2018] [php7:warn] [pid 7414] [client ::1:59976] PHP Warning:  pg_query() expects parameter 1 to be resource, boolean given in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19
+[Sat Feb 10 20:15:28.294998 2018] [php7:warn] [pid 7414] [client ::1:59976] PHP Warning:  pg_fetch_assoc() expects parameter 1 to be resource, null given in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 20
+[Sat Feb 10 20:15:34.945090 2018] [php7:warn] [pid 7415] [client ::1:60009] PHP Warning:  pg_connect(): Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &quot;postgres&quot; in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 18, referer: http://localhost:8080/demo/
+[Sat Feb 10 20:15:34.945437 2018] [php7:warn] [pid 7415] [client ::1:60009] PHP Warning:  pg_query() expects parameter 1 to be resource, boolean given in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19, referer: http://localhost:8080/demo/
+[Sat Feb 10 20:15:34.945475 2018] [php7:warn] [pid 7415] [client ::1:60009] PHP Warning:  pg_fetch_assoc() expects parameter 1 to be resource, null given in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 20, referer: http://localhost:8080/demo/
+[Sat Feb 10 20:18:47.332747 2018] [php7:notice] [pid 7416] [client ::1:60422] PHP Notice:  Undefined index: bookid in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19
+[Sat Feb 10 20:19:13.551339 2018] [php7:notice] [pid 7546] [client ::1:60479] PHP Notice:  Undefined index: bookid in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19, referer: http://localhost:8080/demo/index.php
+[Mon Feb 12 22:24:49.005904 2018] [php7:notice] [pid 7415] [client ::1:55548] PHP Notice:  Undefined index: bookid in /Applications/mappstack-7.1.13-0/apps/demo/htdocs/index.php on line 19

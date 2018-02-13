@@ -1,0 +1,47 @@
+2018-02-07 16:03:10.422 +08 [8700] LOG:  listening on IPv4 address "127.0.0.1", port 5431
+2018-02-07 16:03:10.424 +08 [8700] LOG:  listening on Unix socket "/Applications/mappstack-7.1.13-0/postgresql/.s.PGSQL.5431"
+2018-02-07 16:03:10.437 +08 [8701] LOG:  database system was shut down at 2018-02-07 16:03:09 +08
+2018-02-07 16:03:10.441 +08 [8700] LOG:  database system is ready to accept connections
+2018-02-07 16:03:10.940 +08 [8708] LOG:  incomplete startup packet
+2018-02-07 16:03:21.914 +08 [8700] LOG:  received fast shutdown request
+2018-02-07 16:03:21.915 +08 [8700] LOG:  aborting any active transactions
+2018-02-07 16:03:21.916 +08 [8700] LOG:  worker process: logical replication launcher (PID 8707) exited with exit code 1
+2018-02-07 16:03:21.916 +08 [8702] LOG:  shutting down
+2018-02-07 16:03:21.924 +08 [8700] LOG:  database system is shut down
+2018-02-07 16:06:06.386 +08 [8896] LOG:  listening on IPv4 address "127.0.0.1", port 5431
+2018-02-07 16:06:06.388 +08 [8896] LOG:  listening on Unix socket "/Applications/mappstack-7.1.13-0/postgresql/.s.PGSQL.5431"
+2018-02-07 16:06:06.402 +08 [8897] LOG:  database system was shut down at 2018-02-07 16:03:21 +08
+2018-02-07 16:06:06.410 +08 [8896] LOG:  database system is ready to accept connections
+2018-02-08 23:48:18.982 +08 [8896] LOG:  received smart shutdown request
+2018-02-08 23:48:18.989 +08 [8896] LOG:  worker process: logical replication launcher (PID 8903) exited with exit code 1
+2018-02-08 23:48:18.993 +08 [8898] LOG:  shutting down
+2018-02-08 23:48:19.027 +08 [8896] LOG:  database system is shut down
+2018-02-10 19:54:15.799 +08 [7104] LOG:  listening on IPv4 address "127.0.0.1", port 5431
+2018-02-10 19:54:15.800 +08 [7104] LOG:  listening on Unix socket "/Applications/mappstack-7.1.13-0/postgresql/.s.PGSQL.5431"
+2018-02-10 19:54:15.832 +08 [7105] LOG:  database system was shut down at 2018-02-08 23:48:19 +08
+2018-02-10 19:54:15.842 +08 [7104] LOG:  database system is ready to accept connections
+2018-02-10 19:59:45.210 +08 [7104] LOG:  received fast shutdown request
+2018-02-10 19:59:45.211 +08 [7104] LOG:  aborting any active transactions
+2018-02-10 19:59:45.212 +08 [7104] LOG:  worker process: logical replication launcher (PID 7111) exited with exit code 1
+2018-02-10 19:59:45.212 +08 [7106] LOG:  shutting down
+2018-02-10 19:59:45.220 +08 [7104] LOG:  database system is shut down
+2018-02-10 20:00:06.011 +08 [7453] LOG:  listening on IPv4 address "127.0.0.1", port 5431
+2018-02-10 20:00:06.012 +08 [7453] LOG:  listening on Unix socket "/Applications/mappstack-7.1.13-0/postgresql/.s.PGSQL.5431"
+2018-02-10 20:00:06.024 +08 [7454] LOG:  database system was shut down at 2018-02-10 19:59:45 +08
+2018-02-10 20:00:06.029 +08 [7453] LOG:  database system is ready to accept connections
+2018-02-10 20:14:12.038 +08 [9147] ERROR:  relation "book" already exists
+2018-02-10 20:14:12.038 +08 [9147] STATEMENT:  CREATE TABLE book (
+	    book_id VARCHAR(100) PRIMARY KEY,
+	    name VARCHAR(100),
+	    price NUMERIC,
+	    date_of_publication DATE
+	);
+	
+	 INSERT INTO book (book_id, name, price, date_of_publication) VALUES ('PHP01','Complete PHP', 19.99, '2011-03-27');
+	 
+2018-02-10 21:17:12.603 +08 [12641] FATAL:  password authentication failed for user "ljy"
+2018-02-10 21:17:12.603 +08 [12641] DETAIL:  Role "ljy" does not exist.
+	Connection matched pg_hba.conf line 86: "host    all             all             127.0.0.1/32            md5"
+2018-02-10 21:17:24.653 +08 [12643] FATAL:  password authentication failed for user "ljy"
+2018-02-10 21:17:24.653 +08 [12643] DETAIL:  Role "ljy" does not exist.
+	Connection matched pg_hba.conf line 86: "host    all             all             127.0.0.1/32            md5"

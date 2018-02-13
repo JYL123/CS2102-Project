@@ -1,0 +1,3 @@
+#!/bin/sh
+. /Applications/mappstack-7.1.13-0/postgresql/bin/setenv.sh
+exec /Applications/mappstack-7.1.13-0/postgresql/bin/gdalwarp.bin "$@"
