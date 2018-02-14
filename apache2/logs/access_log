@@ -72,3 +72,16 @@
 ::1 - - [13/Feb/2018:22:41:38 +0800] "GET /demo/index.php HTTP/1.1" 200 323
 ::1 - - [13/Feb/2018:22:41:39 +0800] "POST /demo/index.php HTTP/1.1" 302 528
 ::1 - - [13/Feb/2018:22:41:39 +0800] "GET /demo/testPage.php HTTP/1.1" 500 12
+::1 - - [14/Feb/2018:13:57:16 +0800] "GET / HTTP/1.1" 200 1294
+::1 - - [14/Feb/2018:13:57:16 +0800] "GET /bitnami.css HTTP/1.1" 200 795
+::1 - - [14/Feb/2018:13:57:16 +0800] "GET /img/bitnami.png?1186088387 HTTP/1.1" 200 3738
+::1 - - [14/Feb/2018:13:57:16 +0800] "GET /img/mappstack.png HTTP/1.1" 200 3846
+::1 - - [14/Feb/2018:13:57:16 +0800] "GET /img/tabs_bg.png HTTP/1.1" 200 214
+::1 - - [14/Feb/2018:13:57:22 +0800] "GET /demo/ HTTP/1.1" 200 323
+::1 - - [14/Feb/2018:13:57:31 +0800] "POST /demo/index.php HTTP/1.1" 200 483
+::1 - - [14/Feb/2018:13:57:34 +0800] "POST /demo/index.php HTTP/1.1" 200 337
+::1 - - [14/Feb/2018:13:57:45 +0800] "POST /demo/index.php HTTP/1.1" 302 528
+::1 - - [14/Feb/2018:13:57:45 +0800] "GET /demo/testPage.php HTTP/1.1" 500 12
+::1 - - [14/Feb/2018:14:03:24 +0800] "GET /demo/index.php HTTP/1.1" 200 328
+::1 - - [14/Feb/2018:14:03:31 +0800] "POST /demo/index.php HTTP/1.1" 302 540
+::1 - - [14/Feb/2018:14:03:31 +0800] "GET /demo/testPage.php HTTP/1.1" 500 12
