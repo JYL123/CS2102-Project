@@ -5,7 +5,7 @@
   <style>li {list-style: none;}</style>
 </head>
 <body>
-  <h2>Login Page</h2>
+  <h2>Admin Login Page</h2>
   <ul>
     <form name="display" action="testpage.php" method="POST" >
       <li>Insert the following information to login:</li>
@@ -20,7 +20,7 @@
   <?php
   	// Connect to the database. Please change the password in the following line accordingly
     $db     = pg_connect("host=localhost port=5431 dbname=Project1 user=postgres password=psql");	
-    $result = pg_query($db, "SELECT icnum FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");		// Query template
+    $result = pg_query($db, "SELECT icnum FROM administrators where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");		// Query template
     $row    = pg_fetch_assoc($result);		// To store the result row
 
     if (!empty($row[icnum])) {

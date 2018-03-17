@@ -1424,3 +1424,28 @@
 2018-03-17 23:16:48.389 +08 [16548] ERROR:  syntax error at or near "/" at character 169
 2018-03-17 23:16:48.389 +08 [16548] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('Charlie', '123', '456',  
 	    'Charlie', 'Smith', 'charlie@gmail.com', /'5763435')
+2018-03-17 23:40:29.498 +08 [15753] ERROR:  syntax error at or near "lastname" at character 54
+2018-03-17 23:40:29.498 +08 [15753] STATEMENT:  ALTER TABLE adminisrators
+	ADD firstname varchar(64), lastname varchar(64), email varchar(64), phonenum integer;
+2018-03-17 23:41:57.700 +08 [15753] ERROR:  relation "adminisrators" does not exist
+2018-03-17 23:41:57.700 +08 [15753] STATEMENT:  ALTER TABLE adminisrators
+	ADD firstname varchar(64);
+2018-03-17 23:42:14.148 +08 [15753] ERROR:  syntax error at or near "email" at character 54
+2018-03-17 23:42:14.148 +08 [15753] STATEMENT:  ALTER TABLE administrators
+	ADD lastname varchar(64), email varchar(64), phonenum integer;
+2018-03-17 23:52:14.272 +08 [17001] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-17 23:52:14.272 +08 [17001] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-17 23:52:14.272 +08 [17001] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('David', '123', '123',  
+	    'David', 'Smith', 'david@gmail.com', '64528')
+2018-03-17 23:54:19.741 +08 [17048] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-17 23:54:19.741 +08 [17048] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-17 23:54:19.741 +08 [17048] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('David', '123', '123',  
+	    'David', 'Smith', 'david@gmail.com', '6458232')
+2018-03-17 23:57:19.217 +08 [17073] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-17 23:57:19.217 +08 [17073] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-17 23:57:19.217 +08 [17073] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('David', '123', '123',  
+	    'David', 'Smith', 'david@gmail.com', '634853')
+2018-03-17 23:57:56.684 +08 [17087] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-17 23:57:56.684 +08 [17087] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-17 23:57:56.684 +08 [17087] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('David', '123', '123',  
+	    'David', 'Smith', 'david@gmail.com', '5463425')
