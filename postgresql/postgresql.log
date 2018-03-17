@@ -1221,3 +1221,206 @@
 2018-03-06 01:51:16.213 +08 [90878] HINT:  There is a column named "username" in table "users", but it cannot be referenced from this part of the query.
 2018-03-06 01:51:16.213 +08 [90878] STATEMENT:  INSERT INTO users VALUES (username = '1', userpassword = '2', icnum = '3',  
 	                    firstname = '4', lastname = '5', email = '6', phonenum = '7')
+2018-03-06 13:37:13.563 +08 [86237] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-06 13:37:13.563 +08 [86237] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-06 13:37:13.563 +08 [86237] STATEMENT:  select * from users;
+	insert into users values ('Bob', '123', '123', 'Alice', 'Smith', 'bob@gmail.com', '123')
+2018-03-12 12:34:40.923 +08 [39818] ERROR:  syntax error at end of input at character 100
+2018-03-12 12:34:40.923 +08 [39818] STATEMENT:  INSERT INTO users VALUES ('Cat', '123', 'somerandomnumber',  
+	    'Cat', 'Cat', 'cat@gmail.com', ''
+2018-03-12 12:36:14.840 +08 [39852] ERROR:  syntax error at end of input at character 89
+2018-03-12 12:36:14.840 +08 [39852] STATEMENT:  INSERT INTO users VALUES ('Cat', '123', '73281',  
+	    'Cat', 'Cat', 'cat@gmail.com', ''
+2018-03-12 12:36:57.279 +08 [39867] ERROR:  syntax error at end of input at character 89
+2018-03-12 12:36:57.279 +08 [39867] STATEMENT:  INSERT INTO users VALUES ('Cat', '123', '73281',  
+	    'Cat', 'Cat', 'cat@gmail.com', ''
+2018-03-12 12:37:37.850 +08 [39876] ERROR:  syntax error at end of input at character 100
+2018-03-12 12:37:37.850 +08 [39876] STATEMENT:  INSERT INTO users VALUES ('Cat', '123', 'somerandomnumber',  
+	    'Cat', 'Cat', 'cat@gmail.com', ''
+2018-03-12 12:37:52.932 +08 [39881] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:52.932 +08 [39881] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:54.183 +08 [39885] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:54.183 +08 [39885] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:54.353 +08 [39888] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:54.353 +08 [39888] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:54.544 +08 [39891] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:54.544 +08 [39891] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:54.730 +08 [39894] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:54.730 +08 [39894] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:54.968 +08 [39897] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:54.968 +08 [39897] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:55.270 +08 [39900] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:55.270 +08 [39900] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:55.452 +08 [39904] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:55.452 +08 [39904] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:55.628 +08 [39907] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:55.628 +08 [39907] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:37:55.781 +08 [39910] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:37:55.781 +08 [39910] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:34.535 +08 [39946] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:34.535 +08 [39946] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:35.382 +08 [39949] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:35.382 +08 [39949] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:35.825 +08 [39952] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:35.825 +08 [39952] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:36.028 +08 [39955] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:36.028 +08 [39955] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:36.176 +08 [39958] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:36.176 +08 [39958] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:36.365 +08 [39961] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:36.365 +08 [39961] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:36.532 +08 [39964] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:36.532 +08 [39964] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:36.710 +08 [39967] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:36.710 +08 [39967] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:36.892 +08 [39970] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:36.892 +08 [39970] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:37.083 +08 [39973] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:37.083 +08 [39973] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:37.278 +08 [39976] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:37.278 +08 [39976] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:37.460 +08 [39979] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:37.460 +08 [39979] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:37.659 +08 [39982] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:37.659 +08 [39982] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:53.901 +08 [39990] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:53.901 +08 [39990] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:54.698 +08 [39993] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:54.698 +08 [39993] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:54.874 +08 [39996] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:54.874 +08 [39996] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:40:55.055 +08 [39999] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:40:55.055 +08 [39999] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:41:56.957 +08 [40011] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:41:56.957 +08 [40011] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:42:05.954 +08 [40013] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:42:05.954 +08 [40013] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-12 12:42:14.278 +08 [40016] ERROR:  syntax error at end of input at character 59
+2018-03-12 12:42:14.278 +08 [40016] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-14 09:20:47.055 +08 [7453] LOG:  received smart shutdown request
+2018-03-14 09:20:47.057 +08 [7453] LOG:  worker process: logical replication launcher (PID 7460) exited with exit code 1
+2018-03-14 09:20:47.057 +08 [7455] LOG:  shutting down
+2018-03-14 09:20:47.072 +08 [7453] LOG:  database system is shut down
+2018-03-17 22:18:44.488 +08 [15650] LOG:  listening on IPv4 address "127.0.0.1", port 5431
+2018-03-17 22:18:44.489 +08 [15650] LOG:  listening on Unix socket "/Applications/mappstack-7.1.13-0/postgresql/.s.PGSQL.5431"
+2018-03-17 22:18:44.527 +08 [15651] LOG:  database system was shut down at 2018-03-14 09:20:47 +08
+2018-03-17 22:18:44.536 +08 [15650] LOG:  database system is ready to accept connections
+2018-03-17 22:36:37.251 +08 [15992] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:37.251 +08 [15992] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:38.149 +08 [15995] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:38.149 +08 [15995] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:38.336 +08 [15998] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:38.336 +08 [15998] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:38.510 +08 [16001] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:38.510 +08 [16001] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:38.699 +08 [16004] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:38.699 +08 [16004] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:38.881 +08 [16007] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:38.881 +08 [16007] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:39.666 +08 [16010] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:39.666 +08 [16010] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:39.815 +08 [16013] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:39.815 +08 [16013] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:39.979 +08 [16016] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:39.979 +08 [16016] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:40.163 +08 [16019] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:40.163 +08 [16019] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:40.339 +08 [16022] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:40.339 +08 [16022] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:40.491 +08 [16025] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:40.491 +08 [16025] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:36:40.663 +08 [16028] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:36:40.663 +08 [16028] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:38:18.627 +08 [16050] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:38:18.627 +08 [16050] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:40:55.336 +08 [16106] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:40:55.336 +08 [16106] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:41:03.241 +08 [16114] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:41:03.241 +08 [16114] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:41:08.037 +08 [16122] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:41:08.037 +08 [16122] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:41:09.693 +08 [16123] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:41:09.693 +08 [16123] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:41:12.644 +08 [16126] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:41:12.644 +08 [16126] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:41:16.471 +08 [16128] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:41:16.471 +08 [16128] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:42:11.083 +08 [16140] ERROR:  syntax error at end of input at character 59
+2018-03-17 22:42:11.083 +08 [16140] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	    '', '', '', ''
+2018-03-17 22:47:27.515 +08 [16215] ERROR:  syntax error at end of input at character 99
+2018-03-17 22:47:27.515 +08 [16215] STATEMENT:  INSERT INTO users VALUES ('JY', '123', '123',  
+	    'Jiayao', 'Li', 'jiayao@gmail.com', '32423143'
+2018-03-17 22:51:09.524 +08 [16266] ERROR:  syntax error at or near "'JY'" at character 26
+2018-03-17 22:51:09.524 +08 [16266] STATEMENT:  INSERT INTO users VALUES 'JY', '123', '123',  
+	    'Jiayao', 'Li', 'jiayao@gmail.com', '123341324'
+2018-03-17 22:53:41.744 +08 [16301] ERROR:  syntax error at or near "username" at character 26
+2018-03-17 22:53:41.744 +08 [16301] STATEMENT:  INSERT INTO users VALUES username = 'JY', userpassword = '123', icnum = '123',  
+	    firstname = 'Jiayao', lastname = 'Li', email = 'jiayao@gmail.com', phonenum = '3647324'
+2018-03-17 22:55:17.428 +08 [16314] ERROR:  syntax error at or near "username" at character 26
+2018-03-17 22:55:17.428 +08 [16314] STATEMENT:  INSERT INTO users VALUES username = 'JY', userpassword = '123', icnum = '789',  
+	    firstname = 'Jiayao', lastname = 'Li', email = 'jiayao@gmail.com', phonenum = '3123324'
+2018-03-17 22:55:20.620 +08 [16316] ERROR:  syntax error at or near "username" at character 26
+2018-03-17 22:55:20.620 +08 [16316] STATEMENT:  INSERT INTO users VALUES username = '', userpassword = '', icnum = '',  
+	    firstname = '', lastname = '', email = '', phonenum = ''
+2018-03-17 22:57:08.629 +08 [16346] ERROR:  column "username" does not exist at character 27
+2018-03-17 22:57:08.629 +08 [16346] HINT:  There is a column named "username" in table "users", but it cannot be referenced from this part of the query.
+2018-03-17 22:57:08.629 +08 [16346] STATEMENT:  INSERT INTO users VALUES (username = 'JY', userpassword = '123', icnum = '345',  
+	    firstname = 'Jiayao', lastname = 'Li', email = 'jiayao@gmail.com', phonenum = '234311')
+2018-03-17 22:59:10.302 +08 [16366] ERROR:  column "username" does not exist at character 27
+2018-03-17 22:59:10.302 +08 [16366] HINT:  There is a column named "username" in table "users", but it cannot be referenced from this part of the query.
+2018-03-17 22:59:10.302 +08 [16366] STATEMENT:  INSERT INTO users VALUES (username = 'JY', userpassword = '123', icnum = '345',  
+	    firstname = 'Jiayao', lastname = 'Li', email = 'jiayao@gmail.com', phonenum = '3453453')
+2018-03-17 23:16:48.389 +08 [16548] ERROR:  syntax error at or near "/" at character 169
+2018-03-17 23:16:48.389 +08 [16548] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('Charlie', '123', '456',  
+	    'Charlie', 'Smith', 'charlie@gmail.com', /'5763435')

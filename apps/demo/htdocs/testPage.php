@@ -14,7 +14,7 @@
       <li>password:</li>
       <li><input type="text" name="userpassword" /></li>
       <li><input type="submit" name="submit" /></li>
-      <li><input type="submit" name="next" value="next" /></li>
+      <li><input type="submit" name="next" value="Sign Up" /></li>
     </form>
   </ul>
   <?php
@@ -29,6 +29,12 @@
         exit();
     } else {
         echo "Did you sign up?";
+        
+    }
+
+    if (isset($_POST['next'])) {  
+      header('Location: userSignUp.php'); 
+      exit(); 
     }
     
     ?>  

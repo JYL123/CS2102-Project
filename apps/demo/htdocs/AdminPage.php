@@ -60,7 +60,7 @@
 
     if (isset($_POST['newuser'])) {	// Submit the update SQL command
         $result = pg_query($db, "INSERT INTO users VALUES ('$_POST[username]', '$_POST[userpassword]', '$_POST[icnum]',  
-                    '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]')");
+                    '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]'");
         if (!$result) {
             echo "Update failed!!";
         } else {
