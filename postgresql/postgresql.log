@@ -1449,3 +1449,122 @@
 2018-03-17 23:57:56.684 +08 [17087] DETAIL:  Key (icnum)=(123) already exists.
 2018-03-17 23:57:56.684 +08 [17087] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('David', '123', '123',  
 	    'David', 'Smith', 'david@gmail.com', '5463425')
+2018-03-18 16:30:25.386 +08 [18151] ERROR:  syntax error at end of input at character 75
+2018-03-18 16:30:25.386 +08 [18151] STATEMENT:  INSERT INTO users VALUES ('', '', '',  
+	                    '', '', '', ''
+2018-03-18 16:59:00.137 +08 [18063] ERROR:  syntax error at or near "AUTO_INCREMENT" at character 28
+2018-03-18 16:59:00.137 +08 [18063] STATEMENT:  ALTER TABLE advertisements AUTO_INCREMENT=0;
+	
+2018-03-18 16:59:15.978 +08 [18063] ERROR:  syntax error at or near "adid" at character 28
+2018-03-18 16:59:15.978 +08 [18063] STATEMENT:  ALTER TABLE advertisements adid AUTO_INCREMENT=0;
+	
+2018-03-18 17:01:37.226 +08 [18063] ERROR:  syntax error at or near "AUTO_INCREMENT" at character 28
+2018-03-18 17:01:37.226 +08 [18063] STATEMENT:  ALTER TABLE advertisements AUTO_INCREMENT=1001;
+	
+2018-03-18 17:02:47.610 +08 [18063] ERROR:  syntax error at or near "`" at character 13
+2018-03-18 17:02:47.610 +08 [18063] STATEMENT:  ALTER TABLE `advertisements` AUTO_INCREMENT=1001;
+	
+2018-03-18 17:03:13.113 +08 [18063] ERROR:  syntax error at or near "AUTO_INCREMENT" at character 28
+2018-03-18 17:03:13.113 +08 [18063] STATEMENT:  ALTER TABLE advertisements AUTO_INCREMENT=1000;
+	
+2018-03-18 17:03:23.296 +08 [18063] ERROR:  syntax error at or near "AUTO_INCREMENT" at character 28
+2018-03-18 17:03:23.296 +08 [18063] STATEMENT:  ALTER TABLE advertisements AUTO_INCREMENT = 1000;
+	
+2018-03-18 17:03:54.972 +08 [18063] ERROR:  syntax error at or near "AUTO_INCREMENT" at character 28
+2018-03-18 17:03:54.972 +08 [18063] STATEMENT:  ALTER TABLE advertisements AUTO_INCREMENT = 1000;
+	
+2018-03-18 17:06:32.733 +08 [18063] ERROR:  invalid input syntax for integer: "adid_seq"
+2018-03-18 17:06:32.733 +08 [18063] STATEMENT:  CREATE SEQUENCE adid_seq;
+	ALTER TABLE advertisements ALTER adid SET DEFAULT('adid_seq');
+	
+2018-03-18 17:09:14.770 +08 [18063] ERROR:  relation "advertosements" does not exist at character 15
+2018-03-18 17:09:14.770 +08 [18063] STATEMENT:  select * from advertosements;
+	
+2018-03-18 17:13:29.957 +08 [18661] ERROR:  invalid input syntax for integer: "" at character 63
+2018-03-18 17:13:29.957 +08 [18661] STATEMENT:  INSERT INTO cars (platenum, models, numseats) VALUES ('', '', '')
+2018-03-18 17:13:29.959 +08 [18661] ERROR:  date/time field value out of range: "18/03/2018" at character 89
+2018-03-18 17:13:29.959 +08 [18661] HINT:  Perhaps you need a different "datestyle" setting.
+2018-03-18 17:13:29.959 +08 [18661] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Tampines', 'Kent ridge', '18/03/2018')
+2018-03-18 17:15:56.241 +08 [18701] ERROR:  date/time field value out of range: "18/03/2018" at character 104
+2018-03-18 17:15:56.241 +08 [18701] HINT:  Perhaps you need a different "datestyle" setting.
+2018-03-18 17:15:56.241 +08 [18701] STATEMENT:  INSERT INTO advertisements (adid, origin, destination, doa) VALUES (DEFAULT, 'Tampines', 'Kent ridge', '18/03/2018')
+2018-03-18 17:16:22.975 +08 [18707] ERROR:  date/time field value out of range: "18/03/2018" at character 104
+2018-03-18 17:16:22.975 +08 [18707] HINT:  Perhaps you need a different "datestyle" setting.
+2018-03-18 17:16:22.975 +08 [18707] STATEMENT:  INSERT INTO advertisements (adid, origin, destination, doa) VALUES (DEFAULT, 'Tampines', 'Kent ridge', '18/03/2018')
+2018-03-18 17:16:32.203 +08 [18713] ERROR:  invalid input syntax for type timestamp: "" at character 104
+2018-03-18 17:16:32.203 +08 [18713] STATEMENT:  INSERT INTO advertisements (adid, origin, destination, doa) VALUES (DEFAULT, 'Tampines', 'Kent ridge', '')
+2018-03-18 17:16:42.966 +08 [18716] ERROR:  date/time field value out of range: "18/03/2018" at character 104
+2018-03-18 17:16:42.966 +08 [18716] HINT:  Perhaps you need a different "datestyle" setting.
+2018-03-18 17:16:42.966 +08 [18716] STATEMENT:  INSERT INTO advertisements (adid, origin, destination, doa) VALUES (DEFAULT, 'Tampines', 'Kent ridge', '18/03/2018')
+2018-03-18 19:29:49.125 +08 [19564] ERROR:  syntax error at or near "Kent" at character 75
+2018-03-18 19:29:49.125 +08 [19564] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES (Tampines', 'Kent ridge', '2018-03-18')
+2018-03-18 19:34:12.341 +08 [19613] ERROR:  syntax error at or near "Kent" at character 75
+2018-03-18 19:34:12.341 +08 [19613] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES (Tampines', 'Kent ridge', 'date('Y-m-d G:i:s')')
+2018-03-18 19:34:52.445 +08 [19635] ERROR:  syntax error at or near "Kent" at character 75
+2018-03-18 19:34:52.445 +08 [19635] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES (Tampines', 'Kent ridge', 'date('Y-m-d G:i:s')')
+2018-03-18 19:36:37.224 +08 [18063] ERROR:  syntax error at or near "14" at character 99
+2018-03-18 19:36:37.224 +08 [18063] STATEMENT:  insert into advertisements (origin, destination, doa) values('Tampines', 'Kent ridge', 2011-08-06 14:54:17);
+2018-03-18 19:36:47.169 +08 [18063] ERROR:  column "doa" is of type timestamp without time zone but expression is of type integer at character 88
+2018-03-18 19:36:47.169 +08 [18063] HINT:  You will need to rewrite or cast the expression.
+2018-03-18 19:36:47.169 +08 [18063] STATEMENT:  insert into advertisements (origin, destination, doa) values('Tampines', 'Kent ridge', 2011-08-06);
+2018-03-18 19:38:52.283 +08 [19685] ERROR:  invalid input syntax for type timestamp: "" at character 89
+2018-03-18 19:38:52.283 +08 [19685] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', '')
+2018-03-18 19:40:36.127 +08 [19715] ERROR:  invalid input syntax for type timestamp: "" at character 89
+2018-03-18 19:40:36.127 +08 [19715] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', '')
+2018-03-18 19:41:01.509 +08 [19727] ERROR:  invalid input syntax for type timestamp: "" at character 89
+2018-03-18 19:41:01.509 +08 [19727] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', '')
+2018-03-18 19:42:05.596 +08 [19755] ERROR:  syntax error at or near ")" at character 89
+2018-03-18 19:42:05.596 +08 [19755] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', )
+2018-03-18 19:44:45.325 +08 [19799] ERROR:  syntax error at or near ")" at character 89
+2018-03-18 19:44:45.325 +08 [19799] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', )
+2018-03-18 19:45:40.218 +08 [19823] ERROR:  column "doa" is of type timestamp without time zone but expression is of type integer at character 89
+2018-03-18 19:45:40.218 +08 [19823] HINT:  You will need to rewrite or cast the expression.
+2018-03-18 19:45:40.218 +08 [19823] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', 2018-03-18)
+2018-03-18 19:46:18.682 +08 [19844] ERROR:  column "doa" is of type timestamp without time zone but expression is of type integer at character 89
+2018-03-18 19:46:18.682 +08 [19844] HINT:  You will need to rewrite or cast the expression.
+2018-03-18 19:46:18.682 +08 [19844] STATEMENT:  INSERT INTO advertisements (origin, destination, doa) VALUES ('Kent ridge', 'Tampines', 2018-03-18)
+2018-03-18 20:02:49.021 +08 [20108] ERROR:  syntax error at or near "adid" at character 30
+2018-03-18 20:02:49.021 +08 [20108] STATEMENT:  INSERT INTO advertise (icnum adid) VALUES ('345','')
+2018-03-18 20:03:26.597 +08 [20121] ERROR:  syntax error at or near "adid" at character 30
+2018-03-18 20:03:26.597 +08 [20121] STATEMENT:  INSERT INTO advertise (icnum adid) VALUES ('345','4')
+2018-03-18 20:03:59.201 +08 [20142] ERROR:  syntax error at or near "adid" at character 30
+2018-03-18 20:03:59.201 +08 [20142] STATEMENT:  INSERT INTO advertise (icnum adid) VALUES ('345','5')
+2018-03-18 20:05:48.798 +08 [20177] ERROR:  duplicate key value violates unique constraint "advertise_pkey"
+2018-03-18 20:05:48.798 +08 [20177] DETAIL:  Key (icnum)=(345) already exists.
+2018-03-18 20:05:48.798 +08 [20177] STATEMENT:  INSERT INTO advertise (icnum, adid) VALUES ('345','7')
+2018-03-18 20:06:27.691 +08 [20190] ERROR:  duplicate key value violates unique constraint "advertise_pkey"
+2018-03-18 20:06:27.691 +08 [20190] DETAIL:  Key (icnum)=(345) already exists.
+2018-03-18 20:06:27.691 +08 [20190] STATEMENT:  INSERT INTO advertise (icnum, adid) VALUES ('345','8')
+2018-03-18 20:06:51.431 +08 [20203] ERROR:  duplicate key value violates unique constraint "advertise_pkey"
+2018-03-18 20:06:51.431 +08 [20203] DETAIL:  Key (icnum)=(345) already exists.
+2018-03-18 20:06:51.431 +08 [20203] STATEMENT:  INSERT INTO advertise (icnum, adid) VALUES ('345','9')
+2018-03-18 20:07:15.734 +08 [20210] ERROR:  duplicate key value violates unique constraint "advertise_pkey"
+2018-03-18 20:07:15.734 +08 [20210] DETAIL:  Key (icnum)=(345) already exists.
+2018-03-18 20:07:15.734 +08 [20210] STATEMENT:  INSERT INTO advertise (icnum, adid) VALUES ('345','10')
+2018-03-18 20:09:28.333 +08 [20249] ERROR:  duplicate key value violates unique constraint "advertise_pkey"
+2018-03-18 20:09:28.333 +08 [20249] DETAIL:  Key (icnum)=(345) already exists.
+2018-03-18 20:09:28.333 +08 [20249] STATEMENT:  INSERT INTO advertise (icnum, adid) VALUES ('345','11')
+2018-03-18 20:12:47.710 +08 [18063] ERROR:  syntax error at or near "primary" at character 28
+2018-03-18 20:12:47.710 +08 [18063] STATEMENT:  alter table advertise drop primary key, add primary key(icnum, adid);
+	
+2018-03-18 21:04:58.647 +08 [21051] ERROR:  invalid input syntax for integer: "" at character 32
+2018-03-18 21:04:58.647 +08 [21051] STATEMENT:  SELECT * FROM bid WHERE adid = '' AND icnum = ''
+2018-03-18 21:07:19.354 +08 [21105] ERROR:  invalid input syntax for integer: "" at character 32
+2018-03-18 21:07:19.354 +08 [21105] STATEMENT:  SELECT * FROM bid WHERE adid = '' AND icnum = ''
+2018-03-18 21:07:19.355 +08 [21105] ERROR:  invalid input syntax for integer: "" at character 50
+2018-03-18 21:07:19.355 +08 [21105] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES ('','', 1)
+2018-03-18 21:08:41.480 +08 [21127] ERROR:  insert or update on table "bid" violates foreign key constraint "bid_icnum_fkey"
+2018-03-18 21:08:41.480 +08 [21127] DETAIL:  Key (icnum)=() is not present in table "users".
+2018-03-18 21:08:41.480 +08 [21127] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES ('123','', 1)
+2018-03-18 21:09:18.945 +08 [21147] ERROR:  insert or update on table "bid" violates foreign key constraint "bid_icnum_fkey"
+2018-03-18 21:09:18.945 +08 [21147] DETAIL:  Key (icnum)=() is not present in table "users".
+2018-03-18 21:09:18.945 +08 [21147] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES ('123','', 1)
+2018-03-18 21:13:05.613 +08 [21213] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-18 21:13:05.613 +08 [21213] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-18 21:13:05.613 +08 [21213] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (12,'123', 1)
+2018-03-18 21:13:49.697 +08 [21228] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-18 21:13:49.697 +08 [21228] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-18 21:13:49.697 +08 [21228] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (12,'123', 1)
+2018-03-18 21:14:27.930 +08 [21248] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-18 21:14:27.930 +08 [21248] DETAIL:  Key (icnum)=(123) already exists.
+2018-03-18 21:14:27.930 +08 [21248] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (12,'123', 1)
