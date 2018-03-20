@@ -3,6 +3,7 @@
   <title>UPDATE PostgreSQL data with PHP</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <style>li {list-style: none;}</style>
+  <link rel="stylesheet" href="background.css">
 </head>
 <body>
   <h2>User Sign Up Page</h2>
