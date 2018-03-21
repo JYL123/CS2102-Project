@@ -2,19 +2,40 @@
 <head>
   <title>UPDATE PostgreSQL data with PHP</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <style>li {list-style: none;}</style>
+  <style>li {list-style: none;}
+  #nav {
+  background-color: #C08374;
+  border: 1px solid #A76358;
+  text-align: center;
+  }
+  ul {
+  list-style: none;
+  display: inline-block;
+  }
+  ul li {
+  float: none;
+  margin: 0 20px;
+  }
+  ul li a {
+  color: white;
+  }
+  </style>
   <link rel="stylesheet" href="background.css">
 </head>
 <body>
-  <h2>User Page</h2>
+<div id="nav">
+    <h2>User Page</h2>
+</div>
+<div align='center'>
   <ul>
     <form name="display" action="user.php" method="POST" >
-      <li>As an Admin, you can perform:</li>
+      <li>As an user, you can perform:</li>
       <li><input type="submit" name="apply" value="Apply to be a driver (add car in database)" /></li>
       <li><input type="submit" name="post" value="Post an advertisement" /></li>
       <li><input type="submit" name="bid" value="Bid for an advertisement" /></li>
     </form>
   </ul>
+  </div>
   <?php
   	// Connect to the database. Please change the password in the following line accordingly
     $db = pg_connect("host=localhost port=5431 dbname=Project1 user=postgres password=psql");	
@@ -22,20 +43,21 @@
     //first function - Application of being a driver
     if (isset($_POST['apply'])) {
 
-        echo "The first step to become a driver, you have to fill in the following information:";
+        echo "<div align='center'> The first step to become a driver, you have to fill in the following information: </div>";
 
         echo 
-        "<ul><form name='update' action='user.php' method='POST' > 
+        "<div align='center'>
+        <ul><form name='update' action='user.php' method='POST' > 
         <li>Vehicle Plate Number:</li>  
     	<li><input type='text' name='platenum' value='$row[platenum]' /></li>  
     	<li>Vehicle Model:</li>  
     	<li><input type='text' name='models' value='$row[models]' /></li>  
         <li>Number of seats:</li>
         <li><input type='text' name='numseats' value='$row[numseats]' /></li>  
-
         <li><input type='submit' name='cars'/></li> 
         </form>  
-    	</ul>";
+        </ul>
+        </div>";
     }
     //Submit add query
     if (isset($_POST['cars'])) {	// Submit the update SQL command
@@ -50,10 +72,11 @@
     //second function - post an advertisement 
     if (isset($_POST['post'])) {
 
-        echo "The first step to post an advertisement, you have to fill in the following information:";
+        echo "<div align='center'> The first step to post an advertisement, you have to fill in the following information: </div>";
 
         echo 
-        "<ul><form name='update' action='user.php' method='POST' > 
+        "<div align='center'>
+        <ul><form name='update' action='user.php' method='POST' > 
         <li>Your icnum:</li>  
     	<li><input type='text' name='icnum' value='$row[icnum]' /></li>  
         <li>Start location:</li>  
@@ -62,10 +85,10 @@
     	<li><input type='text' name='destination' value='$row[destination]' /></li>  
         <li>Date of traveling (YYYY-MM-DD):</li>
         <li><input type='text' name='doa' value='$row[doa]' /></li>  
-
         <li><input type='submit' name='ads'/></li> 
         </form>  
-    	</ul>";
+        </ul>
+        </div>";
     }
     //Submit add query
     if (isset($_POST['ads'])) {	// Submit the update SQL command
@@ -109,48 +132,50 @@
         }
 
         while ($row = pg_fetch_assoc($result)) {
+            echo "<div align='center'>";
             echo $row['adid'];
             echo $row['origin'];
             echo $row['destination'];
             echo $row['doa'];
-            echo "<br>";
+            echo "</div>";
         }
 
         //ask users to select an adid to bid
-        echo "The first step to bid, you have to fill in the following information:";
+        echo "<div align='center'> The first step to bid, you have to fill in the following information: </div>";
 
         echo 
-        "<ul><form name='update' action='user.php' method='POST' > 
-        <li>Advertisement ID:</li>  
+        "<div align='center'>
+        <ul><form name='update' action='user.php' method='POST' > 
+        <li>Advertisement ID: </li>  
     	<li><input type='text' name='adid' value='$row[adid]' /></li>  
-    	<li>Your icnum:</li>  
+    	<li>Your icnum: </li>  
     	<li><input type='text' name='icnum' value='$row[icnum]' /></li>  
-
         <li><input type='submit' name='bidad'/></li> 
         </form>  
-    	</ul>";
+        </ul>
+        </div>";
     }
 
     //Submit add query
     if (isset($_POST['bidad'])) {	// Submit the update SQL command
         //check whether the user has bid this ad before; duplication is not allowed
         $userresult = pg_query($db, "SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_POST[icnum]'");
+        $row    = pg_fetch_assoc($userresult);
         if (!$userresult) {
-
-        // by default, each user can contain bid i point for each ad
-        $result = pg_query($db, "INSERT INTO bid (adid, icnum, bidpoints) VALUES ($_POST[adid],'$_POST[icnum]', 1)");		// Query template
-        if (!$result) {
-            echo "Oops, please try again!";
-        } else {
-            echo "Yay, you have successfully set a bid point!";
-        }
-      } else {
-          // duplication for bidding an ad is not allowed.
-        echo "You have already bid for this ad. You can bid for a new ad.";
-      } 
+            // by default, each user can contain bid i point for each ad
+            $result = pg_query($db, "INSERT INTO bid (adid, icnum, bidpoints) VALUES ($_POST[adid],'$_POST[icnum]', 1)");
+            if (!$result) {
+                echo "Oops, please try again!";
+            } else {
+                echo "Yay, you have successfully set a bid point!";
+            }
+         } else {
+            //duplication for bidding an ad is not allowed.
+            echo "$row[adid]";
+            echo "You have already bid for this ad. You can bid for a new ad.";
+         } 
      
     }
- 
     ?>  
 </body>
 </html>

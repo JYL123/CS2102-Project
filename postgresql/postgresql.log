@@ -1568,3 +1568,35 @@
 2018-03-18 21:14:27.930 +08 [21248] ERROR:  duplicate key value violates unique constraint "bid_pkey"
 2018-03-18 21:14:27.930 +08 [21248] DETAIL:  Key (icnum)=(123) already exists.
 2018-03-18 21:14:27.930 +08 [21248] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (12,'123', 1)
+2018-03-21 19:24:14.076 +08 [38218] ERROR:  syntax error at or near "form" at character 10
+2018-03-21 19:24:14.076 +08 [38218] STATEMENT:  select * form users;
+	
+	
+2018-03-21 19:25:12.781 +08 [38561] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-21 19:25:12.781 +08 [38561] DETAIL:  Key (icnum)=(567) already exists.
+2018-03-21 19:25:12.781 +08 [38561] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('Carlo', '123', '567',  
+	    'Smith', 'Carlo', 'carlo@gmail.com', '32786491')
+2018-03-21 19:32:53.416 +08 [38675] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-21 19:32:53.416 +08 [38675] DETAIL:  Key (icnum)=(567) already exists.
+2018-03-21 19:32:53.416 +08 [38675] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('Carlo', '123', '567',  
+	    'Smith', 'Carlo', 'carlo@gmail.com', '32786491')
+2018-03-21 19:33:48.854 +08 [38688] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-21 19:33:48.854 +08 [38688] DETAIL:  Key (icnum)=(567) already exists.
+2018-03-21 19:33:48.854 +08 [38688] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('Carlo', '123', '567',  
+	    'Smith', 'Carlo', 'carlo@gmail.com', '67281639')
+2018-03-21 19:34:48.856 +08 [38696] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-03-21 19:34:48.856 +08 [38696] DETAIL:  Key (icnum)=(234) already exists.
+2018-03-21 19:34:48.856 +08 [38696] STATEMENT:  INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('jiayao', '123', '234',  
+	    'Jiayao', 'Li', 'jiayao@gmail.com', '325481')
+2018-03-21 21:02:39.835 +08 [39633] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-21 21:02:39.835 +08 [39633] DETAIL:  Key (adid, icnum)=(13, 123) already exists.
+2018-03-21 21:02:39.835 +08 [39633] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (13,'123', 1)
+2018-03-21 21:02:55.956 +08 [39637] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-21 21:02:55.956 +08 [39637] DETAIL:  Key (adid, icnum)=(13, 123) already exists.
+2018-03-21 21:02:55.956 +08 [39637] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (13,'123', 1)
+2018-03-21 21:03:02.736 +08 [39640] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-21 21:03:02.736 +08 [39640] DETAIL:  Key (adid, icnum)=(13, 123) already exists.
+2018-03-21 21:03:02.736 +08 [39640] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (13,'123', 1)
+2018-03-21 21:03:27.274 +08 [39657] ERROR:  duplicate key value violates unique constraint "bid_pkey"
+2018-03-21 21:03:27.274 +08 [39657] DETAIL:  Key (adid, icnum)=(13, 123) already exists.
+2018-03-21 21:03:27.274 +08 [39657] STATEMENT:  INSERT INTO bid (adid, icnum, bidpoints) VALUES (13,'123', 1)

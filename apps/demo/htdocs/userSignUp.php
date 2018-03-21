@@ -2,11 +2,30 @@
 <head>
   <title>UPDATE PostgreSQL data with PHP</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <style>li {list-style: none;}</style>
+  <style>li {list-style: none;}
+  #nav {
+  background-color: #C08374;
+  border: 1px solid #A76358;
+  text-align: center;
+  }
+  ul {
+  list-style: none;
+  display: inline-block;
+  }
+  ul li {
+  float: none;
+  margin: 0 20px;
+  }
+  ul li a {
+  color: white;
+  }
+  </style>
   <link rel="stylesheet" href="background.css">
 </head>
 <body>
+<div id="nav">
   <h2>User Sign Up Page</h2>
+</div>
   <ul>
     <form name="display" action="userSignUp.php" method="POST" >
       <li>Insert the following information to sign up:</li>
@@ -46,7 +65,7 @@
     }
 
     if (isset($_POST['next'])) {  
-      header('Location: testpage.php'); 
+      header('Location: userLogin.php'); 
       exit(); 
     }
 

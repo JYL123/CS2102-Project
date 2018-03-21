@@ -2,11 +2,31 @@
 <head>
   <title>UPDATE PostgreSQL data with PHP</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <style>li {list-style: none;}</style>
+  <style>li {list-style: none;}
+  #nav {
+  background-color: #C08374;
+  border: 1px solid #A76358;
+  text-align: center;
+  }
+  ul {
+  list-style: none;
+  display: inline-block;
+  }
+  ul li {
+  float: none;
+  margin: 0 20px;
+  }
+  ul li a {
+  color: white;
+  }
+  </style>
   <link rel="stylesheet" href="background.css">
 </head>
 <body>
-  <h2>Admin Page</h2>
+<div id="nav">
+    <h2>Admin Page</h2>
+</div>
+<div align="center">  
   <ul>
     <form name="display" action="AdminPage.php" method="POST" >
       <li>As an Admin, you can perform:</li>
@@ -15,6 +35,7 @@
       <li><input type="submit" name="delete" value="Delete a user" /></li>
     </form>
   </ul>
+</div>
   <?php
   	// Connect to the database. Please change the password in the following line accordingly
     $db = pg_connect("host=localhost port=5431 dbname=Project1 user=postgres password=psql");	
@@ -24,19 +45,22 @@
         $row    = pg_fetch_assoc($result);		// To store the result row
 
         echo 
-        "<li>User name:</li>  
+        "<div align='center'>
+        <li>User name:</li>  
     	<li><input type='text' name='username' value='$row[username]' /></li>  
     	<li>Phone Number:</li>  
     	<li><input type='text' name='phonenum' value='$row[phonenum]' /></li>  
         <li>IC Number:</li>
         <li><input type='text' name='icnum' value='$row[icnum]' /></li>  
     	<li>Email:</li>  
-    	<li><input type='text' name='email' value='$row[email]' /></li>";
+        <li><input type='text' name='email' value='$row[email]' /></li>
+        </div>";
     }
     //second function
     if (isset($_POST['add'])) {
         echo 
-        "<ul><form name='update' action='AdminPage.php' method='POST' >  
+        "<div align='center'>
+        <ul><form name='update' action='AdminPage.php' method='POST' >  
     	<li>User Name:</li>  
     	<li><input type='text' name='username' value='$row[username]' /></li>  
     	<li>Password:</li>  
@@ -53,10 +77,11 @@
     	<li><input type='text' name='phonenum' value='$row[phonenum]'/></li>  
     	<li><input type='submit' name='newuser'/></li>  
     	</form>  
-    	</ul>";
+        </ul>
+        </div>";
 
         echo 
-        "Fill in necessary information please.";
+        "<div align='center'>Fill in necessary information please.</div>";
     }
 
     if (isset($_POST['newuser'])) {	// Submit the update SQL command
@@ -71,12 +96,14 @@
     //Third function
     if (isset($_POST['delete'])) {
         echo 
-        "<ul><form name='update' action='AdminPage.php' method='POST' >  
+        "<div align='center'>
+        <ul><form name='update' action='AdminPage.php' method='POST' >  
     	<li>User IC Number:</li>  
         <li><input type='text' name='icnum' value='$row[icnum]' /></li>  
         <li><input type='submit' name='deleteuser'/></li> 
     	</form>  
-    	</ul>";
+        </ul>
+        </div>";
 
     }
     if (isset($_POST['deleteuser'])) {	// Submit the update SQL command
