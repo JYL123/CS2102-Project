@@ -1,7 +1,7 @@
 > CS2102
 
 ## Get started
-You only need to copy htdocs folder to your local computer.
+You only need to copy `htdocs` folder to your local computer.
 
 For each php file, you need to change the credentials in the database connection: 
 ```
