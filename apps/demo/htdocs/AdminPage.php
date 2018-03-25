@@ -30,9 +30,11 @@
   <ul>
     <form name="display" action="AdminPage.php" method="POST" >
       <li>As an Admin, you can perform:</li>
-      <li><input type="submit" name="check" value="Check the last user" /></li>
       <li><input type="submit" name="add" value="Add new users" /></li>
       <li><input type="submit" name="delete" value="Delete a user" /></li>
+      <li><input type="submit" name="view" value="View ads bidpoint" /></li>
+      <li><input type="submit" name="viewex" value="View expired ad" /></li>
+      <li><input type="submit" name="viewpop" value="View most popular ad of this week" /></li>
     </form>
   </ul>
 </div>
@@ -40,23 +42,6 @@
   	// Connect to the database. Please change the password in the following line accordingly
     $db = pg_connect("host=localhost port=5431 dbname=Project1 user=postgres password=psql");	
     //first function
-    if (isset($_POST['check'])) {
-        $result = pg_query($db, "SELECT * FROM users");		// Query template
-        $row    = pg_fetch_assoc($result);		// To store the result row
-
-        echo 
-        "<div align='center'>
-        <li>User name:</li>  
-    	<li><input type='text' name='username' value='$row[username]' /></li>  
-    	<li>Phone Number:</li>  
-    	<li><input type='text' name='phonenum' value='$row[phonenum]' /></li>  
-        <li>IC Number:</li>
-        <li><input type='text' name='icnum' value='$row[icnum]' /></li>  
-    	<li>Email:</li>  
-        <li><input type='text' name='email' value='$row[email]' /></li>
-        </div>";
-    }
-    //second function
     if (isset($_POST['add'])) {
         echo 
         "<div align='center'>
@@ -93,7 +78,8 @@
             echo "Update successful!";
         }
     }
-    //Third function
+    
+    //second function
     if (isset($_POST['delete'])) {
         echo 
         "<div align='center'>
@@ -114,7 +100,113 @@
         } else {
             echo "Delete successful!";
         }
-    }  
+    }
+
+    //third function TODO: can be replaced by a function or procedure
+    if (isset($_POST['view'])) {
+        //show all VALID ads
+        $sql = "SELECT DISTINCT * 
+                FROM (
+                    SELECT adid, count(bidpoints) as points
+                    FROM bid
+                    GROUP BY adid
+                ) AS combined natural join advertisements
+                ORDER BY points DESC";
+        $result = pg_query($db, $sql);
+        if (!$result) {
+            echo "An error occurred.\n";
+            exit;
+        }
+
+        while ($row = pg_fetch_assoc($result)) {
+            echo "<div align='center'>";
+            echo "ad id: ";
+            echo $row['id'];
+            echo " points: ";
+            echo $row['points'];
+            echo "ad origin: ";
+            echo $row['origin'];
+            echo "ad destination: ";
+            echo $row['destination'];
+            echo "ad date: ";
+            echo $row['doa'];
+            echo "</div>";
+        }
+    }
+
+    //forth function TODO: can be replaced by a function or procedure
+    if (isset($_POST['viewex'])) {
+        //show all VALID ads
+        $sql = "SELECT DISTINCT * 
+                FROM (
+                    SELECT adid, count(bidpoints) as points
+                    FROM bid
+                    GROUP BY adid
+                ) AS combined natural join advertisements
+                WHERE CURRENT_TIMESTAMP - doa > '14'";
+        $result = pg_query($db, $sql);
+        if (!$result) {
+            echo "An error occurred.\n";
+            exit;
+        }
+
+        while ($row = pg_fetch_assoc($result)) {
+            echo "<div align='center'>";
+            echo "ad id: ";
+            echo $row['id'];
+            echo " points: ";
+            echo $row['points'];
+            echo "ad origin: ";
+            echo $row['origin'];
+            echo "ad destination: ";
+            echo $row['destination'];
+            echo "ad date: ";
+            echo $row['doa'];
+            echo "</div>";
+        }
+    }
+
+    //fifith function -- retrieve the most popular ad (highest bid point)
+    if (isset($_POST['viewpop'])) {
+        //show all VALID ads
+        $sql = "SELECT DISTINCT * 
+                FROM (
+                    SELECT adid, count(bidpoints) as points
+                    FROM bid
+                    GROUP BY adid
+                ) AS combined natural join advertisements
+                WHERE CURRENT_TIMESTAMP - doa <= '7' 
+                ORDER BY points DESC
+                LIMIT 1;";
+
+        $result = pg_query($db, $sql);
+        if (!$result) {
+            echo "An error occurred.\n";
+            exit;
+        }
+
+        if(empty(pg_fetch_assoc($result))) { 
+            echo "<div align='center'>";
+            echo "It seems that no one has posted any advertosements this week"; 
+            echo "</div>";
+        }
+        else {
+            while ($row = pg_fetch_assoc($result)) {
+                echo "<div align='center'>";
+                echo "ad id: ";
+                echo $row['id'];
+                echo " points: ";
+                echo $row['points'];
+                echo "ad origin: ";
+                echo $row['origin'];
+                echo "ad destination: ";
+                echo $row['destination'];
+                echo "ad date: ";
+                echo $row['doa'];
+                echo "</div>";
+            }
+        }
+    }
     
     ?>  
 </body>

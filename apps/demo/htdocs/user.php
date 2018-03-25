@@ -107,7 +107,7 @@
         }
 
         //retrieve the adid for the last ad just added
-        $idresult = pg_query($db, "SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1 ");// Query template
+        $idresult = pg_query($db, "SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1");// Query template
         $row    = pg_fetch_assoc($idresult);	// To store the result row
         echo "<li><input type='text' name='bookid_updated' value='$row[adid]'/></li>";
 
@@ -124,7 +124,7 @@
     //third function - bid for an ad!
     if (isset($_POST['bid'])) {
         //show all VALID ads
-        $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");		// Query template
+        $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");
 
         if (!$result) {
             echo "An error occurred.\n";

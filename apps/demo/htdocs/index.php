@@ -32,6 +32,7 @@
     	</form>  
     	</ul>";
     }
+
     if (isset($_POST['new'])) {	// Submit the update SQL command
         $result = pg_query($db, "UPDATE book SET book_id = '$_POST[bookid_updated]',  
     name = '$_POST[book_name_updated]',price = '$_POST[price_updated]',  
@@ -42,6 +43,7 @@
             echo "Update successful!";
         }
     }
+    
     if (isset($_POST['next'])) {  
         header('Location: testPage.php'); 
         exit(); 
