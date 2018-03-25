@@ -10,8 +10,9 @@ host=localhost port=5431/your_port dbname=Project1/db_server_name user=postgres/
 
 ## Structure 
 * php files: php files are linked together via buttons with starting point being either `Log in\Sign up as user` or `Log in\Sign up as admin`
-* bootstrapMain.php: it is a bootstrap template for the first page of the application. It is supposed to replace main.php
+* bootstrapMain.php: it is a bootstrap template for the first page of the application. It is supposed to replace main.php. [The integration between the bootstrap and the old php files has to be discussed].
 * query.sql: a record for the sql queries we have so far. 
+* background.css: this css file is used for each php file. It is supposed to be replaced by bootstrap. 
 * images folder: storage of all image files
 
 ## Progress 
