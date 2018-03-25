@@ -1,11 +1,12 @@
 > CS2102
 
 ## Get started
-You only need to copy htdocs folder to your local computer
-For each php file, you need to change the credentials in the database connection: "host=localhost port=5431/your_port dbname=Project1/db_server_name user=postgres/your_username password=psql/your_password"
+You only need to copy htdocs folder to your local computer.
 
-
-
+For each php file, you need to change the credentials in the database connection: 
+```
+host=localhost port=5431/your_port dbname=Project1/db_server_name user=postgres/your_username password=psql/your_password
+```
 
 ## Structure 
 * php files: php files are linked together via buttons with starting point being either `Log in\Sign up as user` or `Log in\Sign up as admin`
