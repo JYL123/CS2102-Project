@@ -122,9 +122,11 @@
       "<div align='center'>
       <ul><form name='update' action='user.php' method='POST' >
       <li>Advertisement ID: </li>
-  	<li><input type='text' name='adid' value='$row[adid]' /></li>
-  	<li>Your icnum: </li>
-  	<li><input type='text' name='icnum' value='$row[icnum]' /></li>
+  	  <li><input type='text' name='adid' value='$row[adid]' /></li>
+  	  <li>Your icnum: </li>
+      <li><input type='text' name='icnum' value='$row[icnum]' /></li>
+      <li>Your point: </li>
+  	  <li><input type='text' name='bidpoints' value='$row[bidpoints]' /></li>
       <li><input type='submit' name='bidad'/></li>
       </form>
       </ul>
@@ -136,14 +138,15 @@
       //check whether the user has bid this ad before; duplication is not allowed
       $userresult = pg_query($db, "SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_POST[icnum]'");
       $row    = pg_fetch_assoc($userresult);
-      if (!$userresult) {
+
+      if (!$row) {
           // by default, each user can contain bid i point for each ad
-          $result = pg_query($db, "INSERT INTO bid (adid, icnum, bidpoints) VALUES ($_POST[adid],'$_POST[icnum]', 1)");
-          if (!$result) {
-              echo "Oops, please try again!";
-          } else {
-              echo "Yay, you have successfully set a bid point!";
-          }
+          $result = pg_query($db, "INSERT INTO bid VALUES ('$_POST[icnum]', $_POST[adid], '$_POST[bidpoints]')");
+           if (!$result) {
+               echo "Oops, please try again!";
+           } else {
+               echo "Yay, you have successfully set a bid point!";
+           }
        } else {
           //duplication for bidding an ad is not allowed.
           echo "$row[adid]";
