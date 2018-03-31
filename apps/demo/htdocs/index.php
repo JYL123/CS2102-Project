@@ -1,53 +1,139 @@
-<!DOCTYPE html>  
-<head>
-  <title>UPDATE PostgreSQL data with PHP</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <style>li {list-style: none;}</style>
-</head>
-<body>
-  <h2>Sample: Supply bookid and enter</h2>
-  <ul>
-    <form name="display" action="index.php" method="POST" >
-      <li>Book ID:</li>
-      <li><input type="text" name="bookid" /></li>
-      <li><input type="submit" name="submit" /></li>
-      <li><input type="submit" name="next" value="next" /></li>
-    </form>
-  </ul>
-  <?php
-  	// Connect to the database. Please change the password in the following line accordingly
-    $db     = pg_connect("host=localhost port=5431 dbname=Project1 user=postgres password=psql");	
-    $result = pg_query($db, "SELECT * FROM book where book_id = '$_POST[bookid]'");		// Query template
-    $row    = pg_fetch_assoc($result);		// To store the result row
-    if (isset($_POST['submit'])) {
-        echo "<ul><form name='update' action='index.php' method='POST' >  
-    	<li>Book ID:</li>  
-    	<li><input type='text' name='bookid_updated' value='$row[book_id]' /></li>  
-    	<li>Book Name:</li>  
-    	<li><input type='text' name='book_name_updated' value='$row[name]' /></li>  
-    	<li>Price (USD):</li><li><input type='text' name='price_updated' value='$row[price]' /></li>  
-    	<li>Date of publication:</li>  
-    	<li><input type='text' name='dop_updated' value='$row[date_of_publication]' /></li>  
-    	<li><input type='submit' name='new' /></li>  
-    	</form>  
-    	</ul>";
-    }
+<?php  session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Carpooling">
+    <meta name="author" content="Team 15">
+    <link rel="icon" href="images/favicon.png">
 
-    if (isset($_POST['new'])) {	// Submit the update SQL command
-        $result = pg_query($db, "UPDATE book SET book_id = '$_POST[bookid_updated]',  
-    name = '$_POST[book_name_updated]',price = '$_POST[price_updated]',  
-    date_of_publication = '$_POST[dop_updated]'");
-        if (!$result) {
-            echo "Update failed!!";
+    <title>15 Carpooling</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/index.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <text class="navbar-brand" href="#">Carpooling</text>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" action="index.php" method="POST">
+            <div class="form-group">
+              <input type="text" name="username" placeholder="Username" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" name="userpassword" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" name="submit" class="btn btn-success">Sign in</button>
+            <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'signUpUser.php';">Sign up</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Welcome to Carpooling!</h1>
+        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Login Failed Modal -->
+      <div id="failModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Login Failed</h4>
+            </div>
+            <div class="modal-body">
+              Username and password mismatch. Try again or sign up as a user.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Try Again</button>
+              <button type="button" class="btn btn-primary" onclick="location.href = 'signUpUser.php';">Sign up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; 2018 Company, Inc.</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <?php
+      // Connect to the database. Please change the password in the following line accordingly
+      $db = pg_connect("host=localhost port=5431 dbname=Project1 user=postgres password=psql");
+
+      if (isset($_POST['submit'])) {
+
+        $result = pg_query($db, "SELECT icnum, firstName, lastName FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");		// Query template
+        $row = pg_fetch_assoc($result);		// To store the result row
+
+        if (!empty($row['icnum'])) {
+          $firstname = $row['firstname'];
+          $lastname = $row['lastname'];
+          $icnum = $row['icnum'];
+          $_SESSION['first'] = $firstname;
+          $_SESSION['last'] = $lastname;
+          $_SESSION['icnum'] = $icnum;
+          $_SESSION['user']=$_POST[username];
+          echo "<script> window.location.replace('user.php') </script>";
         } else {
-            echo "Update successful!";
+          echo "<script type='text/javascript'>$('#failModal').modal('toggle');</script>";
         }
-    }
-    
-    if (isset($_POST['next'])) {  
-        header('Location: testPage.php'); 
-        exit(); 
-    }
-    ?>  
-</body>
+      }
+    ?>
+  </body>
 </html>
