@@ -6,6 +6,10 @@ SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1;
 SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid);
 SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_POST[icnum]';
 SELECT icnum, firstName, lastName FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]';
+BEGIN;
+INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
+INSERT INTO advertise (icnum, adid) SELECT '$_SESSION[icnum]', adid FROM advertisements ORDER BY adid DESC LIMIT 1;
+COMMIT;
 
 -- insert
 INSERT INTO users VALUES ('$_POST[username]', '$_POST[userpassword]', '$_POST[icnum]',  '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]';

@@ -65,35 +65,28 @@
       </ul>
       </div>";
   }
-  //Submit add query
-  if (isset($_POST['ads'])) {	// Submit the update SQL command
-      //checking the velidity of the user:
-      $userresult = pg_query($db, "SELECT username FROM users WHERE icnum = '$_POST[icnum]'");// Query template
-      if (!$userresult) {
-        echo "Oops, please register to be driver to post an ad :)";
-      } else {
 
+  // Post advertisement
+  if (isset($_POST['ads'])) {
+    //checking the velidity of the user as a driver:
+    $userresult = pg_query($db, "SELECT 1 FROM drive WHERE icnum = '$_SESSION[icnum]'");
+    $userrow = pg_fetch_assoc($userresult);
+    if (!$userrow) {
+      echo "<script type='text/javascript'>alert('Oops, please apply to be a driver before posting an advertisement :)');</script>";
+    } else {
       //add advertisements
-      $result = pg_query($db, "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]')");// Query template
-      if (!$result) {
-        echo "Oops, adding advertisements failed! You can try again.";
+      $insertAdResult = pg_query($db,
+        "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
+        INSERT INTO advertise (icnum, adid) SELECT '$_SESSION[icnum]', adid FROM advertisements ORDER BY adid DESC LIMIT 1;"
+      );
+      if (!$insertAdResult) {
+        $error = pg_last_error($db);
+        echo $error;
+        echo "<script type='text/javascript'>alert('Oops, adding advertisements failed! You can try again.');</script>";
       } else {
         echo "Yay, you have successfully post an ad!";
       }
-
-      //retrieve the adid for the last ad just added
-      $idresult = pg_query($db, "SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1");// Query template
-      $row    = pg_fetch_assoc($idresult);	// To store the result row
-      echo "<li><input type='text' name='bookid_updated' value='$row[adid]'/></li>";
-
-      //add advertisements with icnum into advertise table
-      $adresult = pg_query($db, "INSERT INTO advertise (icnum, adid) VALUES ('$_POST[icnum]','$row[adid]')");// Query template
-      if (!$adresult) {
-          echo "Oops, adding to advertise failed! You can try again.";
-      } else {
-          echo "Yay, you have successfully linked the ad to the driver!";
-      }
-   }
+    }
   }
 
   //third function - bid for an ad!
@@ -215,47 +208,27 @@
     </div>
 
     <div class="tab-content">
+      <!-- Home page-->
       <div role="tabpanel" class="tab-pane active" id="home">Show user profile</div>
+      <!-- Post page-->
       <div role="tabpanel" class="tab-pane" id="post">
-        <div align='center'><h4>The first step to post an advertisement, you have to fill in the following information: </h4></div>";
-
+        <div align='center'><h4>The first step to post an advertisement, you have to fill in the following information: </h4></div>
         <div align='center'>
           <ul>
             <form class="form" action="user.php" method="POST">
               <h2 class="form-heading">Post a advertisement</h2>
               <input type="text" name="origin" class="form-control" placeholder="Origin" required autofocus>
               <input type="text" name="destination" class="form-control" placeholder="Destination" required>
-              <div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-time"></span>
-                </span>
-              </div>
-              <input type="text" name="doa" class="form-control" placeholder="Number of Seats" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="cars">Apply</button>
+              <input type='datetime-local' name="doa" class="form-control" required>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="ads">Apply</button>
               <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
             </form>
           </ul>
         </div>
-
-
-
-        <div align='center'>
-        <ul><form name='update' action='user.php' method='POST' >
-        <li>Your icnum:</li>
-    	<li><input type='text' name='icnum' value='$row[icnum]' /></li>
-        <li>Start location:</li>
-    	<li><input type='text' name='origin' value='$row[origin]' /></li>
-    	<li>Destination location:</li>
-    	<li><input type='text' name='destination' value='$row[destination]' /></li>
-        <li>Date of traveling (YYYY-MM-DD):</li>
-        <li><input type='text' name='doa' value='$row[doa]' /></li>
-        <li><input type='submit' name='ads'/></li>
-        </form>
-        </ul>
-        </div>
       </div>
-      <div role="tabpanel" class="tab-pane" id="messages">Show message</div>
+      <!-- Bid Ad page -->
+      <div role="tabpanel" class="tab-pane" id="messages">Bid</div>
+      <!-- Drive page -->
       <div role="tabpanel" class="tab-pane" id="drive">
         <div align='center'> <h4>The first step to become a driver, you have to fill in the following information: </h4> </div>";
         <div align='center'>
