@@ -34,3 +34,6 @@ button[type="submit"].btn {
 .form .form-control:focus {
   z-index: 2;
 }
+.radiotext {
+  margin: 10px 10px 0px 0px;
+}
