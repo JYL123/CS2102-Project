@@ -25,6 +25,10 @@ INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION['icnum
 DELETE FROM users WHERE icnum = '$_POST[icnum]';
 
 
+-- update
+UPDATE bid SET status = 'Selected' WHERE icnum = '$_SESSION[icnum]' and adid = $row[adid]
+
+
 -- For displaying bid points of each advertisement. This is to be viewed by administrator.
 SELECT DISTINCT *
 FROM (

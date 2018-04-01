@@ -9,26 +9,6 @@
        header("Location: index.php");
    }
 
-  // //first function - Application of being a driver
-  // if (isset($_POST['apply'])) {
-  //
-  //     echo "<div align='center'> The first step to become a driver, you have to fill in the following information: </div>";
-  //
-  //     echo
-  //     "<div align='center'>
-  //     <ul><form name='update' action='user.php' method='POST' >
-  //     <li>Vehicle Plate Number:</li>
-  // 	<li><input type='text' name='platenum' value='$row[platenum]' /></li>
-  // 	<li>Vehicle Model:</li>
-  // 	<li><input type='text' name='models' value='$row[models]' /></li>
-  //     <li>Number of seats:</li>
-  //     <li><input type='text' name='numseats' value='$row[numseats]' /></li>
-  //     <li><input type='submit' name='cars'/></li>
-  //     </form>
-  //     </ul>
-  //     </div>";
-  // }
-
   // Insert into cars and drive
   if (isset($_POST['cars'])) {	// Submit the update SQL command
     $result = pg_query($db,
@@ -148,37 +128,64 @@
   //forth function -- select bidders
   //show all VALID ads
   if (isset($_POST['select'])) {
-    $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");
+    $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
+            FROM bid b, advertisements a
+            WHERE status = 'Not Selected' AND b.adid = a.adid
+            ORDER BY b.adid";
+    $result = pg_query($db, $sql);
 
     if (!$result) {
         echo "An error occurred.\n";
         exit;
     }
 
+    // display NOT SELECTED bidders for each advertisement
+    $ids = 'ids';
     while ($row = pg_fetch_assoc($result)) {
         echo "<div align='center'>";
         echo $row['adid'];
-        echo "<Input type = 'Radio' Name ='gender' value= 'id'<?PHP print $adid; ?>>Male";
+        // $thisId = $row['adid'];
+        /* echo "<Input type = 'Radio' Name ='adid' value= 'id'<?PHP print $$ids = $thisId;?>>";*/
         echo $row['origin'];
         echo $row['destination'];
         echo $row['doa']; 
+        echo $row['icnum'];
+        echo $row['bidpoints'];
+        echo $row['status']; 
         echo "</div>";
     }
 
-    echo "<div align='center'><Input type = 'Submit' Name = 'Submitid' VALUE = 'Choose the bidder'></div>";
+    // display a form for user to input an id
+    echo
+    "<div align='center'>
+    <ul><form name='update' action='user.php' method='POST' >
+    <li>Select an ADID:</li>
+    <li><input type='text' name='adid' value='$row[adid]' /></li>
+    <li>Select an ICNUM:</li>
+    <li><input type='text' name='icnum' value='$row[icnum]' /></li>
+    <li><input type='submit' name='select' value = 'select a bidder at a time'/></li>
+    </form>
+    </ul>
+    </div>";
 
-        $adid = 'unchecked';
-        
-        if (isset($_POST['Submitid'])) {
-        
-            $selected_radio = $_POST['gender'];
-            
-            if ($selected_radio == 'id') {
-                $adid = 'checked';
-            }
-        
-        }
+    //Submit add query
+  if (isset($_POST['select'])) {	// Submit the update SQL command
+    //check whether the user has bid this ad before; duplication is not allowed
+    $sql = "UPDATE bid
+            SET status = 'Selected'
+            WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
+    $result = pg_query($db, $sql); 
+  
+    if (!$result) {
+      echo "An error occurred.\n";
+      exit;
+    } else {
+      echo "<div align='center'>You have choosen a bidder! (It seems that you have to refresh the page to update the bidder info, 
+      we are sorry about the inconvenience and will fix this soon.) \n</div>";
     }
+  }
+   
+}
 
 ?>
 
@@ -289,44 +296,8 @@
         </ul>
         </div>
       </div>
-      <!--            -->
+      <!--   bid         -->
       <div role="tabpanel" class="tab-pane" id="messages">
-      
-      
-        <FORM name ="form1" method ="post" action ="index.php">
-            <Input type = 'Radio' Name ='gender' value= 'male'
-            <?PHP print $male_status; ?>
-            >Male
-
-            <Input type = 'Radio' Name ='gender' value= 'female' 
-            <?PHP print $female_status; ?>
-            >Female
-
-            <P>
-            <Input type = "Submit" Name = "Submit1" VALUE = "Select a Radio Button">
-        </FORM>
-
-
-        <?
-        $male_status = 'unchecked';
-        $female_status = 'unchecked';
-        
-        if (isset($_POST['Submit1'])) {
-        
-            $selected_radio = $_POST['gender'];
-            
-            if ($selected_radio == 'male') {
-                $male_status = 'checked';
-            }
-            else if ($selected_radio == 'female') {
-                $female_status = 'checked';
-            }
-        
-        }
-        ?>
-
-      
-      
       
       </div>
             <!--            -->
