@@ -1,9 +1,0 @@
-Name: libpgtypes
-Description: PostgreSQL libpgtypes library
-Url: http://www.postgresql.org/
-Version: 10.1
-Requires: 
-Requires.private: 
-Cflags: -I/bitnami/mampstackDev-osx-x64/output/postgresql/include
-Libs: -L/bitnami/mampstackDev-osx-x64/output/postgresql/lib -lpgtypes
-Libs.private: -L/bitnami/mampstackDev-osx-x64/output/common/lib -L/bitnami/mampstackDev-osx-x64/output/sqlite/lib -lm

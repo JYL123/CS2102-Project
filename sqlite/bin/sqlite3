@@ -1,5 +1,0 @@
-#!/bin/sh
-
-. /Applications/mappstack-7.1.13-0/scripts/setenv.sh
-
-exec /Applications/mappstack-7.1.13-0/sqlite/bin/.sqlite3.bin  "$@"

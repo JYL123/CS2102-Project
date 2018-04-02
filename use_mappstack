@@ -1,5 +1,0 @@
-#!/bin/sh
-
-
-
-exec /bin/bash --rcfile "/Applications/mappstack-7.1.13-0/.bashrc"

@@ -1,9 +1,0 @@
-Name: libecpg_compat
-Description: PostgreSQL libecpg_compat library
-Url: http://www.postgresql.org/
-Version: 10.1
-Requires: 
-Requires.private: libecpg libpgtypes
-Cflags: -I/bitnami/mampstackDev-osx-x64/output/postgresql/include
-Libs: -L/bitnami/mampstackDev-osx-x64/output/postgresql/lib -lecpg_compat
-Libs.private: -L/bitnami/mampstackDev-osx-x64/output/common/lib -L/bitnami/mampstackDev-osx-x64/output/sqlite/lib -lpq -lm

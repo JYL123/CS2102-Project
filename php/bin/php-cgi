@@ -1,6 +1,0 @@
-#!/bin/sh
-PHPRC=/Applications/mappstack-7.1.13-0/php/etc
-export PHPRC
-
-. /Applications/mappstack-7.1.13-0/php/../scripts/setenv.sh
-exec /Applications/mappstack-7.1.13-0/php/bin/php-cgi.bin "$@"
