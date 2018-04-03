@@ -10,7 +10,7 @@
     <meta name="author" content="Team 15">
     <link rel="icon" href="images/favicon.png">
 
-    <title>15 Carpooling</title>
+    <title>Carpooling</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -39,6 +39,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" action="index.php" method="POST">
+          <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'testPage.php';">Admin Portal</button>
             <div class="form-group">
               <input type="text" name="username" placeholder="Username" class="form-control">
             </div>
@@ -47,6 +48,7 @@
             </div>
             <button type="submit" name="submit" class="btn btn-success">Sign in</button>
             <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'signUpUser.php';">Sign up</button>
+            <break></break>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -56,8 +58,7 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Welcome to Carpooling!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <p>This is an application for you to bid for your favourite route, or you may post your routes as a driver.</p>
       </div>
     </div>
 
@@ -65,19 +66,19 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>Road traffic rules </h2>
+          <p>Check out the traffic rules before you can sign up to be a driver. </p>
+          <p><a class="btn btn-default" href="https://sso.agc.gov.sg/SL/RTA1961-R20?DocDate=20170630" role="button">View details &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>Friendly social meda</h2>
+          <p>We aim to develop a friendly social media platform. </p>
+          <p><a class="btn btn-default" href="https://coschedule.com/blog/social-media-friendly/" role="button">View details &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>Route Planning</h2>
+          <p>Help you plan your route.</p>
+          <p><a class="btn btn-default" href="http://www.streetdirectory.com/routing/" role="button">View details &raquo;</a></p>
         </div>
       </div>
 

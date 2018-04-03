@@ -284,11 +284,11 @@
         <div align='center'>
         <ul><form name='update' action='user.php' method='POST' >
         <li>Your icnum:</li>
-    	<li><input type='text' name='icnum' value='$row[icnum]' /></li>
+    	  <li><input type='text' name='icnum' value='$row[icnum]' /></li>
         <li>Start location:</li>
-    	<li><input type='text' name='origin' value='$row[origin]' /></li>
-    	<li>Destination location:</li>
-    	<li><input type='text' name='destination' value='$row[destination]' /></li>
+    	  <li><input type='text' name='origin' value='$row[origin]' /></li>
+    	  <li>Destination location:</li>
+    	  <li><input type='text' name='destination' value='$row[destination]' /></li>
         <li>Date of traveling (YYYY-MM-DD):</li>
         <li><input type='text' name='doa' value='$row[doa]' /></li>
         <li><input type='submit' name='ads'/></li>
