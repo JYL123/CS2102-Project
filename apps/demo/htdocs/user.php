@@ -258,9 +258,151 @@
           <!--            -->
 
       <div role="tabpanel" class="tab-pane active" id="home">
-      This is your profile information
+      
       <?php
-      //INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');
+      //retrieve basic information about the user
+      $sql = "SELECT * FROM users WHERE icnum = '$_SESSION[icnum]'";
+      $result = pg_query($db, $sql);// Query template
+      //show error 
+      if (!$result) {
+        echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+      } else {
+        //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+      }
+      //display retrieved information 
+      while ($row = pg_fetch_assoc($result)) {
+        echo "<div align='center'>";
+        echo "<h2> This is your basic profile information: </h2>";
+        echo "<br>";
+        echo "First Name: ";
+        echo $row['firstname'];
+        echo "<br>";
+        echo "<br>";
+        echo "Last Name: ";
+        echo $row['lastname'];
+        echo "<br>";
+        echo "<br>";
+        echo "Email: ";
+        echo $row['email'];
+        echo "<br>";
+        echo "<br>";
+        echo "Phone Number: ";
+        echo $row['phonenum']; 
+        echo "</div>";
+      }
+      
+       //retrieve ad posting information about the user
+       $sql = "SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa 
+               FROM ((users u natural left join advertise a ) natural join advertisements) as uaa
+               WHERE uaa.icnum = '$_SESSION[icnum]'";
+       $result = pg_query($db, $sql);// Query template
+       //show error 
+       if (!$result) {
+         echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+       } else {
+         //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+       }
+
+       //display retrieved ad posting information 
+       echo "<h2 align='center'> This is your ad posting information: </h2>";
+       echo "<p align='center'> AD ID,  Origin, Destination, Date of Advertisement</p>";
+       while ($row = pg_fetch_assoc($result)) {
+         echo "<div align='center'>";
+         echo "<br>";
+         echo "Ad ID: ";
+         echo $row['adid'];
+         echo "<br>";
+         echo "<br>";
+         echo "Origin: ";
+         echo $row['origin'];
+         echo "<br>";
+         echo "<br>";
+         echo "Destination: ";
+         echo $row['destination'];
+         echo "<br>";
+         echo "<br>";
+         echo "Date of advertisement: ";
+         echo $row['doa']; 
+         echo "</div>";
+       }    
+      
+      // $i = 0;
+      // echo "<html><body><table align='center'><tr>";
+      // while ($i < pg_num_fields($result))
+      // {
+      //   $fieldName = pg_field_name($result, $i);
+      //   echo '<td>  ' . $fieldName . '</td> ';
+      //   $i = $i + 1;
+      // }
+      // echo '</tr> ';
+      // $i = 0;
+      
+      // while ($row = pg_fetch_row($result)) 
+      // {
+      //   echo '<tr>';
+      //   $count = count($row);
+      //   $y = 0;
+      //   while ($y < $count)
+      //   {
+      //     $c_row = current($row);
+      //     str_pad($c_row,2,"  ");
+      //     echo '<td>' . str_pad($c_row,2,"  ") . '</td>'  ;
+      //     next($row);
+      //     $y = $y + 1;
+      //   }
+      //   echo '</tr>';
+      //   $i = $i + 1;
+      // }
+      // pg_free_result($result);
+      
+      // echo '</table></body></html>';
+
+
+      //check if the user is a driver
+      $sql = "SELECT DISTINCT * 
+               FROM drive d
+               WHERE d.icnum = '$_SESSION[icnum]'";
+       $result = pg_query($db, $sql);// Query template
+       //show error 
+       if (!$result) {
+         echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+       } else {
+         //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+       }
+
+       if(empty($result)){
+          echo "<h2 align='center'>You are a rider!</h2>";
+       } else {
+         echo "<h2 align='center'>You are a driver!</h2>";
+
+          $sql = "SELECT * FROM cars natural join drive WHERE icnum = '$_SESSION[icnum]' ";
+          $result = pg_query($db, $sql);// Query template
+          //show error 
+          if (!$result) {
+            echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+          } else {
+            //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+          }
+
+          while ($row = pg_fetch_assoc($result)) {
+            echo "<div align='center'>";
+            echo "<br>";
+            echo "Plate Number: ";
+            echo $row['platenum'];
+            echo "<br>";
+            echo "<br>";
+            echo "Model: ";
+            echo $row['models'];
+            echo "<br>";
+            echo "<br>";
+            echo "Number of seats: ";
+            echo $row['numseats'];
+            echo "<br>";
+            echo "<br>";
+            echo "</div>";
+          }    
+
+       }
 
       ?>
       
