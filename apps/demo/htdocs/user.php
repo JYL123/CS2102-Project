@@ -227,6 +227,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="#">Carpooling</a>
       </div>
@@ -235,7 +236,8 @@
           <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
           <li role="presentation"><a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post Ad</a></li>
           <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Select Bidder</a></li>
-          <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">Drive</a></li>
+          <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">Apply Driver</a></li>
+          <li role="presentation"><a href="#bid" aria-controls="bid" role="tab" data-toggle="tab">Bid Ad</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a><?php echo $_SESSION['first'] . " " . $_SESSION['last'];?></a><li>
@@ -251,7 +253,7 @@
 
     <div class="starter-template">
       <h1>Welcome back!</h1>
-      <p class="lead">Show user profile.<br> All you get is this text and a mostly barebones HTML document.</p>
+      <p class="lead">The following is your information.<br> Hope it is useful to you.</p>
     </div>
 
     <div class="tab-content">
@@ -518,12 +520,10 @@
           }
         }
       ?>
-   
-      </div>
-            <!--            -->
 
+    <!--     drive       -->
+    </div>
       <div role="tabpanel" class="tab-pane" id="drive">
-        <div align='center'> <h4>The first step to become a driver, you have to fill in the following information: </h4> </div>";
         <div align='center'>
           <ul>
             <form class="form" action="user.php" method="POST">
@@ -538,6 +538,7 @@
         </div>
       </div>
     </div>
+    
 
   <!-- Bootstrap core -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
