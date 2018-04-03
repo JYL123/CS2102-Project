@@ -13,7 +13,7 @@
   if (isset($_POST['cars'])) {	// Submit the update SQL command
     $result = pg_query($db,
       "INSERT INTO cars (platenum, models, numseats) VALUES ('$_POST[platenum]', '$_POST[models]', '$_POST[numseats]');
-      INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');"
+       INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');"
     );
     if (!$result) {
       $error = pg_last_error($db);
@@ -49,23 +49,25 @@
   if (isset($_POST['ads'])) {
       //add advertisements
       $result = pg_query($db, "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]')");// Query template
+      //show error 
       if (!$result) {
-        echo "Oops, adding advertisements failed! You can try again.";
+        echo "<p align='center'>Oops, adding advertisements failed! You can try again.</p>";
       } else {
-        echo "Yay, you have successfully post an ad!";
+        //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
       }
 
       //retrieve the adid for the last ad just added
       $idresult = pg_query($db, "SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1");// Query template
       $row    = pg_fetch_assoc($idresult);	// To store the result row
-      echo "<li><input type='text' name='bookid_updated' value='$row[adid]'/></li>";
+      $adid = $row[adid];
+      //echo "<li><input type='text' name='bookid_updated' value='$row[adid]'/></li>";
 
       //add advertisements with icnum into advertise table
-      $adresult = pg_query($db, "INSERT INTO advertise (icnum, adid) VALUES ('$_POST[icnum]','$row[adid]')");// Query template
+      $adresult = pg_query($db, "INSERT INTO advertise (icnum, adid) VALUES ('$_SESSION[icnum]', $adid)");// Query template
       if (!$adresult) {
-          echo "Oops, adding to advertise failed! You can try again.";
+          echo "<p align='center'>Oops, adding to advertise failed! You can try again.</p>";
       } else {
-          echo "Yay, you have successfully linked the ad to the driver!";
+         // echo "<p align='center'>Yay, you have successfully linked the ad to the driver!</p>";
       }
     }
 
@@ -232,7 +234,7 @@
         <ul class="nav navbar-nav" role="tablist">
           <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
           <li role="presentation"><a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post Ad</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Bid Ad</a></li>
+          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Select Bidder</a></li>
           <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">Drive</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -255,7 +257,14 @@
     <div class="tab-content">
           <!--            -->
 
-      <div role="tabpanel" class="tab-pane active" id="home"></div>
+      <div role="tabpanel" class="tab-pane active" id="home">
+      This is your profile information
+      <?php
+      //INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');
+
+      ?>
+      
+      </div>
 
             <!--            -->
 
@@ -281,6 +290,7 @@
             </form>
           </ul>
         </div>
+
         </div>
 
         <!--
@@ -386,20 +396,6 @@
         </div>
       </div>
     </div>
-
-<!-- 
-  <div align='center'>
-    <ul>
-      <form name="display" action="user.php" method="POST" >
-        <li>As an user, you can perform:</li>
-        <li><input type="submit" name="apply" value="Apply to be a driver (add car in database)" /></li>
-        <li><input type="submit" name="post" value="Post an advertisement" /></li>
-        <li><input type="submit" name="bid" value="Bid for an advertisement" /></li>
-        <li><input type="submit" name="select" value="Select bidders" /></li>
-      </form>
-    </ul>
-  </div>
--->
 
   <!-- Bootstrap core -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
