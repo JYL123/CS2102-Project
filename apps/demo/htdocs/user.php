@@ -46,6 +46,7 @@
       </div>";
   }
 
+  if (isset($_POST['ads'])) {
       //add advertisements
       $result = pg_query($db, "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]')");// Query template
       if (!$result) {
@@ -66,6 +67,7 @@
       } else {
           echo "Yay, you have successfully linked the ad to the driver!";
       }
+    }
 
   //third function - bid for an ad!
   if (isset($_POST['bid'])) {
@@ -125,67 +127,67 @@
        }
   }
 
-  //forth function -- select bidders
-  //show all VALID ads
-  if (isset($_POST['select'])) {
-    $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
-            FROM bid b, advertisements a
-            WHERE status = 'Not Selected' AND b.adid = a.adid
-            ORDER BY b.adid";
-    $result = pg_query($db, $sql);
+//   //forth function -- select bidders
+//   //show all VALID ads
+//   if (isset($_POST['select'])) {
+//     $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
+//             FROM bid b, advertisements a
+//             WHERE status = 'Not Selected' AND b.adid = a.adid
+//             ORDER BY b.adid";
+//     $result = pg_query($db, $sql);
 
-    if (!$result) {
-        echo "An error occurred.\n";
-        exit;
-    }
+//     if (!$result) {
+//         echo "An error occurred.\n";
+//         exit;
+//     }
 
-    // display NOT SELECTED bidders for each advertisement
-    $ids = 'ids';
-    while ($row = pg_fetch_assoc($result)) {
-        echo "<div align='center'>";
-        echo $row['adid'];
-        // $thisId = $row['adid'];
-        /* echo "<Input type = 'Radio' Name ='adid' value= 'id'<?PHP print $$ids = $thisId;?>>";*/
-        echo $row['origin'];
-        echo $row['destination'];
-        echo $row['doa']; 
-        echo $row['icnum'];
-        echo $row['bidpoints'];
-        echo $row['status']; 
-        echo "</div>";
-    }
+//     // display NOT SELECTED bidders for each advertisement
+//     $ids = 'ids';
+//     while ($row = pg_fetch_assoc($result)) {
+//         echo "<div align='center'>";
+//         echo $row['adid'];
+//         
+//          
+//         echo $row['origin'];
+//         echo $row['destination'];
+//         echo $row['doa']; 
+//         echo $row['icnum'];
+//         echo $row['bidpoints'];
+//         echo $row['status']; 
+//         echo "</div>";
+//     }
 
-    // display a form for user to input an id
-    echo
-    "<div align='center'>
-    <ul><form name='update' action='user.php' method='POST' >
-    <li>Select an ADID:</li>
-    <li><input type='text' name='adid' value='$row[adid]' /></li>
-    <li>Select an ICNUM:</li>
-    <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-    <li><input type='submit' name='select' value = 'select a bidder at a time'/></li>
-    </form>
-    </ul>
-    </div>";
+//     // display a form for user to input an id
+//     echo
+//     "<div align='center'>
+//     <ul><form name='update' action='user.php' method='POST' >
+//     <li>Select an ADID:</li>
+//     <li><input type='text' name='adid' value='$row[adid]' /></li>
+//     <li>Select an ICNUM:</li>
+//     <li><input type='text' name='icnum' value='$row[icnum]' /></li>
+//     <li><input type='submit' name='select' value = 'select a bidder at a time'/></li>
+//     </form>
+//     </ul>
+//     </div>";
 
-    //Submit add query
-  if (isset($_POST['select'])) {	// Submit the update SQL command
-    //check whether the user has bid this ad before; duplication is not allowed
-    $sql = "UPDATE bid
-            SET status = 'Selected'
-            WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
-    $result = pg_query($db, $sql); 
+//     //Submit add query
+//   if (isset($_POST['select'])) {	// Submit the update SQL command
+//     //check whether the user has bid this ad before; duplication is not allowed
+//     $sql = "UPDATE bid
+//             SET status = 'Selected'
+//             WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
+//     $result = pg_query($db, $sql); 
   
-    if (!$result) {
-      echo "An error occurred.\n";
-      exit;
-    } else {
-      echo "<div align='center'>You have choosen a bidder! (It seems that you have to refresh the page to update the bidder info, 
-      we are sorry about the inconvenience and will fix this soon.) \n</div>";
-    }
-  }
+//     if (!$result) {
+//       echo "An error occurred.\n";
+//       exit;
+//     } else {
+//       echo "<div align='center'>You have choosen a bidder! (It seems that you have to refresh the page to update the bidder info, 
+//       we are sorry about the inconvenience and will fix this soon.) \n</div>";
+//     }
+//   }
    
-}
+// }
 
 ?>
 
@@ -200,7 +202,7 @@
     <meta name="author" content="Team 15">
     <link rel="icon" href="images/favicon.png">
 
-    <title>15 Carpooling</title>
+    <title>Carpooling</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -246,41 +248,42 @@
   <div class="container">
 
     <div class="starter-template">
-      <h1>Bootstrap starter template</h1>
-      <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+      <h1>Welcome back!</h1>
+      <p class="lead">Show user profile.<br> All you get is this text and a mostly barebones HTML document.</p>
     </div>
 
     <div class="tab-content">
           <!--            -->
 
-      <div role="tabpanel" class="tab-pane active" id="home">Show user profile</div>
+      <div role="tabpanel" class="tab-pane active" id="home"></div>
 
             <!--            -->
 
       <div role="tabpanel" class="tab-pane" id="post">
-        <div align='center'><h4>The first step to post an advertisement, you have to fill in the following information: </h4></div>
+        <div align='center'>
+        </div>
 
         <div align='center'>
           <ul>
             <form class="form" action="user.php" method="POST">
-              <h2 class="form-heading">Post a advertisement</h2>
+              <h2 class="form-heading">Post an advertisement</h2>
               <input type="text" name="origin" class="form-control" placeholder="Origin" required autofocus>
               <input type="text" name="destination" class="form-control" placeholder="Destination" required>
-              <div class='input-group date' id='datetimepicker3'>
+              <!--<div class='input-group date' id='datetimepicker3'>
                 <input type='text' class="form-control" />
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-time"></span>
                 </span>
-              </div>
-              <input type="text" name="doa" class="form-control" placeholder="Number of Seats" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="cars">Apply</button>
+              </div> -->
+              <input type="text" name="doa" class="form-control" placeholder="Date of traveling (YYYY-MM-DD)" required>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="ads">Apply</button>
               <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
             </form>
           </ul>
         </div>
+        </div>
 
-
-
+        <!--
         <div align='center'>
         <ul><form name='update' action='user.php' method='POST' >
         <li>Your icnum:</li>
@@ -295,10 +298,75 @@
         </form>
         </ul>
         </div>
-      </div>
+        
+        -->
+
       <!--   bid         -->
       <div role="tabpanel" class="tab-pane" id="messages">
+      <?php
+          $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
+                  FROM bid b, advertisements a
+                  WHERE status = 'Not Selected' AND b.adid = a.adid
+                  ORDER BY b.adid";
+          $result = pg_query($db, $sql);
       
+          if (!$result) {
+              echo "An error occurred.\n";
+              exit;
+          }
+
+          // display NOT SELECTED bidders for each advertisement
+          $ids = 'ids';
+          while ($row = pg_fetch_assoc($result)) {
+            echo "<div align='center'>";
+            echo $row['adid'];
+            echo "  ";
+            // $thisId = $row['adid'];
+            /* echo "<Input type = 'Radio' Name ='adid' value= 'id'<?PHP print $$ids = $thisId;?>>";*/
+            echo $row['origin'];
+            echo "  ";
+            echo $row['destination'];
+            echo "  ";
+            echo $row['doa']; 
+            echo "  ";
+            echo $row['icnum'];
+            echo "  ";
+            echo $row['bidpoints'];
+            echo "  ";
+            echo $row['status']; 
+            echo "</div>";
+          }
+      ?>
+      <div align='center'>
+          <ul>
+            <form class="form" action="user.php" method="POST">
+              <h2 class="form-heading">Select a bidder</h2>
+              <input type="text" name="adid" class="form-control" placeholder="Ad index" required autofocus>
+              <input type="text" name="icnum" class="form-control" placeholder="Bidder IC" required>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="select">Bid</button>
+              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
+            </form>
+          </ul>
+      </div>
+
+      <?PHP
+       //Submit add query
+        if (isset($_POST['select'])) {	// Submit the update SQL command
+          //check whether the user has bid this ad before; duplication is not allowed
+          $sql = "UPDATE bid
+                  SET status = 'Selected'
+                  WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
+          $result = pg_query($db, $sql); 
+        
+          if (!$result) {
+            echo "An error occurred.\n";
+            exit;
+          } else {
+            echo "<h2 align='center'>You have choosen a bidder! </h2>";
+          }
+        }
+      ?>
+   
       </div>
             <!--            -->
 
@@ -319,6 +387,7 @@
       </div>
     </div>
 
+<!-- 
   <div align='center'>
     <ul>
       <form name="display" action="user.php" method="POST" >
@@ -330,6 +399,7 @@
       </form>
     </ul>
   </div>
+-->
 
   <!-- Bootstrap core -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
