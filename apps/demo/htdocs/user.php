@@ -253,7 +253,7 @@
 
     <div class="starter-template">
       <h1>Welcome back!</h1>
-      <p class="lead">The following is your information.<br> Hope it is useful to you.</p>
+       <!--<p class="lead">The following is your information.<br> Hope it is useful to you.</p>-->
     </div>
 
     <div class="tab-content">

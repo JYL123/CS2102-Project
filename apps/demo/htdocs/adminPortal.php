@@ -38,8 +38,8 @@
           <text class="navbar-brand" href="#">Carpooling</text>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" action="index.php" method="POST">
-          <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'adminPortal.php';">Admin Portal</button>
+          <form class="navbar-form navbar-right" action="adminPortal.php" method="POST">
+          <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'index.php';">User Portal</button>
             <div class="form-group">
               <input type="text" name="username" placeholder="Username" class="form-control">
             </div>
@@ -47,7 +47,7 @@
               <input type="password" name="userpassword" placeholder="Password" class="form-control">
             </div>
             <button type="submit" name="submit" class="btn btn-success">Sign in</button>
-            <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'signUpUser.php';">Sign up</button>
+            <button type="button" class="btn btn-primary navbar-right" onclick="location.href = 'signUpAdmin.php';">Sign up</button>
             <break></break>
           </form>
         </div><!--/.navbar-collapse -->
@@ -58,7 +58,7 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Welcome to Carpooling!</h1>
-        <p>This is an application for you to bid for your favourite route, or you may post your routes as a driver.</p>
+        <p>This is the administration portal.</p>
       </div>
     </div>
 
@@ -93,11 +93,11 @@
               <h4 class="modal-title" id="myModalLabel">Login Failed</h4>
             </div>
             <div class="modal-body">
-              Username and password mismatch. Try again or sign up as a user.
+              Username and password mismatch. Try again or sign up as a admin.
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Try Again</button>
-              <button type="button" class="btn btn-primary" onclick="location.href = 'signUpUser.php';">Sign up</button>
+              <button type="button" class="btn btn-primary" onclick="location.href = 'signUpAdmin.php';">Sign up</button>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@
 
       if (isset($_POST['submit'])) {
 
-        $result = pg_query($db, "SELECT icnum, firstName, lastName FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");		// Query template
+        $result = pg_query($db, "SELECT icnum, firstName, lastName FROM administrators where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");		// Query template
         $row = pg_fetch_assoc($result);		// To store the result row
 
         if (!empty($row['icnum'])) {
@@ -130,7 +130,7 @@
           $_SESSION['last'] = $lastname;
           $_SESSION['icnum'] = $icnum;
           $_SESSION['user']=$_POST[username];
-          echo "<script> window.location.replace('user.php') </script>";
+          echo "<script> window.location.replace('AdminPage.php') </script>";
         } else {
           echo "<script type='text/javascript'>$('#failModal').modal('toggle');</script>";
         }
