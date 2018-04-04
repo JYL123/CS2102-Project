@@ -357,9 +357,7 @@
             echo 'alert("Oops, an error has occured! You can try again!")';
             echo '</script>';
           } else {
-            echo '<script language="javascript">';
-            echo 'alert("Yay, you have successfully post an ad!")';
-            echo '</script>';
+            //nothing
           }
 
           while ($row = pg_fetch_assoc($result)) {

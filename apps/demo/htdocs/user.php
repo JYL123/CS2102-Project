@@ -1,4 +1,5 @@
 <?php  session_start(); ?>
+<?php include 'logout.php';?>
 
 <?php
 	// Connect to the database. Please change the password in the following line accordingly
@@ -451,24 +452,6 @@
 
         </div>
 
-        <!--
-        <div align='center'>
-        <ul><form name='update' action='user.php' method='POST' >
-        <li>Your icnum:</li>
-    	  <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-        <li>Start location:</li>
-    	  <li><input type='text' name='origin' value='$row[origin]' /></li>
-    	  <li>Destination location:</li>
-    	  <li><input type='text' name='destination' value='$row[destination]' /></li>
-        <li>Date of traveling (YYYY-MM-DD):</li>
-        <li><input type='text' name='doa' value='$row[doa]' /></li>
-        <li><input type='submit' name='ads'/></li>
-        </form>
-        </ul>
-        </div>
-        
-        -->
-
       <!--   bid         -->
       <div role="tabpanel" class="tab-pane" id="messages">
       <?php
@@ -520,8 +503,8 @@
       </div>
 
       <?PHP
-       //Submit add query
-        if (isset($_POST['select'])) {	// Submit the update SQL command
+      
+        if (isset($_POST['select'])) {	// Submit the update SQL command 
           //check whether the user has bid this ad before; duplication is not allowed
           $sql = "UPDATE bid
                   SET status = 'Selected'
