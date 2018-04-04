@@ -270,7 +270,7 @@
       if (!$result) {
         echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
       } else {
-        //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+        //nothing
       }
       //display retrieved information 
       while ($row = pg_fetch_assoc($result)) {
@@ -301,9 +301,11 @@
        $result = pg_query($db, $sql);// Query template
        //show error 
        if (!$result) {
-         echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+        echo '<script language="javascript">';
+        echo 'alert("Oops, an error has occured! You can try again!")';
+        echo '</script>';
        } else {
-         //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+        //nothing
        }
 
        //display retrieved ad posting information 
@@ -351,9 +353,13 @@
           $result = pg_query($db, $sql);// Query template
           //show error 
           if (!$result) {
-            echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+            echo '<script language="javascript">';
+            echo 'alert("Oops, an error has occured! You can try again!")';
+            echo '</script>';
           } else {
-            //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+            echo '<script language="javascript">';
+            echo 'alert("Yay, you have successfully post an ad!")';
+            echo '</script>';
           }
 
           while ($row = pg_fetch_assoc($result)) {
@@ -403,7 +409,9 @@
             $result = pg_query($db, $sql);
         
             if (!$result) {
-                echo "An error occurred.\n";
+              echo '<script language="javascript">';
+              echo 'alert("An error occurred.")';
+              echo '</script>';
                 exit;
             }
 
@@ -437,10 +445,13 @@
             $result = pg_query($db, "DELETE FROM users WHERE icnum = '$_POST[icnum]'");		// Query template
         
             if (!$result) {
-                // display message only when it failed
-                echo "Delete failed!!";
+              echo '<script language="javascript">';
+              echo 'alert("Delete failed.")';
+              echo '</script>';
             } else {
-                //echo "Delete successful!";
+              echo '<script language="javascript">';
+              echo 'alert("The user is deleted.")';
+              echo '</script>';
             }
         }
         
@@ -470,8 +481,10 @@
                     ORDER BY points DESC";
             $result = pg_query($db, $sql);
             if (!$result) {
-                echo "An error occurred.\n";
-                exit;
+              echo '<script language="javascript">';
+              echo 'alert("An error occurred.")';
+              echo '</script>';
+              exit;
             }
 
             while ($row = pg_fetch_assoc($result)) {
@@ -513,7 +526,9 @@
                 WHERE CURRENT_TIMESTAMP - doa > '14'";
         $result = pg_query($db, $sql);
         if (!$result) {
-            echo "An error occurred.\n";
+            echo '<script language="javascript">';
+            echo 'alert("An error occurred.")';
+            echo '</script>';
             exit;
         }
 
@@ -560,14 +575,16 @@
 
         $result = pg_query($db, $sql);
         if (!$result) {
-            echo "An error occurred.\n";
-            exit;
+          echo '<script language="javascript">';
+          echo 'alert("An error occurred.")';
+          echo '</script>';
+          exit;
         }
 
         if(empty(pg_fetch_assoc($result))) { 
-            echo "<div align='center'>";
-            echo "It seems that no one has posted any advertosements this week"; 
-            echo "</div>";
+          echo '<script language="javascript">';
+          echo 'alert("It seems that no one has posted any advertosements this week.")';
+          echo '</script>';
         }
         else {
             while ($row = pg_fetch_assoc($result)) {
