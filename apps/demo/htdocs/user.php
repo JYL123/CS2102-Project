@@ -427,7 +427,6 @@
       </div>
 
       <!-- Post advertisement -->
-
       <div role="tabpanel" class="tab-pane" id="post">
         <div align='center'>
         </div>
@@ -438,13 +437,7 @@
               <h2 class="form-heading">Post an advertisement</h2>
               <input type="text" name="origin" class="form-control" placeholder="Origin" required autofocus>
               <input type="text" name="destination" class="form-control" placeholder="Destination" required>
-              <!--<div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-time"></span>
-                </span>
-              </div> -->
-              <input type="text" name="doa" class="form-control" placeholder="Date of traveling (YYYY-MM-DD)" required>
+              <input  type="datetime-local" name="doa" class="form-control" placeholder="Date of traveling (YYYY-MM-DD)" required>
               <button class="btn btn-lg btn-primary btn-block" type="submit" name="ads">Apply</button>
               <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
             </form>
