@@ -53,7 +53,7 @@
       if (!$result) {
         echo "<p align='center'>Oops, adding advertisements failed! You can try again.</p>";
       } else {
-        //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+        //nothing;
       }
 
       //retrieve the adid for the last ad just added
@@ -67,7 +67,7 @@
       if (!$adresult) {
           echo "<p align='center'>Oops, adding to advertise failed! You can try again.</p>";
       } else {
-         // echo "<p align='center'>Yay, you have successfully linked the ad to the driver!</p>";
+         //nothing
       }
     }
 
@@ -77,8 +77,10 @@
       $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");
 
       if (!$result) {
-          echo "An error occurred.\n";
-          exit;
+        echo '<script language="javascript">';
+        echo 'alert("Oops, an error has occured! You can try again!")';
+        echo '</script>';
+        exit;
       }
 
       while ($row = pg_fetch_assoc($result)) {
@@ -118,14 +120,19 @@
           // by default, each user can contain bid i point for each ad
           $result = pg_query($db, "INSERT INTO bid VALUES ('$_POST[icnum]', $_POST[adid], '$_POST[bidpoints]')");
            if (!$result) {
-               echo "Oops, please try again!";
+               echo '<script language="javascript">';
+               echo 'alert("Oops, please try again!")';
+               echo '</script>';
            } else {
-               echo "Yay, you have successfully set a bid point!";
+              echo '<script language="javascript">';
+              echo 'alert("Yay, you have successfully set a bid point!")';
+              echo '</script>';
            }
        } else {
           //duplication for bidding an ad is not allowed.
-          echo "$row[adid]";
-          echo "You have already bid for this ad. You can bid for a new ad.";
+          echo '<script language="javascript">';
+          echo 'alert("You have already bid for this ad. You can bid for a new ad.")';
+          echo '</script>';
        }
   }
 
@@ -267,9 +274,11 @@
       $result = pg_query($db, $sql);// Query template
       //show error 
       if (!$result) {
-        echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+        echo '<script language="javascript">';
+        echo 'alert("Oops, please try again!")';
+        echo '</script>';
       } else {
-        //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+        //nothing
       }
       //display retrieved information 
       while ($row = pg_fetch_assoc($result)) {
@@ -300,9 +309,11 @@
        $result = pg_query($db, $sql);// Query template
        //show error 
        if (!$result) {
-         echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+        echo '<script language="javascript">';
+        echo 'alert("Oops, please try again!")';
+        echo '</script>';
        } else {
-         //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+         //nothing
        }
 
        //display retrieved ad posting information 
@@ -367,9 +378,11 @@
        $result = pg_query($db, $sql);// Query template
        //show error 
        if (!$result) {
-         echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
+        echo '<script language="javascript">';
+        echo 'alert("Oops, please try again!")';
+        echo '</script>';
        } else {
-         //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
+         //nothing
        }
 
        $row = pg_fetch_assoc($result);
@@ -466,7 +479,9 @@
           $result = pg_query($db, $sql);
       
           if (!$result) {
-              echo "An error occurred.\n";
+              echo '<script language="javascript">';
+              echo 'alert("Oops, please try again!")';
+              echo '</script>';
               exit;
           }
 
@@ -514,10 +529,15 @@
           $result = pg_query($db, $sql); 
         
           if (!$result) {
-            echo "An error occurred.\n";
+            echo '<script language="javascript">';
+            echo 'alert("Oops, please try again!")';
+            echo '</script>';
             exit;
           } else {
-            echo "<h2 align='center'>You have choosen a bidder! </h2>";
+            echo '<script language="javascript">';
+            echo 'alert("You have choosen a bidder!")';
+            echo '</script>';
+            //echo "<h2 align='center'>You have choosen a bidder! </h2>";
           }
         }
       ?>
