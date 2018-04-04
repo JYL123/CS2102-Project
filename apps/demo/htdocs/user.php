@@ -210,7 +210,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Carpooling">
     <meta name="author" content="Team 15">
-    <link rel="icon" href="images/favicon.png">
+    <link rel="icon" href="images/favicon.png" type="image/png">
 
     <title>Carpooling</title>
 
@@ -525,8 +525,9 @@
         }
       ?>
 
-    <!--     drive       -->
     </div>
+
+     <!-- Apply to be a driver -->
       <div role="tabpanel" class="tab-pane" id="drive">
         <div align='center'>
           <ul>
@@ -541,6 +542,71 @@
           </ul>
         </div>
       </div>
+
+        <!-- Apply to be a driver -->
+      <div role="tabpanel" class="tab-pane" id="bid">
+        <div align='center'>
+          <ul>
+          <?php
+           //show all VALID ads
+            $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");
+
+            if (!$result) {
+              echo '<script language="javascript">';
+              echo 'alert("Oops, an error has occured! You can try again!")';
+              echo '</script>';
+              exit;
+            }
+
+            while ($row = pg_fetch_assoc($result)) {
+                echo "<div align='center'>";
+                echo $row['adid'];
+                echo $row['origin'];
+                echo $row['destination'];
+                echo $row['doa']; 
+                echo "</div>";
+            }
+          ?>
+            <form class="form" action="user.php" method="POST">
+              <h2 class="form-heading">Bid an advertisement</h2>
+              <input type="text" name="adid" class="form-control" placeholder="AD ID" required autofocus>
+              <input type="text" name="bidpoints" class="form-control" placeholder="Place Your Bid Points" required>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="bidads">Bid</button>
+              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
+            </form>
+          </ul>
+        </div>
+        <?php
+        if (isset($_POST['bidads'])) {
+         //check whether the user has bid this ad before; duplication is not allowed
+          $userresult = pg_query($db, "SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_SESSION[icnum]'");
+          $row    = pg_fetch_assoc($userresult);
+
+          if (empty($row)) {
+              // by default, each user can contain bid i point for each ad
+              $result = pg_query($db, "INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]')");
+              if (!$result) {
+                  echo '<script language="javascript">';
+                  echo 'alert("Oops, please try again88!")';
+                  echo '</script>';
+              } else {
+                  echo '<script language="javascript">';
+                  echo 'alert("Yay, you have successfully set a bid point!")';
+                  echo '</script>';
+              }
+          } else {
+              //duplication for bidding an ad is not allowed.
+              echo '<script language="javascript">';
+              echo 'alert("You have already bid for this ad. You can bid for a new ad.")';
+              echo '</script>';
+          }
+        }
+        ?>
+      </div>
+     
+
+
+
     </div>
     
 
