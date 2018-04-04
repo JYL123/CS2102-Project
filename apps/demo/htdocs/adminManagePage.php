@@ -130,68 +130,6 @@
        }
   }
 
-//   //forth function -- select bidders
-//   //show all VALID ads
-//   if (isset($_POST['select'])) {
-//     $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
-//             FROM bid b, advertisements a
-//             WHERE status = 'Not Selected' AND b.adid = a.adid
-//             ORDER BY b.adid";
-//     $result = pg_query($db, $sql);
-
-//     if (!$result) {
-//         echo "An error occurred.\n";
-//         exit;
-//     }
-
-//     // display NOT SELECTED bidders for each advertisement
-//     $ids = 'ids';
-//     while ($row = pg_fetch_assoc($result)) {
-//         echo "<div align='center'>";
-//         echo $row['adid'];
-//         
-//          
-//         echo $row['origin'];
-//         echo $row['destination'];
-//         echo $row['doa']; 
-//         echo $row['icnum'];
-//         echo $row['bidpoints'];
-//         echo $row['status']; 
-//         echo "</div>";
-//     }
-
-//     // display a form for user to input an id
-//     echo
-//     "<div align='center'>
-//     <ul><form name='update' action='user.php' method='POST' >
-//     <li>Select an ADID:</li>
-//     <li><input type='text' name='adid' value='$row[adid]' /></li>
-//     <li>Select an ICNUM:</li>
-//     <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-//     <li><input type='submit' name='select' value = 'select a bidder at a time'/></li>
-//     </form>
-//     </ul>
-//     </div>";
-
-//     //Submit add query
-//   if (isset($_POST['select'])) {	// Submit the update SQL command
-//     //check whether the user has bid this ad before; duplication is not allowed
-//     $sql = "UPDATE bid
-//             SET status = 'Selected'
-//             WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
-//     $result = pg_query($db, $sql); 
-  
-//     if (!$result) {
-//       echo "An error occurred.\n";
-//       exit;
-//     } else {
-//       echo "<div align='center'>You have choosen a bidder! (It seems that you have to refresh the page to update the bidder info, 
-//       we are sorry about the inconvenience and will fix this soon.) \n</div>";
-//     }
-//   }
-   
-// }
-
 ?>
 
 <!DOCTYPE html>
@@ -403,7 +341,7 @@
         <?php
         if (isset($_POST['displayusers'])) {
             //firstly display all the users 
-            $sql = "SELECT * FROM users";
+            $sql = "SELECT username, firstname, lastname, icnum FROM users";
             $result = pg_query($db, $sql);
         
             if (!$result) {
@@ -428,18 +366,12 @@
                 echo "  ";
                 echo "IC number:  ";
                 echo $row['icnum']; 
-                echo "  ";
-                echo "Email: ";
-                echo $row['email'];
-                echo "  ";
-                echo "Phone number: ";
-                echo $row['phonenum'];
                 echo "</div>";
             }
         }
 
         if (isset($_POST['deleteusers'])) {
-            //secondly we delete the user according to the IC number
+            //secondly we delete according to the IC number
             $result = pg_query($db, "DELETE FROM users WHERE icnum = '$_POST[icnum]'");		// Query template
         
             if (!$result) {
