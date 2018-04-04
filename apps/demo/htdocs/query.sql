@@ -6,6 +6,10 @@ SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1;
 SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid);
 SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_POST[icnum]';
 SELECT icnum FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]';
+SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
+				FROM bid b, advertisements a, advertise at
+				WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
+				ORDER BY b.adid;
 BEGIN;
 INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
 INSERT INTO advertise (icnum, adid) SELECT '$_SESSION[icnum]', adid FROM advertisements ORDER BY adid DESC LIMIT 1;
@@ -35,7 +39,7 @@ UPDATE bid SET status = 'Selected' WHERE icnum = '$_SESSION[icnum]' and adid = $
 
 
 -- For displaying bid points of each advertisement. This is to be viewed by administrator.
-SELECT DISTINCT * 
+SELECT DISTINCT *
 FROM (
 	SELECT adid, count(bidpoints) as points
 	FROM bid
@@ -43,8 +47,8 @@ FROM (
 ) AS combined natural join advertisements
 ORDER BY points DESC;
 
--- For displaying ads that are expired. The ads which were posted 14 dayds ago is expired. 
-SELECT DISTINCT * 
+-- For displaying ads that are expired. The ads which were posted 14 dayds ago is expired.
+SELECT DISTINCT *
 FROM (
 	SELECT adid, count(bidpoints) as points
 	FROM bid
@@ -53,13 +57,13 @@ FROM (
 WHERE CURRENT_TIMESTAMP - doa > '14' ;
 
 -- Most popular ad of the week
-SELECT DISTINCT * 
+SELECT DISTINCT *
 FROM (
 	SELECT adid, count(bidpoints) as points
 	FROM bid
     GROUP BY adid
 ) AS combined natural join advertisements
-WHERE CURRENT_TIMESTAMP - doa <= '7' 
+WHERE CURRENT_TIMESTAMP - doa <= '7'
 ORDER BY points DESC
 LIMIT 1;
 

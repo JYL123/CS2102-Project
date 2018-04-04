@@ -50,7 +50,7 @@
   if (isset($_POST['ads'])) {
       //add advertisements
       $result = pg_query($db, "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]')");// Query template
-      //show error 
+      //show error
       if (!$result) {
         echo "<p align='center'>Oops, adding advertisements failed! You can try again.</p>";
       } else {
@@ -89,10 +89,10 @@
           echo $row['adid'];
           echo $row['origin'];
           echo $row['destination'];
-          echo $row['doa']; 
+          echo $row['doa'];
           echo "</div>";
       }
-        
+
       //ask users to select an adid to bid
       echo "<div align='center'> The first step to bid, you have to fill in the following information: </div>";
 
@@ -140,7 +140,7 @@
 //   //forth function -- select bidders
 //   //show all VALID ads
 //   if (isset($_POST['select'])) {
-//     $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
+//     $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status
 //             FROM bid b, advertisements a
 //             WHERE status = 'Not Selected' AND b.adid = a.adid
 //             ORDER BY b.adid";
@@ -156,14 +156,14 @@
 //     while ($row = pg_fetch_assoc($result)) {
 //         echo "<div align='center'>";
 //         echo $row['adid'];
-//         
-//          
+//
+//
 //         echo $row['origin'];
 //         echo $row['destination'];
-//         echo $row['doa']; 
+//         echo $row['doa'];
 //         echo $row['icnum'];
 //         echo $row['bidpoints'];
-//         echo $row['status']; 
+//         echo $row['status'];
 //         echo "</div>";
 //     }
 
@@ -186,17 +186,17 @@
 //     $sql = "UPDATE bid
 //             SET status = 'Selected'
 //             WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
-//     $result = pg_query($db, $sql); 
-  
+//     $result = pg_query($db, $sql);
+
 //     if (!$result) {
 //       echo "An error occurred.\n";
 //       exit;
 //     } else {
-//       echo "<div align='center'>You have choosen a bidder! (It seems that you have to refresh the page to update the bidder info, 
+//       echo "<div align='center'>You have choosen a bidder! (It seems that you have to refresh the page to update the bidder info,
 //       we are sorry about the inconvenience and will fix this soon.) \n</div>";
 //     }
 //   }
-   
+
 // }
 
 ?>
@@ -243,9 +243,9 @@
         <ul class="nav navbar-nav" role="tablist">
           <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
           <li role="presentation"><a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post Ad</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Select Bidder</a></li>
-          <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">Apply Driver</a></li>
+          <li role="presentation"><a href="#selectBidder" aria-controls="selectBidder" role="tab" data-toggle="tab">Select Bidder</a></li>
           <li role="presentation"><a href="#bid" aria-controls="bid" role="tab" data-toggle="tab">Bid Ad</a></li>
+          <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">Apply Driver</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a><?php echo $_SESSION['first'] . " " . $_SESSION['last'];?></a><li>
@@ -265,15 +265,16 @@
     </div>
 
     <div class="tab-content">
-          <!--            -->
+
+      <!-- Home Summary page-->
 
       <div role="tabpanel" class="tab-pane active" id="home">
-      
+
       <?php
       //retrieve basic information about the user
       $sql = "SELECT * FROM users WHERE icnum = '$_SESSION[icnum]'";
       $result = pg_query($db, $sql);// Query template
-      //show error 
+      //show error
       if (!$result) {
         echo '<script language="javascript">';
         echo 'alert("Oops, please try again!")';
@@ -281,7 +282,7 @@
       } else {
         //nothing
       }
-      //display retrieved information 
+      //display retrieved information
       while ($row = pg_fetch_assoc($result)) {
         echo "<div align='center'>";
         echo "<h2> This is your basic profile information: </h2>";
@@ -299,16 +300,16 @@
         echo "<br>";
         echo "<br>";
         echo "Phone Number: ";
-        echo $row['phonenum']; 
+        echo $row['phonenum'];
         echo "</div>";
       }
-      
+
        //retrieve ad posting information about the user
-       $sql = "SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa 
+       $sql = "SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa
                FROM ((users u natural left join advertise a ) natural join advertisements) as uaa
                WHERE uaa.icnum = '$_SESSION[icnum]'";
        $result = pg_query($db, $sql);// Query template
-       //show error 
+       //show error
        if (!$result) {
         echo '<script language="javascript">';
         echo 'alert("Oops, please try again!")';
@@ -317,7 +318,7 @@
          //nothing
        }
 
-       //display retrieved ad posting information 
+       //display retrieved ad posting information
        echo "<h2 align='center'> This is your ad posting information: </h2>";
        echo "<p align='center'> AD ID,  Origin, Destination, Date of Advertisement</p>";
        while ($row = pg_fetch_assoc($result)) {
@@ -336,10 +337,10 @@
          echo "<br>";
          echo "<br>";
          echo "Date of advertisement: ";
-         echo $row['doa']; 
+         echo $row['doa'];
          echo "</div>";
-       }    
-      
+       }
+
       // $i = 0;
       // echo "<html><body><table align='center'><tr>";
       // while ($i < pg_num_fields($result))
@@ -350,8 +351,8 @@
       // }
       // echo '</tr> ';
       // $i = 0;
-      
-      // while ($row = pg_fetch_row($result)) 
+
+      // while ($row = pg_fetch_row($result))
       // {
       //   echo '<tr>';
       //   $count = count($row);
@@ -368,16 +369,16 @@
       //   $i = $i + 1;
       // }
       // pg_free_result($result);
-      
+
       // echo '</table></body></html>';
 
 
       //check if the user is a driver
-      $sql = "SELECT DISTINCT * 
+      $sql = "SELECT DISTINCT *
                FROM drive d
                WHERE d.icnum = '$_SESSION[icnum]'";
        $result = pg_query($db, $sql);// Query template
-       //show error 
+       //show error
        if (!$result) {
         echo '<script language="javascript">';
         echo 'alert("Oops, please try again!")';
@@ -394,7 +395,7 @@
 
           $sql = "SELECT * FROM cars natural join drive WHERE icnum = '$_SESSION[icnum]' ";
           $result = pg_query($db, $sql);// Query template
-          //show error 
+          //show error
           if (!$result) {
             echo "<p align='center'>Oops, an error has occured! You can try again.</p>";
           } else {
@@ -417,15 +418,15 @@
             echo "<br>";
             echo "<br>";
             echo "</div>";
-          }    
+          }
 
        }
 
       ?>
-      
+
       </div>
 
-            <!--            -->
+      <!-- Post advertisement -->
 
       <div role="tabpanel" class="tab-pane" id="post">
         <div align='center'>
@@ -452,15 +453,15 @@
 
         </div>
 
-      <!--   bid         -->
-      <div role="tabpanel" class="tab-pane" id="messages">
+      <!-- Select a bidder -->
+      <div role="tabpanel" class="tab-pane" id="selectBidder">
       <?php
-          $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
-                  FROM bid b, advertisements a
-                  WHERE status = 'Not Selected' AND b.adid = a.adid
+          $sql = "SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
+                  FROM bid b, advertisements a, advertise at
+                  WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
                   ORDER BY b.adid";
           $result = pg_query($db, $sql);
-      
+
           if (!$result) {
               echo '<script language="javascript">';
               echo 'alert("Oops, please try again!")';
@@ -480,13 +481,13 @@
             echo "  ";
             echo $row['destination'];
             echo "  ";
-            echo $row['doa']; 
+            echo $row['doa'];
             echo "  ";
             echo $row['icnum'];
             echo "  ";
             echo $row['bidpoints'];
             echo "  ";
-            echo $row['status']; 
+            echo $row['status'];
             echo "</div>";
           }
       ?>
@@ -503,14 +504,13 @@
       </div>
 
       <?PHP
-      
-        if (isset($_POST['select'])) {	// Submit the update SQL command 
+        if (isset($_POST['select'])) {	// Submit the update SQL command
           //check whether the user has bid this ad before; duplication is not allowed
           $sql = "UPDATE bid
                   SET status = 'Selected'
                   WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
-          $result = pg_query($db, $sql); 
-        
+          $result = pg_query($db, $sql);
+
           if (!$result) {
             echo '<script language="javascript">';
             echo 'alert("Oops, please try again!")';
@@ -543,7 +543,7 @@
         </div>
       </div>
 
-        <!-- Apply to be a driver -->
+      <!-- Bid an advetisement-->
       <div role="tabpanel" class="tab-pane" id="bid">
         <div align='center'>
           <ul>
@@ -563,7 +563,7 @@
                 echo $row['adid'];
                 echo $row['origin'];
                 echo $row['destination'];
-                echo $row['doa']; 
+                echo $row['doa'];
                 echo "</div>";
             }
           ?>
@@ -603,12 +603,8 @@
         }
         ?>
       </div>
-     
-
-
-
     </div>
-    
+
 
   <!-- Bootstrap core -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
