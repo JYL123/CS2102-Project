@@ -1,4 +1,5 @@
-<?php  session_start(); ?>
+<?php  session_start(); 
+?>
 
 <?php
 	// Connect to the database. Please change the password in the following line accordingly
@@ -6,7 +7,7 @@
 
   if(!isset($_SESSION['user'])) // If session is not set then redirect to Login Page
    {
-       header("Location: index.php");
+       header("Location: adminPortal.php");
    }
 
   // Insert into cars and drive
@@ -234,10 +235,10 @@
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav" role="tablist">
           <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-          <li role="presentation"><a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post Ad</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Select Bidder</a></li>
-          <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">Apply Driver</a></li>
-          <li role="presentation"><a href="#bid" aria-controls="bid" role="tab" data-toggle="tab">Bid Ad</a></li>
+          <li role="presentation"><a href="#delete" aria-controls="delete" role="tab" data-toggle="tab">Delete users</a></li>
+          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">View ad bidpoints</a></li>
+          <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">View expired ad</a></li>
+          <li role="presentation"><a href="#bid" aria-controls="bid" role="tab" data-toggle="tab">Popular ad of the week</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a><?php echo $_SESSION['first'] . " " . $_SESSION['last'];?></a><li>
@@ -263,7 +264,7 @@
       
       <?php
       //retrieve basic information about the user
-      $sql = "SELECT * FROM users WHERE icnum = '$_SESSION[icnum]'";
+      $sql = "SELECT * FROM administrators WHERE icnum = '$_SESSION[icnum]'";
       $result = pg_query($db, $sql);// Query template
       //show error 
       if (!$result) {
@@ -295,7 +296,7 @@
       
        //retrieve ad posting information about the user
        $sql = "SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa 
-               FROM ((users u natural left join advertise a ) natural join advertisements) as uaa
+               FROM ((administrators u natural left join advertise a ) natural join advertisements) as uaa
                WHERE uaa.icnum = '$_SESSION[icnum]'";
        $result = pg_query($db, $sql);// Query template
        //show error 
@@ -327,38 +328,6 @@
          echo $row['doa']; 
          echo "</div>";
        }    
-      
-      // $i = 0;
-      // echo "<html><body><table align='center'><tr>";
-      // while ($i < pg_num_fields($result))
-      // {
-      //   $fieldName = pg_field_name($result, $i);
-      //   echo '<td>  ' . $fieldName . '</td> ';
-      //   $i = $i + 1;
-      // }
-      // echo '</tr> ';
-      // $i = 0;
-      
-      // while ($row = pg_fetch_row($result)) 
-      // {
-      //   echo '<tr>';
-      //   $count = count($row);
-      //   $y = 0;
-      //   while ($y < $count)
-      //   {
-      //     $c_row = current($row);
-      //     str_pad($c_row,2,"  ");
-      //     echo '<td>' . str_pad($c_row,2,"  ") . '</td>'  ;
-      //     next($row);
-      //     $y = $y + 1;
-      //   }
-      //   echo '</tr>';
-      //   $i = $i + 1;
-      // }
-      // pg_free_result($result);
-      
-      // echo '</table></body></html>';
-
 
       //check if the user is a driver
       $sql = "SELECT DISTINCT * 
@@ -374,9 +343,9 @@
 
        $row = pg_fetch_assoc($result);
        if(empty($row)){
-          echo "<h2 align='center'>You are a rider!</h2>";
+          echo "<h2 align='center'>You are a rider too!</h2>";
        } else {
-         echo "<h2 align='center'>You are a driver!</h2>";
+         echo "<h2 align='center'>You are a driver too!</h2>";
 
           $sql = "SELECT * FROM cars natural join drive WHERE icnum = '$_SESSION[icnum]' ";
           $result = pg_query($db, $sql);// Query template
@@ -411,133 +380,215 @@
       
       </div>
 
-            <!--            -->
-
-      <div role="tabpanel" class="tab-pane" id="post">
-        <div align='center'>
-        </div>
+      <!--     delete a user      -->
+      <div role="tabpanel" class="tab-pane" id="delete">
+        <div align='center'></div>
 
         <div align='center'>
           <ul>
-            <form class="form" action="user.php" method="POST">
-              <h2 class="form-heading">Post an advertisement</h2>
-              <input type="text" name="origin" class="form-control" placeholder="Origin" required autofocus>
-              <input type="text" name="destination" class="form-control" placeholder="Destination" required>
-              <!--<div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-time"></span>
-                </span>
-              </div> -->
-              <input type="text" name="doa" class="form-control" placeholder="Date of traveling (YYYY-MM-DD)" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="ads">Apply</button>
-              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
+            <form class="form" action="adminManagePage#delete.php" method="POST">
+              <h2 class="form-heading">Delete an user</h2>
+              <input type="text" name="icnum" class="form-control" placeholder="User IC Number">
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="deleteusers">Delete</button>
+              <button class="btn btn-lg btn-primary btn-block" name="displayusers">Display all users</button>
+              <button class="btn btn-lg btn-block" onclick="location.href = 'adminManagePage.php';" >Back</button>
             </form>
           </ul>
         </div>
 
-        </div>
-
-        <!--
-        <div align='center'>
-        <ul><form name='update' action='user.php' method='POST' >
-        <li>Your icnum:</li>
-    	  <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-        <li>Start location:</li>
-    	  <li><input type='text' name='origin' value='$row[origin]' /></li>
-    	  <li>Destination location:</li>
-    	  <li><input type='text' name='destination' value='$row[destination]' /></li>
-        <li>Date of traveling (YYYY-MM-DD):</li>
-        <li><input type='text' name='doa' value='$row[doa]' /></li>
-        <li><input type='submit' name='ads'/></li>
-        </form>
-        </ul>
-        </div>
+        <?php
+        if (isset($_POST['displayusers'])) {
+            //firstly display all the users 
+            $sql = "SELECT * FROM users";
+            $result = pg_query($db, $sql);
         
-        -->
+            if (!$result) {
+                echo "An error occurred.\n";
+                exit;
+            }
 
-      <!--   bid         -->
-      <div role="tabpanel" class="tab-pane" id="messages">
-      <?php
-          $sql = "SELECT b.adid, a.origin, a.destination, a.doa, icnum, bidpoints, status 
-                  FROM bid b, advertisements a
-                  WHERE status = 'Not Selected' AND b.adid = a.adid
-                  ORDER BY b.adid";
-          $result = pg_query($db, $sql);
-      
-          if (!$result) {
-              echo "An error occurred.\n";
-              exit;
-          }
+            // display all users in the database
+            $ids = 'ids';
+            while ($row = pg_fetch_assoc($result)) {
+                echo "<div align='center'>";
+                echo "User name: ";
+                echo $row['username'];
+                echo "  ";
+                echo "First name: ";
+                echo $row['firstname'];
+                echo "  ";
+                echo "Last name: ";
+                echo $row['lastname'];
+                echo "  ";
+                echo "IC number:  ";
+                echo $row['icnum']; 
+                echo "  ";
+                echo "Email: ";
+                echo $row['email'];
+                echo "  ";
+                echo "Phone number: ";
+                echo $row['phonenum'];
+                echo "</div>";
+            }
+        }
 
-          // display NOT SELECTED bidders for each advertisement
-          $ids = 'ids';
-          while ($row = pg_fetch_assoc($result)) {
-            echo "<div align='center'>";
-            echo $row['adid'];
-            echo "  ";
-            // $thisId = $row['adid'];
-            /* echo "<Input type = 'Radio' Name ='adid' value= 'id'<?PHP print $$ids = $thisId;?>>";*/
-            echo $row['origin'];
-            echo "  ";
-            echo $row['destination'];
-            echo "  ";
-            echo $row['doa']; 
-            echo "  ";
-            echo $row['icnum'];
-            echo "  ";
-            echo $row['bidpoints'];
-            echo "  ";
-            echo $row['status']; 
-            echo "</div>";
-          }
-      ?>
-      <div align='center'>
+        if (isset($_POST['deleteusers'])) {
+            //secondly we delete the user according to the IC number
+            $result = pg_query($db, "DELETE FROM users WHERE icnum = '$_POST[icnum]'");		// Query template
+        
+            if (!$result) {
+                // display message only when it failed
+                echo "Delete failed!!";
+            } else {
+                //echo "Delete successful!";
+            }
+        }
+        
+        ?>
+    </div>
+
+    
+    <div role="tabpanel" class="tab-pane" id="messages">   
+      <div align='center'></div>
           <ul>
-            <form class="form" action="user.php" method="POST">
-              <h2 class="form-heading">Select a bidder</h2>
-              <input type="text" name="adid" class="form-control" placeholder="Ad index" required autofocus>
-              <input type="text" name="icnum" class="form-control" placeholder="Bidder IC" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="select">Bid</button>
-              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
+            <form class="form" action="adminManagePage.php" method="POST">
+              <h2 class="form-heading" align = "center">Bidpoints for valid ads</h2>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="view">view</button>
+              <button class="btn btn-lg btn-block" onclick="location.href = 'adminManagePage.php';" >Back</button>
             </form>
           </ul>
       </div>
+      <?php
+      if (isset($_POST['view'])) {
+            //show all VALID ads
+            $sql = "SELECT DISTINCT * 
+                    FROM (
+                        SELECT adid, count(bidpoints) as points
+                        FROM bid
+                        GROUP BY adid
+                    ) AS combined natural join advertisements
+                    ORDER BY points DESC";
+            $result = pg_query($db, $sql);
+            if (!$result) {
+                echo "An error occurred.\n";
+                exit;
+            }
 
-      <?PHP
-       //Submit add query
-        if (isset($_POST['select'])) {	// Submit the update SQL command
-          //check whether the user has bid this ad before; duplication is not allowed
-          $sql = "UPDATE bid
-                  SET status = 'Selected'
-                  WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
-          $result = pg_query($db, $sql); 
-        
-          if (!$result) {
-            echo "An error occurred.\n";
-            exit;
-          } else {
-            echo "<h2 align='center'>You have choosen a bidder! </h2>";
-          }
+            while ($row = pg_fetch_assoc($result)) {
+                echo "<div align='center'>";
+                echo "ad id: ";
+                echo $row['id'];
+                echo " points: ";
+                echo $row['points'];
+                echo "ad origin: ";
+                echo $row['origin'];
+                echo "ad destination: ";
+                echo $row['destination'];
+                echo "ad date: ";
+                echo $row['doa'];
+                echo "</div>";
+            }
         }
       ?>
-
-    <!--     drive       -->
-    </div>
-      <div role="tabpanel" class="tab-pane" id="drive">
-        <div align='center'>
+       
+    <!--View expired ad section-->
+    <div role="tabpanel" class="tab-pane" id="drive">   
+      <div align='center'></div>
           <ul>
-            <form class="form" action="user.php" method="POST">
-              <h2 class="form-heading">Apply to become a driver</h2>
-              <input type="text" name="platenum" class="form-control" placeholder="Vehicle Plate Number" required autofocus>
-              <input type="text" name="models" class="form-control" placeholder="Vehicle Model" required>
-              <input type="number" name="numseats" class="form-control" placeholder="Number of Seats" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="cars">Apply</button>
-              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
+            <form class="form" action="adminManagePage.php" method="POST">
+              <h2 class="form-heading" align = "center">Expired Ads for past 2 weeks</h2>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="viewex">view</button>
+              <button class="btn btn-lg btn-block" onclick="location.href = 'adminManagePage.php';" >Back</button>
             </form>
           </ul>
-        </div>
-      </div>
+          <?php
+    if (isset($_POST['viewex'])) {
+        //show all VALID ads
+        $sql = "SELECT DISTINCT * 
+                FROM (
+                    SELECT adid, count(bidpoints) as points
+                    FROM bid
+                    GROUP BY adid
+                ) AS combined natural join advertisements
+                WHERE CURRENT_TIMESTAMP - doa > '14'";
+        $result = pg_query($db, $sql);
+        if (!$result) {
+            echo "An error occurred.\n";
+            exit;
+        }
+
+        while ($row = pg_fetch_assoc($result)) {
+            echo "<div align='center'>";
+            echo "ad id: ";
+            echo $row['id'];
+            echo " points: ";
+            echo $row['points'];
+            echo "ad origin: ";
+            echo $row['origin'];
+            echo "ad destination: ";
+            echo $row['destination'];
+            echo "ad date: ";
+            echo $row['doa'];
+            echo "</div>";
+        }
+    }
+    ?>   
+    </div>
+
+     <!--View popular ads-->
+     <div role="tabpanel" class="tab-pane" id="bid">   
+      <div align='center'></div>
+          <ul>
+            <form class="form" action="adminManagePage.php" method="POST">
+              <h2 class="form-heading" align = "center">Populard Ads for last weeks</h2>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" name="viewpop">view</button>
+              <button class="btn btn-lg btn-block" onclick="location.href = 'adminManagePage.php';" >Back</button>
+            </form>
+          </ul>
+          <?php
+    if (isset($_POST['viewpop'])) {
+        //show all VALID ads
+        $sql = "SELECT DISTINCT * 
+                FROM (
+                    SELECT adid, count(bidpoints) as points
+                    FROM bid
+                    GROUP BY adid
+                ) AS combined natural join advertisements
+                WHERE CURRENT_TIMESTAMP - doa <= '7' 
+                ORDER BY points DESC
+                LIMIT 1;";
+
+        $result = pg_query($db, $sql);
+        if (!$result) {
+            echo "An error occurred.\n";
+            exit;
+        }
+
+        if(empty(pg_fetch_assoc($result))) { 
+            echo "<div align='center'>";
+            echo "It seems that no one has posted any advertosements this week"; 
+            echo "</div>";
+        }
+        else {
+            while ($row = pg_fetch_assoc($result)) {
+                echo "<div align='center'>";
+                echo "ad id: ";
+                echo $row['id'];
+                echo " points: ";
+                echo $row['points'];
+                echo "ad origin: ";
+                echo $row['origin'];
+                echo "ad destination: ";
+                echo $row['destination'];
+                echo "ad date: ";
+                echo $row['doa'];
+                echo "</div>";
+            }
+        }
+    }
+    ?>
+    </div>
+
     </div>
     
 

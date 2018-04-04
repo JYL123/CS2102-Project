@@ -130,7 +130,7 @@
           $_SESSION['last'] = $lastname;
           $_SESSION['icnum'] = $icnum;
           $_SESSION['user']=$_POST[username];
-          echo "<script> window.location.replace('AdminPage.php') </script>";
+          echo "<script> window.location.replace('adminManagePage.php') </script>";
         } else {
           echo "<script type='text/javascript'>$('#failModal').modal('toggle');</script>";
         }

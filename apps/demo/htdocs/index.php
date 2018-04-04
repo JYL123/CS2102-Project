@@ -1,4 +1,5 @@
-<?php  session_start(); ?>
+<?php  session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -71,7 +72,7 @@
           <p><a class="btn btn-default" href="https://sso.agc.gov.sg/SL/RTA1961-R20?DocDate=20170630" role="button">View details &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Friendly social meda</h2>
+          <h2>Friendly social media</h2>
           <p>We aim to develop a friendly social media platform. </p>
           <p><a class="btn btn-default" href="https://coschedule.com/blog/social-media-friendly/" role="button">View details &raquo;</a></p>
        </div>
@@ -119,7 +120,7 @@
 
       if (isset($_POST['submit'])) {
 
-        $result = pg_query($db, "SELECT icnum, firstName, lastName FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");		// Query template
+        $result = pg_query($db, "SELECT icnum, firstName, lastName FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]'");
         $row = pg_fetch_assoc($result);		// To store the result row
 
         if (!empty($row['icnum'])) {
