@@ -216,6 +216,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -269,6 +270,200 @@
       <!-- Home Summary page-->
 
       <div role="tabpanel" class="tab-pane active" id="home">
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+              <a href="edit.html" >Edit Profile</a>
+            </div>
+            <div class="toppad" >
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><?php echo $_SESSION['first'] . " " . $_SESSION['last'];?></h3>
+                </div>
+                <div class="panel-body">
+                <div class="row">
+                  <div class=" col-md-9 col-lg-9 ">
+                    <table class="table table-user-information">
+                      <tbody>
+                        <!-- Name -->
+                        <tr>
+                          <td>Name</td>
+                          <td><?php echo $_SESSION['first'] . " " . $_SESSION['last'];?></td>
+                        </tr>
+                        <!-- Email and phone -->
+                        <?php
+                          //retrieve basic information about the user
+                          $sql = "SELECT * FROM users WHERE icnum = '$_SESSION[icnum]'";
+                          $result = pg_query($db, $sql);// Query template
+                          //show error
+                          if (!$result) {
+                            echo '<script language="javascript">';
+                            echo 'alert("Oops, please try again!")';
+                            echo '</script>';
+                          } else {
+                            //nothing
+                          }
+                          //display retrieved information
+                          while ($row = pg_fetch_assoc($result)) {
+                            $email = $row['email'];
+                            echo "<tr>";
+                            echo "<td>Email</td>";
+                            echo "<td><a href='mailto:$email'>$email</a></td>";
+                            echo "</tr>";
+                            echo "<tr>";
+                            echo "<td>Phone</td>";
+                            echo "<td>" . $row['phonenum'] . "</td>";
+                            echo "</tr>";
+                          }
+                        ?>
+                        <!-- Cars -->
+                        <tr>
+                          <td>Cars</td>
+                          <td>
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>Plate Number</th>
+                                  <th>Model</th>
+                                  <th>Seats</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <?php
+                                    $result = pg_query($db, "SELECT * FROM cars WHERE plateNum IN (SELECT plateNum FROM drive WHERE icnum = '$_SESSION[icnum]')");
+                                    if (!$result) {
+                                      echo "An error occurred.\n";
+                                      exit;
+                                    }
+                                    $firstRow = pg_fetch_assoc($result);
+                                    if (!$firstRow) {
+                                      echo "<div align='center'>The user is not a driver</div>";
+                                    }
+                                    else {
+                                      echo "<tr>";
+                                      echo "<th>" . $firstRow['platenum'] . "</th>";
+                                      echo "<th>" . $firstRow['models'] . "</th>";
+                                      echo "<th>" . $firstRow['numseats'] . "</th>";
+                                      echo "</tr>";
+                                    }
+
+                                    while ($row = pg_fetch_assoc($result)) {
+                                      echo "<tr>";
+                                      echo "<th>" . $row['platenum'] . "</th>";
+                                      echo "<th>" . $row['models'] . "</th>";
+                                      echo "<th>" . $row['numseats'] . "</th>";
+                                      echo "</tr>";
+                                    }
+                                  ?>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                        <!-- Advertisements -->
+                        <tr>
+                          <td>Advertisements</td>
+                          <td>
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>Ad ID</th>
+                                  <th>Origin</th>
+                                  <th>Destination</th>
+                                  <th>Time</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php
+                                  //retrieve ad posting information about the user
+                                  $sql = "SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa
+                                          FROM ((users u natural left join advertise a ) natural join advertisements) as uaa
+                                          WHERE uaa.icnum = '$_SESSION[icnum]'";
+                                  $result = pg_query($db, $sql);// Query template
+                                  //show error
+                                  if (!$result) {
+                                   echo '<script language="javascript">';
+                                   echo 'alert("Oops, please try again!")';
+                                   echo '</script>';
+                                  }
+
+                                  //display retrieved ad posting information
+                                  while ($row = pg_fetch_assoc($result)) {
+                                    echo "<tr>";
+                                    echo "<th>" . $row['adid'] . "</th>";
+                                    echo "<th>" . $row['origin'] . "</th>";
+                                    echo "<th>" . $row['destination'] . "</th>";
+                                    echo "<th>" . $row['doa'] . "</th>";
+                                    echo "</tr>";
+                                  }
+                                ?>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                        <!-- Bids -->
+                        <tr>
+                          <td>My Bids</td>
+                          <td>
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>Origin</th>
+                                  <th>Destination</th>
+                                  <th>Time</th>
+                                  <th>Points</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php
+                                  //retrieve ad posting information about the user
+                                  $sql = "SELECT origin, destination, doa, bidpoints, status
+                                          FROM bid, advertisements a
+                                          WHERE bid.adid = a.adid
+                                          AND bid.icnum = '$_SESSION[icnum]'";
+                                  $result = pg_query($db, $sql);// Query template
+                                  //show error
+                                  if (!$result) {
+                                   echo '<script language="javascript">';
+                                   echo 'alert("Oops, please try again!")';
+                                   echo '</script>';
+                                  }
+
+                                  //display retrieved ad posting information
+                                  while ($row = pg_fetch_assoc($result)) {
+                                    echo "<tr>";
+                                    echo "<th>" . $row['origin'] . "</th>";
+                                    echo "<th>" . $row['destination'] . "</th>";
+                                    echo "<th>" . $row['doa'] . "</th>";
+                                    echo "<th>" . $row['bidpoints'] . "</th>";
+                                    echo "<th>" . $row['status'] . "</th>";
+                                    echo "</tr>";
+                                  }
+                                ?>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <a href="#" class="btn btn-primary">Random Button</a>
+                    <a href="#" class="btn btn-primary">Have not implemented</a>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                <span class="pull-right">
+                    <a href="#" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                    <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <?php
       //retrieve basic information about the user
@@ -423,8 +618,8 @@
        }
 
       ?>
+    </div>
 
-      </div>
 
       <!-- Post advertisement -->
       <div role="tabpanel" class="tab-pane" id="post">
@@ -448,6 +643,46 @@
 
       <!-- Select a bidder -->
       <div role="tabpanel" class="tab-pane" id="selectBidder">
+        <table class="table table-user-information">
+          <thead>
+            <tr>
+              <th>Ad ID</th>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Time</th>
+              <th>Points</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              //retrieve ad posting information about the user
+              $sql = "SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
+                      FROM bid b, advertisements a, advertise at
+                      WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
+                      ORDER BY b.adid";
+              $result = pg_query($db, $sql);// Query template
+              //show error
+              if (!$result) {
+               echo '<script language="javascript">';
+               echo 'alert("Oops, please try again!")';
+               echo '</script>';
+              }
+
+              //display retrieved ad posting information
+              while ($row = pg_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<th>" . $row['adid'] . "</th>";
+                echo "<th>" . $row['origin'] . "</th>";
+                echo "<th>" . $row['destination'] . "</th>";
+                echo "<th>" . $row['doa'] . "</th>";
+                echo "<th>" . $row['bidpoints'] . "</th>";
+                echo "<th>" . $row['status'] . "</th>";
+                echo "</tr>";
+              }
+            ?>
+          </tbody>
+        </table>
       <?php
           $sql = "SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
                   FROM bid b, advertisements a, advertise at
@@ -538,6 +773,50 @@
 
       <!-- Bid an advetisement-->
       <div role="tabpanel" class="tab-pane" id="bid">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Ad Id</th>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Time</th>
+              <th>Highest Bid</th>
+              <th>Your Bid</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              //retrieve ad posting information about the user
+              $sql = "SELECT * ,
+                      (SELECT max(bidpoints) AS maxBid FROM bid GROUP BY adid HAVING adid = a.adid),
+                      (SELECT bidpoints AS yourBid FROM bid WHERE icnum='A1111111A' AND adid = a.adid)
+                      FROM advertisements a
+                      WHERE NOT EXISTS (
+                      	SELECT 1 FROM bid b
+                      	WHERE b.adid = a.adid
+                      	AND b.status = 'Selected')";
+              $result = pg_query($db, $sql);// Query template
+              //show error
+              if (!$result) {
+               echo '<script language="javascript">';
+               echo 'alert("Oops, please try again!")';
+               echo '</script>';
+              }
+
+              //display retrieved ad posting information
+              while ($row = pg_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<th>" . $row['adid'] . "</th>";
+                echo "<th>" . $row['origin'] . "</th>";
+                echo "<th>" . $row['destination'] . "</th>";
+                echo "<th>" . $row['doa'] . "</th>";
+                echo "<th>" . $row['maxbid'] . "</th>";
+                echo "<th>" . $row['yourbid'] . "</th>";
+                echo "</tr>";
+              }
+            ?>
+          </tbody>
+        </table>
         <div align='center'>
           <ul>
           <?php
@@ -580,7 +859,7 @@
               $result = pg_query($db, "INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]')");
               if (!$result) {
                   echo '<script language="javascript">';
-                  echo 'alert("Oops, please try again88!")';
+                  echo 'alert("Oops, please try again!")';
                   echo '</script>';
               } else {
                   echo '<script language="javascript">';
@@ -588,10 +867,22 @@
                   echo '</script>';
               }
           } else {
-              //duplication for bidding an ad is not allowed.
+            //duplication for bidding an ad is not allowed.
+            //so update if a record already exists.
+            $sql = "UPDATE bid
+                    SET bidpoints = '$_POST[bidpoints]'
+                    WHERE icnum = '$_SESSION[icnum]'
+                    AND adid = '$_POST[adid]'";
+
+            $result = pg_query($db, $sql);
+            if (!$result) {
+              echo "An error occurred.\n";
+              exit;
+            } else {
               echo '<script language="javascript">';
-              echo 'alert("You have already bid for this ad. You can bid for a new ad.")';
+              echo 'alert("Yay, you have successfully updated your bidpoint!")';
               echo '</script>';
+            }
           }
         }
         ?>
@@ -603,13 +894,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script type="text/javascript">
-    $(function () {
-        $('#datetimepicker3').datetimepicker({
-          format: 'LT'
-        });
-    });
-  </script>
 
 </body>
 </html>

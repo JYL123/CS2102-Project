@@ -10,6 +10,17 @@ SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
 				FROM bid b, advertisements a, advertise at
 				WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
 				ORDER BY b.adid;
+
+SELECT * , --Find ads eligible to bid
+(SELECT max(bidpoints) AS maxBid FROM bid GROUP BY adid HAVING adid = a.adid),
+(SELECT bidpoints AS yourBid FROM bid WHERE icnum='A1111111A' AND adid = a.adid)
+FROM advertisements a
+WHERE NOT EXISTS (
+	SELECT 1 FROM bid b
+	WHERE b.adid = a.adid
+	AND b.status = 'Selected'
+);
+
 BEGIN;
 INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
 INSERT INTO advertise (icnum, adid) SELECT '$_SESSION[icnum]', adid FROM advertisements ORDER BY adid DESC LIMIT 1;
