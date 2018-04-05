@@ -1,4 +1,4 @@
-> CS2102
+> RouteSharing
 
 ## Get started
 You only need to copy `htdocs` folder to your local computer.
@@ -19,18 +19,15 @@ host=localhost port=5431/your_port dbname=Project1/db_server_name user=postgres/
 ### Done:
 * For user:
 ```
-Login page
+index page
 User page
-Sign up page
-Function page (apply to be a driver; post an advertisement; bid for an advertisement)
 ```
 
 * For admin:
 ```
-Login page
-Admin page
-Sign up page
-Function page (add user, delete user, view ad summary (points, origin, destination, doa, adid), view expired ads, view the most popular ad of the week)
+index page
+adminPortal page
+adminManagePage up page
 ```
 
 ### ToDo:
