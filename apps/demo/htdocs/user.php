@@ -150,7 +150,7 @@
     <meta name="author" content="Team 15">
     <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <title>Carpooling</title>
+    <title>RouteSharing</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -176,7 +176,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Carpooling</a>
+        <a class="navbar-brand" href="#">RouteSharing</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav" role="tablist">
