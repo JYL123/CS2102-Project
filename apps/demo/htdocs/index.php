@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="Carpooling">
+    <meta name="description" content="RouteSharing">
     <meta name="author" content="Team 15">
     <link rel="icon" href="images/favicon.png">
 
-    <title>Carpooling</title>
+    <title>RouteSharing</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <text class="navbar-brand" href="#">Carpooling</text>
+          <text class="navbar-brand" href="#">RouteSharing</text>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" action="index.php" method="POST">
@@ -58,7 +58,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Welcome to Carpooling!</h1>
+        <h1>Welcome to RouteSharing!</h1>
         <p>This is an application for you to bid for your favourite route, or you may post your routes as a driver.</p>
       </div>
     </div>

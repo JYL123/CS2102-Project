@@ -10,7 +10,7 @@
     <meta name="author" content="Team 15">
     <link rel="icon" href="images/favicon.png">
 
-    <title>Carpooling</title>
+    <title>RouteSharing</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <text class="navbar-brand" href="#">Carpooling</text>
+          <text class="navbar-brand" href="#">RouteSharing</text>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" action="adminPortal.php" method="POST">
@@ -57,7 +57,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Welcome to Carpooling!</h1>
+        <h1>Welcome to RouteSharing!</h1>
         <p>This is the administration portal.</p>
       </div>
     </div>
