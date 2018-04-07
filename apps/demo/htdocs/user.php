@@ -502,8 +502,8 @@
           if (empty($row)) {
               // by default, each user can contain bid i point for each ad
               $result = pg_query($db, "INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]')");
-              $row = pg_fetch_assoc($result);
-              if (!$result | empty($row)) {
+              $error = pg_last_error($db);
+              if (!$result | $error) {
                   echo '<script languagce="javascript">';
                   echo 'alert("Invalid input!")';
                   echo '</script>';
@@ -522,8 +522,9 @@
                     AND adid = '$_POST[adid]'";
 
             $result = pg_query($db, $sql);
-            $row = pg_fetch_assoc($result);
-            if (!$result | empty($row)) {
+            $error = pg_last_error($db);
+
+            if (!$result | $error) {
               echo '<script languagce="javascript">';
               echo 'alert("Invalid input!")';
               echo '</script>';
