@@ -10,106 +10,6 @@
        header("Location: index.php");
    }
 
-  // Insert into cars and drive
-  if (isset($_POST['cars'])) {	// Submit the update SQL command
-    $result = pg_query($db,
-      "INSERT INTO cars (platenum, models, numseats) VALUES ('$_POST[platenum]', '$_POST[models]', '$_POST[numseats]');
-       INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');"
-    );
-    if (!$result) {
-      $error = pg_last_error($db);
-      echo "<script type='text/javascript'>alert('Oops, please try again! " . strstr($error," \"",true). "!');</script>";
-    } else {
-      echo "Yay, you have successfully become a driver!";
-      header("Location: user.php");
-    }
-  }
-
-  //second function - post an advertisement
-  if (isset($_POST['post'])) {
-
-      echo "<div align='center'> The first step to post an advertisement, you have to fill in the following information: </div>";
-
-      echo
-      "<div align='center'>
-      <ul><form name='update' action='user.php' method='POST' >
-      <li>Your icnum:</li>
-  	  <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-      <li>Start location:</li>
-  	  <li><input type='text' name='origin' value='$row[origin]' /></li>
-  	  <li>Destination location:</li>
-  	  <li><input type='text' name='destination' value='$row[destination]' /></li>
-      <li>Date of traveling (YYYY-MM-DD):</li>
-      <li><input type='text' name='doa' value='$row[doa]' /></li>
-      <li><input type='submit' name='ads'/></li>
-      </form>
-      </ul>
-      </div>";
-  }
-
-  if (isset($_POST['ads'])) {
-      //add advertisements
-      $result = pg_query($db, "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]')");// Query template
-      //show error
-      if (!$result) {
-        echo "<p align='center'>Oops, adding advertisements failed! You can try again.</p>";
-      } else {
-        //nothing;
-      }
-
-      //retrieve the adid for the last ad just added
-      $idresult = pg_query($db, "SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1");// Query template
-      $row    = pg_fetch_assoc($idresult);	// To store the result row
-      $adid = $row[adid];
-      //echo "<li><input type='text' name='bookid_updated' value='$row[adid]'/></li>";
-
-      //add advertisements with icnum into advertise table
-      $adresult = pg_query($db, "INSERT INTO advertise (icnum, adid) VALUES ('$_SESSION[icnum]', $adid)");// Query template
-      if (!$adresult) {
-          echo "<p align='center'>Oops, adding to advertise failed! You can try again.</p>";
-      } else {
-         //nothing
-      }
-    }
-
-  //third function - bid for an ad!
-  if (isset($_POST['bid'])) {
-      //show all VALID ads
-      $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");
-
-      if (!$result) {
-        echo '<script language="javascript">';
-        echo 'alert("Oops, an error has occured! You can try again!")';
-        echo '</script>';
-        exit;
-      }
-
-      while ($row = pg_fetch_assoc($result)) {
-          echo "<div align='center'>";
-          echo $row['adid'];
-          echo $row['origin'];
-          echo $row['destination'];
-          echo $row['doa'];
-          echo "</div>";
-      }
-
-      //ask users to select an adid to bid
-      echo "<div align='center'> The first step to bid, you have to fill in the following information: </div>";
-
-      echo
-      "<div align='center'>
-      <ul><form name='update' action='user.php' method='POST' >
-      <li>Advertisement ID: </li>
-  	  <li><input type='text' name='adid' value='$row[adid]' /></li>
-  	  <li>Your icnum: </li>
-      <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-      <li>Your point: </li>
-  	  <li><input type='text' name='bidpoints' value='$row[bidpoints]' /></li>
-      <li><input type='submit' name='bidad'/></li>
-      </form>
-      </ul>
-      </div>";
-  }
 
   //Submit add query
   if (isset($_POST['bidad'])) {	// Submit the update SQL command
@@ -121,9 +21,9 @@
           // by default, each user can contain bid i point for each ad
           $result = pg_query($db, "INSERT INTO bid VALUES ('$_POST[icnum]', $_POST[adid], '$_POST[bidpoints]')");
            if (!$result) {
-               echo '<script language="javascript">';
-               echo 'alert("Oops, please try again!")';
-               echo '</script>';
+             echo '<script language="javascript">';
+             echo 'alert("Oops, please try again!")';
+             echo '</script>';
            } else {
               echo '<script language="javascript">';
               echo 'alert("Yay, you have successfully set a bid point!")';
@@ -246,7 +146,7 @@
                             $email = $row['email'];
                             echo "<tr>";
                             echo "<td>Email</td>";
-                            echo "<td><a href=\"mailto:" + $email+ "\">"+ $email +"</></td>";
+                            echo "<td><a href='mailto:$email'>$email</a></td>";
                             echo "</tr>";
                             echo "<tr>";
                             echo "<td>Phone</td>";
@@ -268,6 +168,7 @@
                               </thead>
                               <tbody>
                                   <?php
+                                    // Retrieve all cars information of the current user
                                     $result = pg_query($db, "SELECT * FROM cars WHERE plateNum IN (SELECT plateNum FROM drive WHERE icnum = '$_SESSION[icnum]')");
                                     if (!$result) {
                                       echo "An error occurred.\n";
@@ -354,7 +255,7 @@
                               </thead>
                               <tbody>
                                 <?php
-                                  //retrieve ad posting information about the user
+                                  //retrieve my bidding information about the user
                                   $sql = "SELECT origin, destination, doa, bidpoints, status
                                           FROM bid, advertisements a
                                           WHERE bid.adid = a.adid
@@ -412,8 +313,28 @@
             </form>
           </ul>
         </div>
-
-        </div>
+      </div>
+      <?php
+        if (isset($_POST['ads'])) {
+          //add advertisements
+          $result = pg_query($db,
+            "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
+            INSERT INTO advertise (icnum, adid)(
+            	SELECT '$_SESSION[icnum]', adid
+            	FROM advertisements
+            	ORDER BY adid
+            	DESC LIMIT 1
+            );
+            "
+          );
+          //show error
+          if (!$result) {
+            echo "<p align='center'>Oops, adding advertisements failed! You can try again.</p>";
+          } else {
+            echo "<script> window.location.replace('user.php') </script>";
+          }
+        }
+      ?>
 
       <!-- Select a bidder -->
       <div role="tabpanel" class="tab-pane" id="selectBidder">
@@ -421,6 +342,7 @@
           <thead>
             <tr>
               <th>Ad ID</th>
+              <th>Bidder IC</th>
               <th>Origin</th>
               <th>Destination</th>
               <th>Time</th>
@@ -430,8 +352,8 @@
           </thead>
           <tbody>
             <?php
-              //retrieve ad posting information about the user
-              $sql = "SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
+              //retrieve bids that are eligible to select, meaning not yet selected by other drivers
+              $sql = "SELECT b.adid, b.icnum, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
                       FROM bid b, advertisements a, advertise at
                       WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
                       ORDER BY b.adid";
@@ -445,69 +367,48 @@
 
               //display retrieved ad posting information
               while ($row = pg_fetch_assoc($result)) {
+                $adid = $row['adid'];
+                $icnum = $row['icnum'];
                 echo "<tr>";
                 echo "<th>" . $row['adid'] . "</th>";
+                echo "<th>" . $row['icnum'] . "</th>";
                 echo "<th>" . $row['origin'] . "</th>";
                 echo "<th>" . $row['destination'] . "</th>";
                 echo "<th>" . $row['doa'] . "</th>";
                 echo "<th>" . $row['bidpoints'] . "</th>";
                 echo "<th>" . $row['status'] . "</th>";
+                echo "<th>";
+                echo "<form class='form' action='user.php' method='POST'>";
+                echo "<input type='hidden' name='adid' class='form-control' placeholder='AD ID' value=$adid>";
+                echo "<input type='hidden' name='icnum' class='form-control' placeholder='IC Num' value=$icnum>";
+                echo "<button class='btn btn-sm btn-primary' type='submit' name='selectbid'>Select</button>";
+                echo "</form>";
                 echo "</tr>";
+                echo "</tr>";
+              }
+            ?>
+            <?PHP
+              if (isset($_POST['selectbid'])) {	// Submit the update SQL command
+                // select a bidder that is not yet selected by other drivers
+                $sql = "SELECT selBidder('$_POST[icnum]', '$_POST[adid]')";
+                $result = pg_query($db, $sql);
+
+                if (!$result) {
+                  echo '<script language="javascript">';
+                  echo 'alert("Oops, please try again!")';
+                  echo '</script>';
+                  exit;
+                } else {
+                  echo '<script language="javascript">';
+                  echo 'alert("You have choosen a bidder!")';
+                  echo '</script>';
+                  echo "<script> window.location.replace('user.php') </script>";
+                }
               }
             ?>
           </tbody>
         </table>
-      <div align='center'>
-          <ul>
-            <form class="form" action="user.php" method="POST">
-              <h2 class="form-heading">Select a bidder</h2>
-              <input type="text" name="adid" class="form-control" placeholder="Ad index" required autofocus>
-              <input type="text" name="icnum" class="form-control" placeholder="Bidder IC" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="select">Bid</button>
-              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
-            </form>
-          </ul>
-      </div>
-
-      <?PHP
-        if (isset($_POST['select'])) {	// Submit the update SQL command
-          //check whether the user has bid this ad before; duplication is not allowed
-          $sql = "UPDATE bid
-                  SET status = 'Selected'
-                  WHERE icnum = '$_POST[icnum]' and adid = $_POST[adid]";
-          $result = pg_query($db, $sql);
-
-          if (!$result) {
-            echo '<script language="javascript">';
-            echo 'alert("Oops, please try again!")';
-            echo '</script>';
-            exit;
-          } else {
-            echo '<script language="javascript">';
-            echo 'alert("You have choosen a bidder!")';
-            echo '</script>';
-            //echo "<h2 align='center'>You have choosen a bidder! </h2>";
-          }
-        }
-      ?>
-
     </div>
-
-     <!-- Apply to be a driver -->
-      <div role="tabpanel" class="tab-pane" id="drive">
-        <div align='center'>
-          <ul>
-            <form class="form" action="user.php" method="POST">
-              <h2 class="form-heading">Apply to become a driver</h2>
-              <input type="text" name="platenum" class="form-control" placeholder="Vehicle Plate Number" required autofocus>
-              <input type="text" name="models" class="form-control" placeholder="Vehicle Model" required>
-              <input type="number" name="numseats" class="form-control" placeholder="Number of Seats" required>
-              <button class="btn btn-lg btn-primary btn-block" type="submit" name="cars">Apply</button>
-              <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
-            </form>
-          </ul>
-        </div>
-      </div>
 
       <!-- Bid an advetisement-->
       <div role="tabpanel" class="tab-pane" id="bid">
@@ -524,7 +425,7 @@
           </thead>
           <tbody>
             <?php
-              //retrieve ad posting information about the user
+              // Find ads eligible to bid, also show the user's bidpoint and the current max bidpoint
               $sql = "SELECT * ,
                       (SELECT max(bidpoints) AS maxBid FROM bid GROUP BY adid HAVING adid = a.adid),
                       (SELECT bidpoints AS yourBid FROM bid WHERE icnum='$_SESSION[icnum]' AND adid = a.adid)
@@ -543,6 +444,7 @@
 
               //display retrieved ad posting information
               while ($row = pg_fetch_assoc($result)) {
+                $adid = $row['adid'];
                 echo "<tr>";
                 echo "<th>" . $row['adid'] . "</th>";
                 echo "<th>" . $row['origin'] . "</th>";
@@ -550,7 +452,32 @@
                 echo "<th>" . $row['doa'] . "</th>";
                 echo "<th>" . $row['maxbid'] . "</th>";
                 echo "<th>" . $row['yourbid'] . "</th>";
+                echo "<th>";
+                echo "<form class='form' action='user.php' method='POST'>";
+                echo "<input type='hidden' name='adid' class='form-control' placeholder='AD ID' value=$adid>";
+                echo "<button class='btn btn-sm btn-primary' type='submit' name='incbid'>Inc Bid by 10</button>";
+                echo "</form>";
                 echo "</tr>";
+                echo "</tr>";
+              }
+            ?>
+            <?PHP
+              if (isset($_POST['incbid'])) {	// Submit the update SQL command
+                // select a bidder that is not yet selected by other drivers
+                $sql = "SELECT incBid('$_SESSION[icnum]', '$_POST[adid]', 10)";
+                $result = pg_query($db, $sql);
+                $row = pg_fetch_assoc($result);
+
+                if (empty($row['incbid'])) {
+                  echo '<script language="javascript">';
+                  echo 'alert("Place a bid before updating!")';
+                  echo '</script>';
+                } else {
+                  echo '<script language="javascript">';
+                  echo 'alert("You have increased the bid by 10!")';
+                  echo '</script>';
+                }
+                echo "<script> window.location.replace('user.php') </script>";
               }
             ?>
           </tbody>
@@ -575,14 +502,16 @@
           if (empty($row)) {
               // by default, each user can contain bid i point for each ad
               $result = pg_query($db, "INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]')");
-              if (!$result) {
-                  echo '<script language="javascript">';
-                  echo 'alert("Oops, please try again!")';
+              $error = pg_last_error($db);
+              if (!$result | $error) {
+                  echo '<script languagce="javascript">';
+                  echo 'alert("Invalid input!")';
                   echo '</script>';
               } else {
                   echo '<script language="javascript">';
                   echo 'alert("Yay, you have successfully set a bid point!")';
                   echo '</script>';
+                  echo "<script> window.location.replace('user.php') </script>";
               }
           } else {
             //duplication for bidding an ad is not allowed.
@@ -593,18 +522,54 @@
                     AND adid = '$_POST[adid]'";
 
             $result = pg_query($db, $sql);
-            if (!$result) {
-              echo "An error occurred.\n";
-              exit;
+            $error = pg_last_error($db);
+
+            if (!$result | $error) {
+              echo '<script languagce="javascript">';
+              echo 'alert("Invalid input!")';
+              echo '</script>';
             } else {
               echo '<script language="javascript">';
               echo 'alert("Yay, you have successfully updated your bidpoint!")';
               echo '</script>';
             }
+            echo "<script> window.location.replace('user.php') </script>";
           }
         }
         ?>
       </div>
+
+      <!-- Apply to be a driver -->
+       <div role="tabpanel" class="tab-pane" id="drive">
+         <div align='center'>
+           <ul>
+             <form class="form" action="user.php" method="POST">
+               <h2 class="form-heading">Apply to become a driver</h2>
+               <input type="text" name="platenum" class="form-control" placeholder="Vehicle Plate Number" required autofocus>
+               <input type="text" name="models" class="form-control" placeholder="Vehicle Model" required>
+               <input type="number" name="numseats" class="form-control" placeholder="Number of Seats" required>
+               <button class="btn btn-lg btn-primary btn-block" type="submit" name="cars">Apply</button>
+               <button class="btn btn-lg btn-block" onclick="location.href = 'user.php';" >Back</button>
+             </form>
+           </ul>
+         </div>
+       </div>
+       <?php
+         // Insert into cars and drive
+         if (isset($_POST['cars'])) {	// Submit the update SQL command
+           $result = pg_query($db,
+             "INSERT INTO cars (platenum, models, numseats) VALUES ('$_POST[platenum]', '$_POST[models]', '$_POST[numseats]');
+              INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');"
+           );
+           if (!$result) {
+             $error = pg_last_error($db);
+             echo "<script type='text/javascript'>alert('Oops, please try again! " . strstr($error," \"",true). "!');</script>";
+           } else {
+             echo "<script type='text/javascript'>alert('Yay, you have successfully become a driver!');</script>";
+             echo "<script> window.location.replace('user.php') </script>";
+           }
+         }
+       ?>
     </div>
 
 

@@ -71,7 +71,7 @@
           <p><a class="btn btn-default" href="https://sso.agc.gov.sg/SL/RTA1961-R20?DocDate=20170630" role="button">View details &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Friendly social meda</h2>
+          <h2>Friendly social media</h2>
           <p>We aim to develop a friendly social media platform. </p>
           <p><a class="btn btn-default" href="https://coschedule.com/blog/social-media-friendly/" role="button">View details &raquo;</a></p>
        </div>

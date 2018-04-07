@@ -1,4 +1,4 @@
-<?php  session_start(); 
+<?php  session_start();
 ?>
 
 <?php
@@ -9,127 +9,6 @@
    {
        header("Location: adminPortal.php");
    }
-
-  // Insert into cars and drive
-  if (isset($_POST['cars'])) {	// Submit the update SQL command
-    $result = pg_query($db,
-      "INSERT INTO cars (platenum, models, numseats) VALUES ('$_POST[platenum]', '$_POST[models]', '$_POST[numseats]');
-       INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');"
-    );
-    if (!$result) {
-      $error = pg_last_error($db);
-      echo "<script type='text/javascript'>alert('Oops, please try again! " . strstr($error," \"",true). "!');</script>";
-    } else {
-      echo "Yay, you have successfully become a driver!";
-      header("Location: user.php");
-    }
-  }
-
-  //second function - post an advertisement
-  if (isset($_POST['post'])) {
-
-      echo "<div align='center'> The first step to post an advertisement, you have to fill in the following information: </div>";
-
-      echo
-      "<div align='center'>
-      <ul><form name='update' action='user.php' method='POST' >
-      <li>Your icnum:</li>
-  	  <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-      <li>Start location:</li>
-  	  <li><input type='text' name='origin' value='$row[origin]' /></li>
-  	  <li>Destination location:</li>
-  	  <li><input type='text' name='destination' value='$row[destination]' /></li>
-      <li>Date of traveling (YYYY-MM-DD):</li>
-      <li><input type='text' name='doa' value='$row[doa]' /></li>
-      <li><input type='submit' name='ads'/></li>
-      </form>
-      </ul>
-      </div>";
-  }
-
-  if (isset($_POST['ads'])) {
-      //add advertisements
-      $result = pg_query($db, "INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]')");// Query template
-      //show error 
-      if (!$result) {
-        echo "<p align='center'>Oops, adding advertisements failed! You can try again.</p>";
-      } else {
-        //echo "<p align='center'>Yay, you have successfully post an ad!</p>";
-      }
-
-      //retrieve the adid for the last ad just added
-      $idresult = pg_query($db, "SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1");// Query template
-      $row    = pg_fetch_assoc($idresult);	// To store the result row
-      $adid = $row[adid];
-      //echo "<li><input type='text' name='bookid_updated' value='$row[adid]'/></li>";
-
-      //add advertisements with icnum into advertise table
-      $adresult = pg_query($db, "INSERT INTO advertise (icnum, adid) VALUES ('$_SESSION[icnum]', $adid)");// Query template
-      if (!$adresult) {
-          echo "<p align='center'>Oops, adding to advertise failed! You can try again.</p>";
-      } else {
-         // echo "<p align='center'>Yay, you have successfully linked the ad to the driver!</p>";
-      }
-    }
-
-  //third function - bid for an ad!
-  if (isset($_POST['bid'])) {
-      //show all VALID ads
-      $result = pg_query($db, "SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid)");
-
-      if (!$result) {
-          echo "An error occurred.\n";
-          exit;
-      }
-
-      while ($row = pg_fetch_assoc($result)) {
-          echo "<div align='center'>";
-          echo $row['adid'];
-          echo $row['origin'];
-          echo $row['destination'];
-          echo $row['doa']; 
-          echo "</div>";
-      }
-        
-      //ask users to select an adid to bid
-      echo "<div align='center'> The first step to bid, you have to fill in the following information: </div>";
-
-      echo
-      "<div align='center'>
-      <ul><form name='update' action='user.php' method='POST' >
-      <li>Advertisement ID: </li>
-  	  <li><input type='text' name='adid' value='$row[adid]' /></li>
-  	  <li>Your icnum: </li>
-      <li><input type='text' name='icnum' value='$row[icnum]' /></li>
-      <li>Your point: </li>
-  	  <li><input type='text' name='bidpoints' value='$row[bidpoints]' /></li>
-      <li><input type='submit' name='bidad'/></li>
-      </form>
-      </ul>
-      </div>";
-  }
-
-  //Submit add query
-  if (isset($_POST['bidad'])) {	// Submit the update SQL command
-      //check whether the user has bid this ad before; duplication is not allowed
-      $userresult = pg_query($db, "SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_POST[icnum]'");
-      $row    = pg_fetch_assoc($userresult);
-
-       if (!$row) {
-          // by default, each user can contain bid i point for each ad
-          $result = pg_query($db, "INSERT INTO bid VALUES ('$_POST[icnum]', $_POST[adid], '$_POST[bidpoints]')");
-           if (!$result) {
-               echo "Oops, please try again!";
-           } else {
-               echo "Yay, you have successfully set a bid point!";
-           }
-       } else {
-          //duplication for bidding an ad is not allowed.
-          echo "$row[adid]";
-          echo "You have already bid for this ad. You can bid for a new ad.";
-       }
-  }
-
 ?>
 
 <!DOCTYPE html>
@@ -174,7 +53,7 @@
         <ul class="nav navbar-nav" role="tablist">
           <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
           <li role="presentation"><a href="#delete" aria-controls="delete" role="tab" data-toggle="tab">Delete users</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">View ad bidpoints</a></li>
+          <li role="presentation"><a href="#viewBidpoint" aria-controls="viewBidpoint" role="tab" data-toggle="tab">View ad bidpoints</a></li>
           <li role="presentation"><a href="#drive" aria-controls="drive" role="tab" data-toggle="tab">View expired ad</a></li>
           <li role="presentation"><a href="#bid" aria-controls="bid" role="tab" data-toggle="tab">Popular ad of the week</a></li>
         </ul>
@@ -238,7 +117,7 @@
                             $email = $row['email'];
                             echo "<tr>";
                             echo "<td>Email</td>";
-                            echo "<td><a href=\"mailto:" + $email+ "\">"+ $email +"</></td>";
+                            echo "<td><a href='mailto:$email'>$email</a></td>";
                             echo "</tr>";
                             echo "<tr>";
                             echo "<td>Phone</td>";
@@ -246,132 +125,43 @@
                             echo "</tr>";
                           }
                         ?>
-                        <!-- Cars -->
+                        <!-- Total no. of users -->
                         <tr>
-                          <td>Cars</td>
+                          <td>Total Users</td>
                           <td>
-                            <table class="table">
-                              <thead>
-                                <tr>
-                                  <th>Plate Number</th>
-                                  <th>Model</th>
-                                  <th>Seats</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                  <?php
-                                    $result = pg_query($db, "SELECT * FROM cars WHERE plateNum IN (SELECT plateNum FROM drive WHERE icnum = '$_SESSION[icnum]')");
-                                    if (!$result) {
-                                      echo "An error occurred.\n";
-                                      exit;
-                                    }
-                                    $firstRow = pg_fetch_assoc($result);
-                                    if (!$firstRow) {
-                                      echo "<div align='center'>The administrator is not a driver</div>";
-                                    }
-                                    else {
-                                      echo "<tr>";
-                                      echo "<th>" . $firstRow['platenum'] . "</th>";
-                                      echo "<th>" . $firstRow['models'] . "</th>";
-                                      echo "<th>" . $firstRow['numseats'] . "</th>";
-                                      echo "</tr>";
-                                    }
-
-                                    while ($row = pg_fetch_assoc($result)) {
-                                      echo "<tr>";
-                                      echo "<th>" . $row['platenum'] . "</th>";
-                                      echo "<th>" . $row['models'] . "</th>";
-                                      echo "<th>" . $row['numseats'] . "</th>";
-                                      echo "</tr>";
-                                    }
-                                  ?>
-                              </tbody>
-                            </table>
+                            <?php
+                              $sql = "SELECT count(icnum) FROM users";
+                              $result = pg_query($db, $sql);
+                              $row = pg_fetch_assoc($result);
+                              echo $row['count'];
+                            ?>
                           </td>
                         </tr>
-                        <!-- Advertisements -->
-                        <tr>
-                          <td>Advertisements</td>
-                          <td>
-                            <table class="table">
-                              <thead>
-                                <tr>
-                                  <th>Ad ID</th>
-                                  <th>Origin</th>
-                                  <th>Destination</th>
-                                  <th>Time</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php
-                                  //retrieve ad posting information about the user
-                                  $sql = "SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa
-                                          FROM ((administrators u natural left join advertise a ) natural join advertisements) as uaa
-                                          WHERE uaa.icnum = '$_SESSION[icnum]'";
-                                  $result = pg_query($db, $sql);// Query template
-                                  //show error
-                                  if (!$result) {
-                                   echo '<script language="javascript">';
-                                   echo 'alert("Oops, please try again!")';
-                                   echo '</script>';
-                                  }
 
-                                  //display retrieved ad posting information
-                                  while ($row = pg_fetch_assoc($result)) {
-                                    echo "<tr>";
-                                    echo "<th>" . $row['adid'] . "</th>";
-                                    echo "<th>" . $row['origin'] . "</th>";
-                                    echo "<th>" . $row['destination'] . "</th>";
-                                    echo "<th>" . $row['doa'] . "</th>";
-                                    echo "</tr>";
-                                  }
-                                ?>
-                              </tbody>
-                            </table>
+                        <!-- Total no. of drivers -->
+                        <tr>
+                          <td>Total Drivers</td>
+                          <td>
+                            <?php
+                              $sql = "SELECT count(DISTINCT icnum)
+                                      FROM drive NATURAL JOIN users";
+                              $result = pg_query($db, $sql);
+                              $row = pg_fetch_assoc($result);
+                              echo $row['count'];
+                            ?>
                           </td>
                         </tr>
-                        <!-- Bids -->
-                        <tr>
-                          <td>My Bids</td>
-                          <td>
-                            <table class="table">
-                              <thead>
-                                <tr>
-                                  <th>Origin</th>
-                                  <th>Destination</th>
-                                  <th>Time</th>
-                                  <th>Points</th>
-                                  <th>Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php
-                                  //retrieve ad posting information about the user
-                                  $sql = "SELECT origin, destination, doa, bidpoints, status
-                                          FROM bid, advertisements a
-                                          WHERE bid.adid = a.adid
-                                          AND bid.icnum = '$_SESSION[icnum]'";
-                                  $result = pg_query($db, $sql);// Query template
-                                  //show error
-                                  if (!$result) {
-                                   echo '<script language="javascript">';
-                                   echo 'alert("Oops, please try again!")';
-                                   echo '</script>';
-                                  }
 
-                                  //display retrieved ad posting information
-                                  while ($row = pg_fetch_assoc($result)) {
-                                    echo "<tr>";
-                                    echo "<th>" . $row['origin'] . "</th>";
-                                    echo "<th>" . $row['destination'] . "</th>";
-                                    echo "<th>" . $row['doa'] . "</th>";
-                                    echo "<th>" . $row['bidpoints'] . "</th>";
-                                    echo "<th>" . $row['status'] . "</th>";
-                                    echo "</tr>";
-                                  }
-                                ?>
-                              </tbody>
-                            </table>
+                        <!-- Total no. of advertisments -->
+                        <tr>
+                          <td>Total Ads</td>
+                          <td>
+                            <?php
+                              $sql = "SELECT count(*) FROM advertisements";
+                              $result = pg_query($db, $sql);
+                              $row = pg_fetch_assoc($result);
+                              echo $row['count'];
+                            ?>
                           </td>
                         </tr>
                       </tbody>
@@ -391,16 +181,18 @@
       <table class="table table-user-information">
           <thead>
             <tr>
-              <th>Ad ID</th>
-              <th>User Name</th>
+              <th>Username</th>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>IC Number</th>
+              <th>Email</th>
+              <th>Phone</th>
             </tr>
           </thead>
           <tbody>
             <?php
               //retrieve ad posting information about the user
-              $sql = "SELECT username, firstname, lastname, icnum FROM users";
+              $sql = "SELECT username, firstname, lastname, icnum, email, phonenum FROM users";
               $result = pg_query($db, $sql);// Query template
               //show error
               if (!$result) {
@@ -412,16 +204,17 @@
               //display retrieved ad posting information
               while ($row = pg_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<th>" . $row['adid'] . "</th>";
                 echo "<th>" . $row['username'] . "</th>";
                 echo "<th>" . $row['firstname'] . "</th>";
                 echo "<th>" . $row['lastname'] . "</th>";
+                echo "<th>" . $row['icnum'] . "</th>";
+                echo "<th>" . $row['email'] . "</th>";
+                echo "<th>" . $row['phonenum'] . "</th>";
                 echo "</tr>";
               }
             ?>
           </tbody>
         </table>
-
 
         <div align='center'></div>
         <div align='center'>
@@ -439,7 +232,7 @@
         if (isset($_POST['deleteusers'])) {
             //secondly we delete according to the IC number
             $result = pg_query($db, "DELETE FROM users WHERE icnum = '$_POST[icnum]'");		// Query template
-        
+
             if (!$result) {
               echo '<script language="javascript">';
               echo 'alert("Delete failed.")';
@@ -448,14 +241,15 @@
               echo '<script language="javascript">';
               echo 'alert("The user is deleted.")';
               echo '</script>';
+              echo "<script> window.location.replace('adminManagePage.php') </script>";
             }
         }
-        
+
         ?>
     </div>
 
-    
-    <div role="tabpanel" class="tab-pane" id="messages">   
+    <!-- View all maxx bidpoints -->
+    <div role="tabpanel" class="tab-pane" id="viewBidpoint">
       <div align='center'></div>
          <h2 class="form-heading" align = "center">Max Bidpoints for valid ads</h2>
          <table class="table table-user-information">
@@ -471,7 +265,7 @@
           <tbody>
             <?php
               //show all VALID ads with max bidpoints
-              $sql = "SELECT DISTINCT * 
+              $sql = "SELECT DISTINCT *
               FROM (
                   SELECT adid, max(bidpoints) as points
                   FROM bid
@@ -500,14 +294,14 @@
           </tbody>
         </table>
           <ul>
-            <form class="form" action="adminManagePage.php" method="POST"> 
+            <form class="form" action="adminManagePage.php" method="POST">
               <button class="btn btn-lg btn-info btn-block" onclick="location.href = 'adminManagePage.php';" >Back</button>
             </form>
           </ul>
       </div>
-       
+
     <!--View expired ad section-->
-    <div role="tabpanel" class="tab-pane" id="drive">   
+    <div role="tabpanel" class="tab-pane" id="drive">
       <div align='center'></div>
           <h2 class="form-heading" align = "center">Expired Ads for past 2 weeks</h2>
           <table class="table table-user-information">
@@ -522,14 +316,15 @@
           </thead>
           <tbody>
             <?php
-              //show all VALID ads with max bidpoints
-              $sql = "SELECT DISTINCT * 
+              //show all expired, showing max bidpoint
+              $sql = "SELECT DISTINCT *
               FROM (
-                  SELECT adid, count(bidpoints) as points
-                  FROM bid
-                  GROUP BY adid
+              		SELECT adid, max(bidpoints) as points
+              		FROM bid
+              		GROUP BY adid
               ) AS combined natural join advertisements
-              WHERE CURRENT_TIMESTAMP - doa > '14'";
+              WHERE CURRENT_TIMESTAMP - doa > '14 day'::interval
+              ORDER by doa DESC";
               $result = pg_query($db, $sql);// Query template
               //show error
               if (!$result) {
@@ -550,7 +345,7 @@
               }
             ?>
           </tbody>
-        </table>  
+        </table>
           <ul>
             <form class="form" action="adminManagePage.php" method="POST">
               <button class="btn btn-lg btn-info btn-block" onclick="location.href = 'adminManagePage.php';" >Back</button>
@@ -559,7 +354,7 @@
     </div>
 
      <!--View popular ads-->
-     <div role="tabpanel" class="tab-pane" id="bid">   
+     <div role="tabpanel" class="tab-pane" id="bid">
       <div align='center'></div>
       <h2 class="form-heading" align = "center">Populard Ads for last weeks</h2>
       <table class="table table-user-information">
@@ -575,15 +370,15 @@
           <tbody>
             <?php
               //show all VALID ads with max bidpoints
-              $sql = "SELECT DISTINCT * 
+              $sql = "SELECT DISTINCT *
               FROM (
-                  SELECT adid, max(bidpoints) as points
-                  FROM bid
-                  GROUP BY adid
+              		SELECT adid, max(bidpoints) as points
+              		FROM bid
+              		GROUP BY adid
               ) AS combined natural join advertisements
-              WHERE CURRENT_TIMESTAMP - doa <= '7' 
+              WHERE CURRENT_TIMESTAMP - doa <= '7 day'::interval
               ORDER BY points DESC
-              LIMIT 1";
+              LIMIT 10";
               $result = pg_query($db, $sql);// Query template
               //show error
               if (!$result) {
@@ -613,7 +408,7 @@
     </div>
 
     </div>
-    
+
 
   <!-- Bootstrap core -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

@@ -1,84 +1,150 @@
 -- Simple sql query
---select
-SELECT icnum FROM administrators where username = '$_POST[username]' and userpassword = '$_POST[userpassword]';
-SELECT username FROM users WHERE icnum = '$_POST[icnum]';
-SELECT adid FROM advertisements ORDER BY adid DESC LIMIT 1;
-SELECT * FROM advertisements WHERE EXISTS (SELECT 1 FROM advertise WHERE advertisements.adid = advertise.adid);
-SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_POST[icnum]';
-SELECT icnum FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]';
+
+------------- SELECT -------------
+
+-- User login
+SELECT icnum, firstName, lastName FROM users where username = '$_POST[username]' and userpassword = '$_POST[userpassword]';
+-- Admin login
+SELECT icnum, firstName, lastName FROM administrators where username = '$_POST[username]' and userpassword = '$_POST[userpassword]';
+-- Retrive admin information
+SELECT * FROM administrators WHERE icnum = '$_SESSION[icnum]';
+-- Find total number of users in the system
+SELECT count(icnum) FROM users;
+-- Find total number of drivers in the system
+SELECT count(DISTINCT icnum)
+FROM drive NATURAL JOIN users;
+-- Find total number of advertisements in the system
+SELECT count(*) FROM advertisements;
+-- Retrieve bidding status of advertisements the specific user has posted
+-- (meaning all those he/she can select), thus the bid should also not yet be selected by other drivers
 SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
 				FROM bid b, advertisements a, advertise at
 				WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
 				ORDER BY b.adid;
 
-SELECT * , --Find ads eligible to bid
-(SELECT max(bidpoints) AS maxBid FROM bid GROUP BY adid HAVING adid = a.adid),
-(SELECT bidpoints AS yourBid FROM bid WHERE icnum='A1111111A' AND adid = a.adid)
+-- Find ads eligible to bid, also show the user's bidpoint and the current max bidpoint
+SELECT * ,
+	(SELECT max(bidpoints) AS maxBid FROM bid GROUP BY adid HAVING adid = a.adid),
+	(SELECT bidpoints AS yourBid FROM bid WHERE icnum='$_SESSION[icnum]' AND adid = a.adid)
 FROM advertisements a
 WHERE NOT EXISTS (
 	SELECT 1 FROM bid b
 	WHERE b.adid = a.adid
-	AND b.status = 'Selected'
+	AND b.status = 'Selected');
+
+-- Get all cars of the current user
+SELECT *
+FROM cars
+WHERE plateNum IN (
+	SELECT plateNum FROM drive WHERE icnum = '$_SESSION[icnum]'
 );
 
+-- Get all advertisements posted by the current user;
+SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa
+FROM (
+	(users u natural left join advertise a ) natural join advertisements
+) as uaa
+WHERE uaa.icnum = '$_SESSION[icnum]';
+
+-- Get all ads that the user have bidded, show also the status whether he/she is selected
+SELECT origin, destination, doa, bidpoints, status
+FROM bid, advertisements a
+WHERE bid.adid = a.adid
+AND bid.icnum = '$_SESSION[icnum]'
+
+
+
+------------- INSERT -------------
+
+-- User sign up
+INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum)
+	VALUES ('$_POST[username]', '$_POST[userpassword]', '$_POST[icnum]', '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]');
+-- Admin sign up
+INSERT INTO administrators (username, userpassword, icnum, firstname, lastname, email, phonenum)
+	VALUES ('$_POST[username]', '$_POST[userpassword]', '$_POST[icnum]', '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]');
+
+-- Post an advertisement (Insert into advertisement and also advertise in one transection)
 BEGIN;
 INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
-INSERT INTO advertise (icnum, adid) SELECT '$_SESSION[icnum]', adid FROM advertisements ORDER BY adid DESC LIMIT 1;
-COMMIT;
+INSERT INTO advertise (icnum, adid)(
+	SELECT '$_SESSION[icnum]', adid
+	FROM advertisements
+	ORDER BY adid
+	DESC LIMIT 1
+);
+END;
 
--- insert
-INSERT INTO administrators (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('$_POST[username]', '$_POST[userpassword]', '$_POST[icnum]', '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]');
+-- Bidding an advertisement
+-- Step 1: Check whether the user has already bidded for that specific advertisements
+SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_SESSION[icnum]';
+-- Step 2:
+-- IF not exists a record
+INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]';
+-- ELSE update points the existing one
+UPDATE bid
+SET bidpoints = '$_POST[bidpoints]'
+WHERE icnum = '$_SESSION[icnum]'
+AND adid = '$_POST[adid]';
+
+-- Apply to be a driver;
+BEGIN;
 INSERT INTO cars (platenum, models, numseats) VALUES ('$_POST[platenum]', '$_POST[models]', '$_POST[numseats]');
-INSERT INTO advertisements (origin, destination, doa) VALUES ('$_POST[origin]', '$_POST[destination]', '$_POST[doa]');
-INSERT INTO advertise (icnum, adid) VALUES ('$_POST[icnum]','$row[adid]');
-INSERT INTO bid (adid, icnum, bidpoints) VALUES ($_POST[adid],'$_POST[icnum]', 1);
-INSERT INTO users (username, userpassword, icnum, firstname, lastname, email, phonenum) VALUES ('$_POST[username]', '$_POST[userpassword]', '$_POST[icnum]', '$_POST[firstname]', '$_POST[lastname]', '$_POST[email]', '$_POST[phonenum]');
-INSERT INTO drive(plateNum, ICNum) VALUES ('$_POST[platenum]', '$_POST[icnum]');
+INSERT INTO drive(platenum, icnum) VALUES ('$_POST[platenum]', '$_SESSION[icnum]');
+END;
 
--- delete
+
+------------- DELETE -------------
+
+-- Delete a user according to the icnum
 DELETE FROM users WHERE icnum = '$_POST[icnum]';
+
+
 DELETE FROM drive WHERE plateNum = '$_POST[platenum]' and icnum='$_POST[icnum]';
-DELETE FROM advertise WHERE adid='$_POST[adid]' and icnum='$_POST[icnum]';
-DELETE FROM bid WHERE adid='_POST[adid]' and icnum='$_POST[icnum]';
 DELETE FROM cars WHERE plateNum='$_POST[platenum]';
-DELETE FROM advertisements WHERE adid='$_POST[adid]';
 
 
+------------- UPDATE -------------
 
--- update
-UPDATE bid SET status = 'Selected' WHERE icnum = '$_SESSION[icnum]' and adid = $row[adid]
+-- When a driver selects a bidder, set the bid status to 'SELECTED'.
+UPDATE bid
+	SET status = 'Selected'
+	WHERE icnum = '$_POST[icnum]'
+	AND adid = '$_POST[adid]';
 
+------------- COMPLEX QUERIES -------------
 
--- For displaying bid points of each advertisement. This is to be viewed by administrator.
+-- For displaying maximum bidpoint of each advertisement. This is to be viewed by administrator.
 SELECT DISTINCT *
 FROM (
-	SELECT adid, count(bidpoints) as points
-	FROM bid
-    GROUP BY adid
+		SELECT adid, max(bidpoints) as points
+		FROM bid
+		GROUP BY adid
 ) AS combined natural join advertisements
 ORDER BY points DESC;
 
--- For displaying ads that are expired. The ads which were posted 14 dayds ago is expired.
+-- Show all expired ads (14 days), with its max bidpoint, in descending time order
 SELECT DISTINCT *
 FROM (
-	SELECT adid, count(bidpoints) as points
-	FROM bid
-    GROUP BY adid
+		SELECT adid, max(bidpoints) as points
+		FROM bid
+		GROUP BY adid
 ) AS combined natural join advertisements
-WHERE CURRENT_TIMESTAMP - doa > '14' ;
+WHERE CURRENT_TIMESTAMP - doa > '14 day'::interval
+ORDER by doa DESC;
 
--- Most popular ad of the week
+-- Top 10 popular ad of the week
 SELECT DISTINCT *
 FROM (
-	SELECT adid, count(bidpoints) as points
-	FROM bid
-    GROUP BY adid
+		SELECT adid, max(bidpoints) as points
+		FROM bid
+		GROUP BY adid
 ) AS combined natural join advertisements
-WHERE CURRENT_TIMESTAMP - doa <= '7'
+WHERE CURRENT_TIMESTAMP - doa <= '7 day'::interval
 ORDER BY points DESC
-LIMIT 1;
+LIMIT 10;
 
--- Functions
+
+------------- FUNCTIONS -------------
 
 	--update bid points
 CREATE OR REPLACE FUNCTION incBid(IC VARCHAR, ad INTEGER, val NUMERIC)
@@ -92,18 +158,36 @@ END;'
 LANGUAGE PLPGSQL;
 
 	--update bid status
-CREATE OR REPLACE FUNCTION selBidder(IC VARCHAR)
+CREATE OR REPLACE FUNCTION selBidder(IC VARCHAR, ad INTEGER)
 RETURNS BOOLEAN AS $$
 BEGIN
 UPDATE bid
 SET status='Selected'
-WHERE icnum=IC;
+WHERE icnum=IC
+AND adid=ad;
 RETURN TRUE;
 END; $$
 LANGUAGE PLPGSQL;
 
--- Triggers
-	--delete trigger
+------------- TRIGGER -------------
+
+-- Function and trigger to keep integrity constraint (bidpoint > 0)
+CREATE OR REPLACE FUNCTION exception()
+RETURNS TRIGGER AS $$
+BEGIN
+RAISE NOTICE 'invalid bidpoint';
+RETURN NULL;
+END; $$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER exception
+BEFORE INSERT OR UPDATE
+ON bid
+FOR EACH STATEMENT
+WHEN NEW.bidpoint < 0
+EXECUTE PROCEDURE exception();
+
+--delete trigger
 CREATE OR REPLACE FUNCTION delete()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -162,3 +246,36 @@ BEFORE UPDATE
 ON drive
 FOR EACH STATEMENT
 EXECUTE PROCEDURE insertDrive();
+
+
+------------- LOG -------------
+CREATE TABLE blog (
+	ICNum VARCHAR(16),
+	adID INTEGER,
+	pointBefore INTEGER,
+	pointAfter INTEGER NOT NULL,
+	upadteTime TIMESTAMP NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION bidlog()
+RETURNS TRIGGER AS $$
+DECLARE pb INTEGER;
+DECLARE now TIMESTAMP;
+BEGIN
+now := CURRENT_TIMESTAMP;
+IF TG_OP ='INSERT'
+THEN pb:=null;
+ELSEIF TG_OP ='UPDATE'
+THEN pb:=OLD.bidpoints;
+END IF;
+INSERT INTO blog
+VALUES (NEW.icnum, NEW.adID, pb, NEW.bidpoints, now);
+RETURN NULL;
+END; $$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER logBP
+AFTER INSERT OR UPDATE
+ON bid
+FOR EACH ROW
+EXECUTE PROCEDURE bidlog();
