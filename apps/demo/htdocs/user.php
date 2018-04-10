@@ -251,14 +251,16 @@
                                   <th>Time</th>
                                   <th>Points</th>
                                   <th>Status</th>
+                                  <th>Driver</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <?php
                                   //retrieve my bidding information about the user
-                                  $sql = "SELECT origin, destination, doa, bidpoints, status
-                                          FROM bid, advertisements a
+                                  $sql = "SELECT origin, destination, doa, bidpoints, status, u.lastname, u.firstname
+                                          FROM bid, advertisements a, users u
                                           WHERE bid.adid = a.adid
+                                          AND driveric = u.icnum
                                           AND bid.icnum = '$_SESSION[icnum]'";
                                   $result = pg_query($db, $sql);// Query template
                                   //show error
@@ -276,6 +278,7 @@
                                     echo "<th>" . $row['doa'] . "</th>";
                                     echo "<th>" . $row['bidpoints'] . "</th>";
                                     echo "<th>" . $row['status'] . "</th>";
+                                    echo "<th>" . $row['firstname'] . " " . $row['lastname'] . "</th>";
                                     echo "</tr>";
                                   }
                                 ?>
@@ -353,7 +356,7 @@
           <tbody>
             <?php
               //retrieve bids that are eligible to select, meaning not yet selected by other drivers
-              $sql = "SELECT b.adid, b.icnum, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
+              $sql = "SELECT b.adid, b.icnum as BidderIC, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
                       FROM bid b, advertisements a, advertise at
                       WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
                       ORDER BY b.adid";
@@ -371,7 +374,7 @@
                 $icnum = $row['icnum'];
                 echo "<tr>";
                 echo "<th>" . $row['adid'] . "</th>";
-                echo "<th>" . $row['icnum'] . "</th>";
+                echo "<th>" . $row['bidderic'] . "</th>";
                 echo "<th>" . $row['origin'] . "</th>";
                 echo "<th>" . $row['destination'] . "</th>";
                 echo "<th>" . $row['doa'] . "</th>";
@@ -392,11 +395,13 @@
                 // select a bidder that is not yet selected by other drivers
                 $sql = "SELECT selBidder('$_POST[icnum]', '$_POST[adid]')";
                 $result = pg_query($db, $sql);
+                $row = pg_fetch_assoc($result);
 
-                if (!$result) {
+                if (empty($row['selbidder'])) {
                   echo '<script language="javascript">';
                   echo 'alert("Oops, please try again!")';
                   echo '</script>';
+                  echo "<script> window.location.replace('user.php') </script>";
                   exit;
                 } else {
                   echo '<script language="javascript">';
@@ -433,6 +438,7 @@
                       WHERE NOT EXISTS (
                       	SELECT 1 FROM bid b
                       	WHERE b.adid = a.adid
+                        AND icnum='$_SESSION[icnum]'
                       	AND b.status = 'Selected')";
               $result = pg_query($db, $sql);// Query template
               //show error
@@ -503,7 +509,14 @@
               // by default, each user can contain bid i point for each ad
               $result = pg_query($db, "INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]')");
               $error = pg_last_error($db);
-              if (!$result | $error) {
+              $notice = pg_last_notice($db);
+
+              if ($notice == "NOTICE:  Create bid failed on checkBidderTime()!") {
+                echo '<script language="javascript">';
+                echo 'alert("Oops, multiple routes at the same timing!")';
+                echo '</script>';
+              }
+              else if (!$result | $error) {
                   echo '<script languagce="javascript">';
                   echo 'alert("Invalid input!")';
                   echo '</script>';

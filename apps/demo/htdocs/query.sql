@@ -17,7 +17,7 @@ FROM drive NATURAL JOIN users;
 SELECT count(*) FROM advertisements;
 -- Retrieve bidding status of advertisements the specific user has posted
 -- (meaning all those he/she can select), thus the bid should also not yet be selected by other drivers
-SELECT b.adid, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
+SELECT b.adid, b.icnum as BidderIC, a.origin, a.destination, a.doa, at.icnum, bidpoints, status
 				FROM bid b, advertisements a, advertise at
 				WHERE status = 'Not Selected' AND b.adid = a.adid AND b.adid = at.adid AND at.icnum = '$_SESSION[icnum]'
 				ORDER BY b.adid;
@@ -30,6 +30,7 @@ FROM advertisements a
 WHERE NOT EXISTS (
 	SELECT 1 FROM bid b
 	WHERE b.adid = a.adid
+	AND icnum='$_SESSION[icnum]'
 	AND b.status = 'Selected');
 
 -- Get all cars of the current user
@@ -47,11 +48,11 @@ FROM (
 WHERE uaa.icnum = '$_SESSION[icnum]';
 
 -- Get all ads that the user have bidded, show also the status whether he/she is selected
-SELECT origin, destination, doa, bidpoints, status
-FROM bid, advertisements a
+SELECT origin, destination, doa, bidpoints, status, u.lastname, u.firstname
+FROM bid, advertisements a, users u
 WHERE bid.adid = a.adid
+AND driveric = u.icnum
 AND bid.icnum = '$_SESSION[icnum]'
-
 
 
 ------------- INSERT -------------
@@ -162,10 +163,12 @@ CREATE OR REPLACE FUNCTION selBidder(IC VARCHAR, ad INTEGER)
 RETURNS BOOLEAN AS $$
 BEGIN
 UPDATE bid
-SET status='Selected'
-WHERE icnum=IC
-AND adid=ad;
-RETURN TRUE;
+SET status='Selected', driverIC=IC
+WHERE adid=ad;
+IF ((SELECT driveric FROM bid WHERE adid = ad) = IC) --Check whether the update is successful
+THEN RETURN TRUE;
+ELSE
+RETURN NULL;
 END; $$
 LANGUAGE PLPGSQL;
 
@@ -186,6 +189,82 @@ ON bid
 FOR EACH STATEMENT
 WHEN NEW.bidpoint < 0
 EXECUTE PROCEDURE exception();
+
+-- Prohibit driver from selecting multiple bids if the driver would not be able to
+-- pick up the next driver on time. (Timeframe set to be 15 mins)
+CREATE OR REPLACE FUNCTION checkDriverTime()
+RETURNS TRIGGER AS $$
+DECLARE t TIMESTAMP;
+DECLARE ori VARCHAR(64);
+DECLARE dest VARCHAR(64);
+BEGIN
+t := (SELECT doa FROM Advertisements WHERE adid = NEW.adid);
+ori := (SELECT origin FROM Advertisements WHERE adid = NEW.adid);
+dest := (SELECT destination FROM Advertisements WHERE adid = NEW.adid);
+IF (SELECT count(*) FROM Bid NATURAL JOIN Advertisements
+		WHERE driverIC = NEW.driveric
+		AND origin <> ori
+		AND destination <> dest
+		AND ((t - doa < '15 minute'::interval AND t - doa >'-15 minute'::interval)
+			OR
+			(doa - t < '15 minute'::interval AND doa - t >'-15 minute'::interval))
+		)
+THEN
+RAISE NOTICE 'Select bidder failed on checkDriverTime()!';
+RETURN NULL;
+ELSE
+RAISE NOTICE 'Select bidder success!';
+RETURN NEW;
+END IF;
+END; $$
+LANGUAGE PLPGSQL;
+
+
+CREATE TRIGGER driverTime
+BEFORE UPDATE
+ON bid
+FOR EACH ROW
+WHEN (NEW.status = 'Selected')
+EXECUTE PROCEDURE checkDriverTime();
+
+
+-- Prohibit user from bidding multiple bids of different routes in the same
+-- 15 minutes timeframe (Rationale being they cannot change ride in such a short timeframe)
+CREATE OR REPLACE FUNCTION checkBidderTime()
+RETURNS TRIGGER AS $$
+DECLARE t TIMESTAMP;
+DECLARE ori VARCHAR(64);
+DECLARE dest VARCHAR(64);
+BEGIN
+t := (SELECT doa FROM Advertisements WHERE adid = NEW.adid);
+ori := (SELECT origin FROM Advertisements WHERE adid = NEW.adid);
+dest := (SELECT destination FROM Advertisements WHERE adid = NEW.adid);
+
+IF EXISTS(SELECT 1 FROM Bid NATURAL JOIN Advertisements
+		WHERE icnum = NEW.icnum
+		AND origin <> ori
+		AND destination <> dest
+		AND ((t - doa < '15 minute'::interval AND t - doa >'-15 minute'::interval)
+				OR
+				(doa - t < '15 minute'::interval AND doa - t >'-15 minute'::interval))
+		)
+THEN
+RAISE NOTICE 'Create bid failed on checkBidderTime()!';
+RETURN NULL;
+ELSE
+RAISE NOTICE 'Create bid success!';
+RETURN NEW;
+END IF;
+END; $$
+LANGUAGE PLPGSQL;
+
+
+CREATE TRIGGER bidderTime
+BEFORE INSERT
+ON bid
+FOR EACH ROW
+EXECUTE PROCEDURE checkBidderTime();
+
 
 --delete trigger
 CREATE OR REPLACE FUNCTION delete()
