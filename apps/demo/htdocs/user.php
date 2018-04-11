@@ -22,7 +22,7 @@
           $result = pg_query($db, "INSERT INTO bid VALUES ('$_POST[icnum]', $_POST[adid], '$_POST[bidpoints]')");
            if (!$result) {
              echo '<script language="javascript">';
-             echo 'alert("Oops, please try again! 1")';
+             echo 'alert("Oops, please try again!")';
              echo '</script>';
            } else {
               echo '<script language="javascript">';
@@ -136,7 +136,7 @@
                           //show error
                           if (!$result) {
                             echo '<script language="javascript">';
-                            echo 'alert("Oops, please try again! 2")';
+                            echo 'alert("Oops, please try again!")';
                             echo '</script>';
                           } else {
                             //nothing
@@ -221,7 +221,7 @@
                                   //show error
                                   if (!$result) {
                                    echo '<script language="javascript">';
-                                   echo 'alert("Oops, please try again! 3")';
+                                   echo 'alert("Oops, please try again!")';
                                    echo '</script>';
                                   }
 
@@ -266,7 +266,7 @@
                                   if (!$result) {
                                    echo  pg_last_error();
                                    echo '<script language="javascript">';
-                                   echo 'alert("Oops, please try again! 4")';
+                                   echo 'alert("Oops, please try again!")';
                                    echo '</script>';
                                   }
 
@@ -364,7 +364,7 @@
               //show error
               if (!$result) {
                echo '<script language="javascript">';
-               echo 'alert("Oops, please try again! 5")';
+               echo 'alert("Oops, please try again!")';
                echo '</script>';
               }
 
@@ -399,7 +399,7 @@
 
                 if (empty($row['selbidder'])) {
                   echo '<script language="javascript">';
-                  echo 'alert("Oops, please try again! 6")';
+                  echo 'alert("Oops, please try again!")';
                   echo '</script>';
                   echo "<script> window.location.replace('user.php') </script>";
                   exit;
@@ -444,7 +444,7 @@
               //show error
               if (!$result) {
                echo '<script language="javascript">';
-               echo 'alert("Oops, please try again! 7")';
+               echo 'alert("Oops, please try again!")';
                echo '</script>';
               }
 
