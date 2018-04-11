@@ -22,7 +22,7 @@
           $result = pg_query($db, "INSERT INTO bid VALUES ('$_POST[icnum]', $_POST[adid], '$_POST[bidpoints]')");
            if (!$result) {
              echo '<script language="javascript">';
-             echo 'alert("Oops, please try again!")';
+             echo 'alert("Oops, please try again! 1")';
              echo '</script>';
            } else {
               echo '<script language="javascript">';
@@ -136,7 +136,7 @@
                           //show error
                           if (!$result) {
                             echo '<script language="javascript">';
-                            echo 'alert("Oops, please try again!")';
+                            echo 'alert("Oops, please try again! 2")';
                             echo '</script>';
                           } else {
                             //nothing
@@ -221,7 +221,7 @@
                                   //show error
                                   if (!$result) {
                                    echo '<script language="javascript">';
-                                   echo 'alert("Oops, please try again!")';
+                                   echo 'alert("Oops, please try again! 3")';
                                    echo '</script>';
                                   }
 
@@ -257,16 +257,16 @@
                               <tbody>
                                 <?php
                                   //retrieve my bidding information about the user
-                                  $sql = "SELECT origin, destination, doa, bidpoints, status, u.lastname, u.firstname
-                                          FROM bid, advertisements a, users u
-                                          WHERE bid.adid = a.adid
-                                          AND driveric = u.icnum
-                                          AND bid.icnum = '$_SESSION[icnum]'";
+                                  $sql = "SELECT UBA.origin, UBA.destination, UBA.doa, UBA.bidpoints, UBA.status, UBA.lastname, UBA.firstname, UAA.username as driver
+                                          FROM (bid natural join advertisements a natural join users u) as UBA, (users natural join advertise natural join advertisements) as UAA
+                                          WHERE UBA.adid = UAA.adid
+                                          AND UBA.icnum = '$_SESSION[icnum]'";
                                   $result = pg_query($db, $sql);// Query template
                                   //show error
                                   if (!$result) {
+                                   echo  pg_last_error();
                                    echo '<script language="javascript">';
-                                   echo 'alert("Oops, please try again!")';
+                                   echo 'alert("Oops, please try again! 4")';
                                    echo '</script>';
                                   }
 
@@ -278,7 +278,7 @@
                                     echo "<th>" . $row['doa'] . "</th>";
                                     echo "<th>" . $row['bidpoints'] . "</th>";
                                     echo "<th>" . $row['status'] . "</th>";
-                                    echo "<th>" . $row['firstname'] . " " . $row['lastname'] . "</th>";
+                                    echo "<th>" . $row['driver'] . "</th>";
                                     echo "</tr>";
                                   }
                                 ?>
@@ -364,7 +364,7 @@
               //show error
               if (!$result) {
                echo '<script language="javascript">';
-               echo 'alert("Oops, please try again!")';
+               echo 'alert("Oops, please try again! 5")';
                echo '</script>';
               }
 
@@ -399,7 +399,7 @@
 
                 if (empty($row['selbidder'])) {
                   echo '<script language="javascript">';
-                  echo 'alert("Oops, please try again!")';
+                  echo 'alert("Oops, please try again! 6")';
                   echo '</script>';
                   echo "<script> window.location.replace('user.php') </script>";
                   exit;
@@ -444,7 +444,7 @@
               //show error
               if (!$result) {
                echo '<script language="javascript">';
-               echo 'alert("Oops, please try again!")';
+               echo 'alert("Oops, please try again! 7")';
                echo '</script>';
               }
 
