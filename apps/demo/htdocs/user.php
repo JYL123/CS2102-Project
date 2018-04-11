@@ -470,7 +470,7 @@
             <?PHP
               if (isset($_POST['incbid'])) {	// Submit the update SQL command
                 // select a bidder that is not yet selected by other drivers
-                $sql = "SELECT incBid('$_SESSION[icnum]', '$_POST[adid]', 10)";
+                $sql = "SELECT incBid('$_SESSION[icnum]', $_POST[adid], 10)";
                 $result = pg_query($db, $sql);
                 $row = pg_fetch_assoc($result);
 
