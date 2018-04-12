@@ -303,7 +303,7 @@
     <!--View expired ad section-->
     <div role="tabpanel" class="tab-pane" id="drive">
       <div align='center'></div>
-          <h2 class="form-heading" align = "center">Expired Ads for past 2 weeks</h2>
+          <h2 class="form-heading" align = "center">10 Most Recent Expired Ads for Past Weeks</h2>
           <table class="table table-user-information">
           <thead>
             <tr>
@@ -316,11 +316,12 @@
           </thead>
           <tbody>
             <?php
-              //show all expired, showing max bidpoint
+              //most recent 10 expired ads
               $sql = "SELECT DISTINCT *
-                      FROM  advertisements
-                      WHERE CURRENT_TIMESTAMP - doa > '14 day'::interval
-                      ORDER by doa DESC";
+              FROM  advertisements
+              WHERE CURRENT_TIMESTAMP - doa > '7 day'::interval
+              ORDER by doa DESC
+              LIMIT 10";
               $result = pg_query($db, $sql);// Query template
               //show error
               if (!$result) {
@@ -352,7 +353,7 @@
      <!--View popular ads-->
      <div role="tabpanel" class="tab-pane" id="bid">
       <div align='center'></div>
-      <h2 class="form-heading" align = "center">Populard Ads for last weeks</h2>
+      <h2 class="form-heading" align = "center">Top 10 Popular Ads for Past Weeks</h2>
       <table class="table table-user-information">
           <thead>
             <tr>
@@ -372,7 +373,7 @@
               		FROM bid
               		GROUP BY adid
               ) AS combined natural join advertisements
-              WHERE CURRENT_TIMESTAMP - doa <= '7 day'::interval
+              WHERE doa::timestamp <= CURRENT_TIMESTAMP - INTERVAL '7 days'
               ORDER BY points DESC
               LIMIT 10";
               $result = pg_query($db, $sql);// Query template
