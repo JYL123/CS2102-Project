@@ -22,7 +22,7 @@ In this project, the design of RouteSharing application would require three main
 
 
 
-<img src="ERDiagram.png" alt="ER diagram" style="width: 470px;"/>
+<img src="ERDiagram.jpg" alt="ER diagram" style="width: 470px;"/>
 
 
 
@@ -142,8 +142,7 @@ Furthermore, several non-trivial **constraints** are implemented. The first is t
   SELECT *
   FROM cars
   WHERE plateNum IN (
-  	SELECT plateNum FROM drive WHERE icnum = '$_SESSION[icnum]'
-  );
+  	SELECT plateNum FROM drive WHERE icnum = '$_SESSION[icnum]');
 
   -- Get all advertisements posted by the current user;
   SELECT DISTINCT uaa.adid, uaa.origin, uaa.destination, uaa.doa
@@ -292,15 +291,16 @@ FROM (
 ) AS combined natural join advertisements
 ORDER BY points DESC;
 
--- Show all expired ads (14 days), with its max bidpoint, in descending time order
+-- Show 10 most recent expired advertisement, with its max bidpoint, in descending time order
 SELECT DISTINCT *
 FROM (
 		SELECT adid, max(bidpoints) as points
 		FROM bid
 		GROUP BY adid
 ) AS combined natural join advertisements
-WHERE CURRENT_TIMESTAMP - doa > '14 day'::interval
-ORDER by doa DESC;
+WHERE CURRENT_TIMESTAMP - doa > '7 day'::interval
+ORDER by doa DESC
+LIMIT 10
 
 -- Top 10 popular ad of the week
 SELECT DISTINCT *
@@ -473,40 +473,11 @@ FOR EACH STATEMENT
 EXECUTE PROCEDURE insertDrive();
 ```
 ## 5 Web Interface Design 
-#### Selectively display essential parts of the application
+In this section, we selectively display essential parts of the application.
+
 <h3> User Portal </h3>
 
 <p>
-
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/SignUpPage.png" alt="" style="width: 300px;"/>
-
-<em><center>*Sign Up Page*</center></em>
-
-
-
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/SignInPage.png" alt="" style="width: 900px;"/>
-
-<em><center>*Sign In Page*</center></em>
-
-
-
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/Overview.png" alt="" style="width: 600px;"/>
-
-<em><center>*Overview of Web Page*</center></em>
-
-
-
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/PoseAdPage.png" alt="" style="width: 350px;"/>
-
-<em><center>*Post an Advertisement*</center></em>
-
-
-
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/ApplyDriverPage.png" alt="" style="width: 350px;"/>
-
-<em><center>*Apply Driver Page*</center></em>
-
-
 
 <img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/BidAdPage.jpeg" alt="" style="width: 600px;"/>
 
@@ -524,12 +495,9 @@ EXECUTE PROCEDURE insertDrive();
 
 <em><center>*Homepage Overview with Cars, Advertisements and Bids infomation*</center></em>
 
+<div style="page-break-after: always;"></div>
 
 <h3> Admin Portal </h3>
-
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/DeleteUsers.png" alt="" style="width: 300px;"/>
-
-<em><center>*Delete Users Page*</center></em>
 
 
 <img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/MaxPoints.png" alt="" style="width: 600px;"/>
@@ -537,7 +505,7 @@ EXECUTE PROCEDURE insertDrive();
 <em><center>*View Max Bidpoint Per Advertisement Page*</center></em>
 
 
-<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/PopularAd.png" alt="" style="width: 600px;"/>
+<img src="/Users/zhangshuoyang/Desktop/CS2102Diagram/PopularAd.jpeg" alt="" style="width: 600px;"/>
 
 <em><center>*View Top 10 Popular Advertisements Page*</center></em>
 
