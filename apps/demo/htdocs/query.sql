@@ -186,8 +186,8 @@ LANGUAGE PLPGSQL;
 CREATE TRIGGER exception
 BEFORE INSERT OR UPDATE
 ON bid
-FOR EACH STATEMENT
-WHEN NEW.bidpoint < 0
+FOR EACH ROW
+WHEN (NEW.bidpoints < 0)
 EXECUTE PROCEDURE exception();
 
 -- Prohibit driver from selecting multiple bids if the driver would not be able to
@@ -201,7 +201,7 @@ BEGIN
 t := (SELECT doa FROM Advertisements WHERE adid = NEW.adid);
 ori := (SELECT origin FROM Advertisements WHERE adid = NEW.adid);
 dest := (SELECT destination FROM Advertisements WHERE adid = NEW.adid);
-IF (SELECT count(*) FROM Bid NATURAL JOIN Advertisements
+IF EXISTS(SELECT 1 FROM Bid NATURAL JOIN Advertisements
 		WHERE driverIC = NEW.driveric
 		AND origin <> ori
 		AND destination <> dest
