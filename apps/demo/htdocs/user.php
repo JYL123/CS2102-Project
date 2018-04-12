@@ -505,6 +505,17 @@
           $userresult = pg_query($db, "SELECT * FROM bid WHERE adid = $_POST[adid] AND icnum = '$_SESSION[icnum]'");
           $row    = pg_fetch_assoc($userresult);
 
+          $postOwner = pg_query($db, "SELECT ICNum FROM Advertise WHERE adid = '$_POST[adid]'");
+          $postOwnerRow = pg_fetch_assoc($postOwner);
+
+          if ($postOwnerRow['icnum'] == $_SESSION[icnum]) {
+            echo '<script language="javascript">';
+            echo 'alert("Oops, cannot bid your own ad!")';
+            echo '</script>';
+            echo "<script> window.location.replace('user.php') </script>";
+            exit;
+          }
+
           if (empty($row)) {
               // by default, each user can contain bid i point for each ad
               $result = pg_query($db, "INSERT INTO bid VALUES ('$_SESSION[icnum]', $_POST[adid], '$_POST[bidpoints]')");
@@ -516,7 +527,7 @@
                 echo 'alert("Oops, multiple routes at the same timing!")';
                 echo '</script>';
               }
-              else if (!$result | $error) {
+              else if (!$result || $error || $notice == "NOTICE:  invalid bidpoint") {
                   echo '<script languagce="javascript">';
                   echo 'alert("Invalid input!")';
                   echo '</script>';
