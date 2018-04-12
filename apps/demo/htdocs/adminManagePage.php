@@ -318,13 +318,9 @@
             <?php
               //show all expired, showing max bidpoint
               $sql = "SELECT DISTINCT *
-              FROM (
-              		SELECT adid, max(bidpoints) as points
-              		FROM bid
-              		GROUP BY adid
-              ) AS combined natural join advertisements
-              WHERE CURRENT_TIMESTAMP - doa > '14 day'::interval
-              ORDER by doa DESC";
+                      FROM  advertisements
+                      WHERE CURRENT_TIMESTAMP - doa > '14 day'::interval
+                      ORDER by doa DESC";
               $result = pg_query($db, $sql);// Query template
               //show error
               if (!$result) {
