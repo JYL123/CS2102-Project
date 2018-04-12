@@ -83,6 +83,11 @@
         </div>
       </div>
 
+      <div>
+      <h2>Dashboard: </h2>
+       <p>For all drivers who wish to dissociate their vehicles from the plateform, please contact administrators @9999 1111. As we are protecting the safty and privacy of our customers, the dissociation of any vehicles requires manual paper work. The vehicles will be removed from the system afterwards.</p>
+      </div>
+
       <hr>
 
       <!-- Login Failed Modal -->
