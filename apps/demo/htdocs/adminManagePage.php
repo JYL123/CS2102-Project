@@ -334,7 +334,7 @@
               while ($row = pg_fetch_assoc($result)) {
                 echo "<tr>";
                 echo "<th>" . $row['adid'] . "</th>";
-                echo "<th>" . $row['points'] . "</th>";
+                echo "<th>" . $row['bidpoints'] . "</th>";
                 echo "<th>" . $row['origin'] . "</th>";
                 echo "<th>" . $row['destination'] . "</th>";
                 echo "<th>" . $row['doa'] . "</th>";
