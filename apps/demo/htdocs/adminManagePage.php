@@ -308,7 +308,6 @@
           <thead>
             <tr>
               <th>Ad ID</th>
-              <th>Point</th>
               <th>Origin</th>
               <th>Destination</th>
               <th>Date</th>
@@ -318,10 +317,14 @@
             <?php
               //most recent 10 expired ads
               $sql = "SELECT DISTINCT *
-              FROM  advertisements
-              WHERE CURRENT_TIMESTAMP - doa > '7 day'::interval
-              ORDER by doa DESC
-              LIMIT 10";
+                      FROM (
+                        SELECT adid, max(bidpoints) as points
+                        FROM bid
+                        GROUP BY adid
+                      ) AS combined natural join advertisements
+                      WHERE CURRENT_TIMESTAMP - doa > '7 day'::interval
+                      ORDER by doa DESC
+                      LIMIT 10";
               $result = pg_query($db, $sql);// Query template
               //show error
               if (!$result) {
@@ -334,7 +337,6 @@
               while ($row = pg_fetch_assoc($result)) {
                 echo "<tr>";
                 echo "<th>" . $row['adid'] . "</th>";
-                echo "<th>" . $row['bidpoints'] . "</th>";
                 echo "<th>" . $row['origin'] . "</th>";
                 echo "<th>" . $row['destination'] . "</th>";
                 echo "<th>" . $row['doa'] . "</th>";
@@ -366,7 +368,6 @@
           </thead>
           <tbody>
             <?php
-              //show all VALID ads with max bidpoints
               $sql = "SELECT DISTINCT *
               FROM (
               		SELECT adid, max(bidpoints) as points
